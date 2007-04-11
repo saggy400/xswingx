@@ -25,6 +25,10 @@ public class JXPromptField extends JTextField {
 	}
 
 	public JXPromptField(String labelText, Color labelTextColor) {
+		installPromptSupport(labelText, labelTextColor);
+	}
+
+	protected void installPromptSupport(String labelText, Color labelTextColor) {
 		PromptSupport.install(labelText, labelTextColor, this);
 	}
 

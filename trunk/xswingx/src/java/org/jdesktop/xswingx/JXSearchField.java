@@ -1,14 +1,15 @@
 package org.jdesktop.xswingx;
 
+import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import javax.swing.AbstractAction;
-import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.KeyStroke;
@@ -22,6 +23,9 @@ import org.jdesktop.xswingx.plaf.JXSearchFieldAddon;
 import org.jdesktop.xswingx.plaf.basic.BasicSearchFieldUI;
 
 public class JXSearchField extends JXPromptField {
+	private static final KeyStroke CLEAR_KEY = KeyStroke.getKeyStroke(
+			KeyEvent.VK_ESCAPE, 0);
+
 	public enum LayoutStyle {
 		VISTA, MAC
 	};
@@ -43,16 +47,27 @@ public class JXSearchField extends JXPromptField {
 
 	private Insets buttonMargin;
 
-	private LayoutStyle layoutStyle;
+	private LayoutStyle layoutStyle = LayoutStyle.MAC;
 
 	public JXSearchField() {
-		layoutStyle = LayoutStyle.MAC;
-		
-		getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
-				"clearText");
-		getActionMap().put("clearText", getClearTextAction());
+		// We cannot register the ClearTextAction through the Input- and ActionMap,
+		// because ToolTipManager registers the escape key with an action that
+		// hides the tooltip every time the tooltip is changed and then the
+		// ClearTextAction will never be called.
+		addKeyListener(new KeyAdapter() {
+			public void keyPressed(KeyEvent e) {
+				if (CLEAR_KEY.equals(KeyStroke.getKeyStroke(e.getKeyCode(), e
+						.getModifiers()))) {
+					getClearTextAction().clear();
+				}
+			}
+		});
 
 		propertyChangeHandler.install();
+	}
+
+	protected void installPromptSupport(String labelText, Color labelTextColor) {
+		// don't! Handled by setUI
 	}
 
 	public LayoutStyle getLayoutStyle() {
@@ -77,10 +92,10 @@ public class JXSearchField extends JXPromptField {
 	}
 
 	public void setButtonMargin(Insets buttonMargin) {
-		this.buttonMargin = buttonMargin;
+		firePropertyChange("buttonMargin", this.buttonMargin, this.buttonMargin = buttonMargin);
 	}
 
-	public Action getClearTextAction() {
+	public ClearTextAction getClearTextAction() {
 		if (clearTextAction == null) {
 			clearTextAction = new ClearTextAction();
 		}
@@ -163,10 +178,11 @@ public class JXSearchField extends JXPromptField {
 	}
 
 	class ClearTextAction extends AbstractAction {
-		public ClearTextAction() {
+		public void actionPerformed(ActionEvent e) {
+			clear();
 		}
 
-		public void actionPerformed(ActionEvent e) {
+		public void clear() {
 			setText(null);
 		}
 	}
@@ -219,10 +235,12 @@ public class JXSearchField extends JXPromptField {
 			if (clearButton != null) {
 				clearButton.setVisible(doc != null && doc.getLength() > 0);
 			}
-			if (isVistaLayoutStyle()) {
-				searchButton.setVisible(!clearButton.isVisible());
-			} else {
-				searchButton.setVisible(true);
+			if (searchButton != null) {
+				if (isVistaLayoutStyle()) {
+					searchButton.setVisible(!clearButton.isVisible());
+				} else {
+					searchButton.setVisible(true);
+				}
 			}
 		}
 	}

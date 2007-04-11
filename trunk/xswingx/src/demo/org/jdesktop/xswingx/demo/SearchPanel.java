@@ -6,11 +6,23 @@
 
 package org.jdesktop.xswingx.demo;
 
+import java.awt.Color;
+import java.awt.Insets;
+import java.text.ParseException;
+import java.util.Scanner;
+import javax.swing.JFormattedTextField;
+import javax.swing.UIManager;
+import javax.swing.border.LineBorder;
+import javax.swing.text.DefaultFormatterFactory;
+import org.jdesktop.xswingx.JXSearchField;
+
 /**
  *
  * @author  peterw
  */
 public class SearchPanel extends javax.swing.JPanel {
+    private final DefaultFormatterFactory ff = new DefaultFormatterFactory(new InsetsFormatter());
+    private boolean change = false;
     
     /** Creates new form SearchPanel */
     public SearchPanel() {
@@ -24,32 +36,404 @@ public class SearchPanel extends javax.swing.JPanel {
      */
     // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:initComponents
     private void initComponents() {
-        jXSearchField1 = new org.jdesktop.xswingx.JXSearchField();
+        styleGroup = new javax.swing.ButtonGroup();
+        borderGroup = new javax.swing.ButtonGroup();
+        searchField = new org.jdesktop.xswingx.JXSearchField();
+        jXTitledSeparator1 = new org.jdesktop.swingx.JXTitledSeparator();
+        rbMac = new javax.swing.JRadioButton();
+        rbVista = new javax.swing.JRadioButton();
+        jXTitledSeparator2 = new org.jdesktop.swingx.JXTitledSeparator();
+        rbDefaultBorder = new javax.swing.JRadioButton();
+        rbLineBorder = new javax.swing.JRadioButton();
+        slBorderThickness = new javax.swing.JSlider();
+        jXTitledSeparator3 = new org.jdesktop.swingx.JXTitledSeparator();
+        txtPromptField = new org.jdesktop.xswingx.JXPromptField();
+        jXTitledSeparator4 = new org.jdesktop.swingx.JXTitledSeparator();
+        txtMargin = new javax.swing.JFormattedTextField();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        txtBtnMargin = new javax.swing.JFormattedTextField();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        btnResetMargins = new javax.swing.JButton();
+        jXTitledSeparator5 = new org.jdesktop.swingx.JXTitledSeparator();
+        cbFixedSize = new javax.swing.JCheckBox();
+        spnColumns = new javax.swing.JSpinner();
+        jLabel5 = new javax.swing.JLabel();
 
-        jXSearchField1.setPrompt("Type to Search");
-        jXSearchField1.setPromptFontStyle(java.awt.Font.ITALIC);
+        styleGroup.add(rbMac);
+        styleGroup.add(rbVista);
+        borderGroup.add(rbDefaultBorder);
+        borderGroup.add(rbLineBorder);
+
+        searchField.setPrompt("Type to Search");
+        searchField.setPromptFontStyle(java.awt.Font.ITALIC);
+        searchField.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                searchFieldPropertyChange(evt);
+            }
+        });
+
+        jXTitledSeparator1.setTitle("Layout Style");
+
+        rbMac.setSelected(searchField.isMacLayoutStyle());
+        rbMac.setText("Mac");
+        rbMac.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        rbMac.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        rbMac.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                layoutStyleChanged(evt);
+            }
+        });
+
+        rbVista.setSelected(searchField.isVistaLayoutStyle());
+        rbVista.setText("Vista");
+        rbVista.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        rbVista.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        rbVista.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                layoutStyleChanged(evt);
+            }
+        });
+
+        jXTitledSeparator2.setTitle("Border");
+
+        rbDefaultBorder.setSelected(true);
+        rbDefaultBorder.setText("Default");
+        rbDefaultBorder.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        rbDefaultBorder.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        rbDefaultBorder.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                borderChanged(evt);
+            }
+        });
+
+        rbLineBorder.setText("Line");
+        rbLineBorder.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        rbLineBorder.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        rbLineBorder.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                borderChanged(evt);
+            }
+        });
+
+        slBorderThickness.setMaximum(10);
+        slBorderThickness.setMinorTickSpacing(1);
+        slBorderThickness.setPaintTicks(true);
+        slBorderThickness.setSnapToTicks(true);
+        slBorderThickness.setToolTipText("Change thickness");
+        slBorderThickness.setValue(1);
+        slBorderThickness.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                borderChanged(evt);
+            }
+        });
+
+        jXTitledSeparator3.setTitle("Prompt");
+
+        txtPromptField.setPrompt("Enter Search Prompt");
+        txtPromptField.setText(searchField.getPrompt());
+        txtPromptField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                promptMayChanged(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                promptMayChanged(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                promptMayChanged(evt);
+            }
+        });
+
+        jXTitledSeparator4.setTitle("Margins");
+
+        txtMargin.setFormatterFactory(ff);
+        txtMargin.setValue(searchField.getMargin());
+        txtMargin.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                marginChanged(evt);
+            }
+        });
+
+        jLabel1.setText("(Text) Margin:");
+
+        jLabel2.setText("Button Margin:");
+
+        txtBtnMargin.setFormatterFactory(ff);
+        txtBtnMargin.setValue(searchField.getButtonMargin());
+        txtBtnMargin.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                btnMarginChanged(evt);
+            }
+        });
+
+        jLabel3.setForeground(java.awt.SystemColor.textInactiveText);
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        jLabel3.setText("Hit 'Escape' to clear search text.");
+
+        jLabel4.setForeground(java.awt.SystemColor.textInactiveText);
+        jLabel4.setText("top, left, bottom, right");
+
+        btnResetMargins.setText("Reset to Default");
+        btnResetMargins.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnResetMarginsActionPerformed(evt);
+            }
+        });
+
+        jXTitledSeparator5.setTitle("Other");
+
+        cbFixedSize.setText("Fixed Size:");
+        cbFixedSize.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        cbFixedSize.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        cbFixedSize.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                columnsChanged(evt);
+            }
+        });
+
+        spnColumns.setValue(20);
+        spnColumns.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                columnsChanged(evt);
+            }
+        });
+
+        jLabel5.setText("Columns");
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(layout.createSequentialGroup()
-                .addContainerGap()
-                .add(jXSearchField1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(215, Short.MAX_VALUE))
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                            .add(jXTitledSeparator3, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 434, Short.MAX_VALUE)
+                            .add(layout.createSequentialGroup()
+                                .add(10, 10, 10)
+                                .add(rbMac)
+                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                                .add(rbVista))
+                            .add(jXTitledSeparator1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 434, Short.MAX_VALUE)
+                            .add(layout.createSequentialGroup()
+                                .add(searchField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                                .add(jLabel3, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 301, Short.MAX_VALUE))
+                            .add(jXTitledSeparator2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 434, Short.MAX_VALUE)
+                            .add(layout.createSequentialGroup()
+                                .add(10, 10, 10)
+                                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                                    .add(layout.createSequentialGroup()
+                                        .add(rbLineBorder)
+                                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                                        .add(slBorderThickness, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 381, Short.MAX_VALUE))
+                                    .add(rbDefaultBorder))
+                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED))))
+                    .add(layout.createSequentialGroup()
+                        .add(20, 20, 20)
+                        .add(txtPromptField, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 424, Short.MAX_VALUE))
+                    .add(layout.createSequentialGroup()
+                        .add(22, 22, 22)
+                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                            .add(org.jdesktop.layout.GroupLayout.TRAILING, jLabel2)
+                            .add(org.jdesktop.layout.GroupLayout.TRAILING, jLabel1))
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                            .add(txtBtnMargin, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 347, Short.MAX_VALUE)
+                            .add(txtMargin, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 347, Short.MAX_VALUE)))
+                    .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
+                        .addContainerGap()
+                        .add(jXTitledSeparator4, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 321, Short.MAX_VALUE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(jLabel4))
+                    .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
+                        .addContainerGap(333, Short.MAX_VALUE)
+                        .add(btnResetMargins))
+                    .add(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                            .add(layout.createSequentialGroup()
+                                .add(10, 10, 10)
+                                .add(cbFixedSize)
+                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                                .add(spnColumns, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                                .add(jLabel5))
+                            .add(jXTitledSeparator5, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 434, Short.MAX_VALUE))))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(layout.createSequentialGroup()
                 .addContainerGap()
-                .add(jXSearchField1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(64, Short.MAX_VALUE))
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(searchField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(jLabel3))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(jXTitledSeparator1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(rbMac)
+                    .add(rbVista))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(jXTitledSeparator2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(rbDefaultBorder)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
+                    .add(slBorderThickness, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .add(rbLineBorder, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(jXTitledSeparator3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(txtPromptField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
+                    .add(jLabel4)
+                    .add(jXTitledSeparator4, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(txtMargin, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(jLabel1))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(txtBtnMargin, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(jLabel2))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(btnResetMargins)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(jXTitledSeparator5, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(cbFixedSize)
+                    .add(spnColumns, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(jLabel5))
+                .addContainerGap(77, Short.MAX_VALUE))
         );
+
+        layout.linkSize(new java.awt.Component[] {rbLineBorder, slBorderThickness}, org.jdesktop.layout.GroupLayout.VERTICAL);
+
+        layout.linkSize(new java.awt.Component[] {jLabel3, searchField}, org.jdesktop.layout.GroupLayout.VERTICAL);
+
     }// </editor-fold>//GEN-END:initComponents
+    
+    private void columnsChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_columnsChanged
+        if(cbFixedSize.isSelected()){
+            searchField.setColumns((Integer)spnColumns.getValue());
+        }else{
+            searchField.setColumns(0);
+        }
+        searchFieldChanged();
+    }//GEN-LAST:event_columnsChanged
+    
+    private void btnResetMarginsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetMarginsActionPerformed
+        searchField.setMargin(UIManager.getInsets("TextField.margin"));
+        searchField.setButtonMargin(UIManager.getInsets("SearchField.buttonMargin"));
+    }//GEN-LAST:event_btnResetMarginsActionPerformed
+    
+    private void searchFieldPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_searchFieldPropertyChange
+        if(change) return;
+        
+        if("margin".equals(evt.getPropertyName())){
+            txtMargin.setValue(searchField.getMargin());
+        }
+        if("buttonMargin".equals(evt.getPropertyName())){
+            txtBtnMargin.setValue(searchField.getButtonMargin());
+        }
+    }//GEN-LAST:event_searchFieldPropertyChange
+    
+    private void btnMarginChanged(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_btnMarginChanged
+        change = true;
+        if("value".equals(evt.getPropertyName())){
+            searchField.setButtonMargin((Insets) txtBtnMargin.getValue());
+        }
+        searchFieldChanged();
+        change = false;
+    }//GEN-LAST:event_btnMarginChanged
+    
+    private void marginChanged(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_marginChanged
+        change = true;
+        if("value".equals(evt.getPropertyName())){
+            searchField.setMargin((Insets) txtMargin.getValue());
+        }
+        searchFieldChanged();
+        change = false;
+    }//GEN-LAST:event_marginChanged
+    
+    private void promptMayChanged(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_promptMayChanged
+        searchField.setPrompt(txtPromptField.getText());
+        searchFieldChanged();
+    }//GEN-LAST:event_promptMayChanged
+    
+    private void borderChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_borderChanged
+        if(rbDefaultBorder.isSelected()){
+            searchField.setBorder(UIManager.getBorder("TextField.border"));
+        }else{
+            searchField.setBorder(new LineBorder(Color.BLACK, slBorderThickness.getValue()));
+        }
+        searchFieldChanged();
+    }//GEN-LAST:event_borderChanged
+    
+    private void layoutStyleChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_layoutStyleChanged
+        if(rbMac.isSelected()){
+            searchField.setLayoutStyle(JXSearchField.LayoutStyle.MAC);
+        }else{
+            searchField.setLayoutStyle(JXSearchField.LayoutStyle.VISTA);
+        }
+        searchFieldChanged();
+    }//GEN-LAST:event_layoutStyleChanged
+    
+    private void searchFieldChanged() {
+        validate();
+        searchField.revalidate();
+        searchField.repaint();
+    }
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private org.jdesktop.xswingx.JXSearchField jXSearchField1;
+    private javax.swing.ButtonGroup borderGroup;
+    private javax.swing.JButton btnResetMargins;
+    private javax.swing.JCheckBox cbFixedSize;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private org.jdesktop.swingx.JXTitledSeparator jXTitledSeparator1;
+    private org.jdesktop.swingx.JXTitledSeparator jXTitledSeparator2;
+    private org.jdesktop.swingx.JXTitledSeparator jXTitledSeparator3;
+    private org.jdesktop.swingx.JXTitledSeparator jXTitledSeparator4;
+    private org.jdesktop.swingx.JXTitledSeparator jXTitledSeparator5;
+    private javax.swing.JRadioButton rbDefaultBorder;
+    private javax.swing.JRadioButton rbLineBorder;
+    private javax.swing.JRadioButton rbMac;
+    private javax.swing.JRadioButton rbVista;
+    private org.jdesktop.xswingx.JXSearchField searchField;
+    private javax.swing.JSlider slBorderThickness;
+    private javax.swing.JSpinner spnColumns;
+    private javax.swing.ButtonGroup styleGroup;
+    private javax.swing.JFormattedTextField txtBtnMargin;
+    private javax.swing.JFormattedTextField txtMargin;
+    private org.jdesktop.xswingx.JXPromptField txtPromptField;
     // End of variables declaration//GEN-END:variables
     
+    class InsetsFormatter extends JFormattedTextField.AbstractFormatter{
+        public Object stringToValue(String text) throws ParseException {
+            String[] s = text.split(",");
+            if(s.length == 4){
+                return new Insets(Integer.parseInt(s[0]), Integer.parseInt(s[1]), Integer.parseInt(s[2]), Integer.parseInt(s[3]));
+            }
+            return null;
+        }
+        
+        public String valueToString(Object value) throws ParseException {
+            if(value == null) return null;
+            
+            Insets i = (Insets) value;
+            
+            return i.top+","+i.left+","+i.bottom+","+i.right;
+        }
+    }
 }
