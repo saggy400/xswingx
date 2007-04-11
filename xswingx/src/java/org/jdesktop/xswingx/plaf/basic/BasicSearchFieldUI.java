@@ -24,7 +24,7 @@ public class BasicSearchFieldUI extends PromptTextFieldUI {
 	private JXSearchField searchField;
 
 	private Handler handler = new Handler();
-
+	
 	public BasicSearchFieldUI(TextUI delegate) {
 		super(delegate);
 	}
@@ -32,7 +32,7 @@ public class BasicSearchFieldUI extends PromptTextFieldUI {
 	public void installUI(JComponent c) {
 		super.installUI(c);
 		searchField = (JXSearchField) c;
-		
+
 		searchField.setButtonMargin(UIManager
 				.getInsets("SearchField.buttonMargin"));
 		searchButton().setIcon(UIManager.getIcon("SearchField.icon"));
@@ -48,13 +48,13 @@ public class BasicSearchFieldUI extends PromptTextFieldUI {
 
 		replaceBorderIfNecessary();
 		replaceLayoutIfNecessary();
-		
+
 		searchField.addPropertyChangeListener(handler);
 	}
 
 	public void uninstallUI(JComponent c) {
 		searchField.removePropertyChangeListener(handler);
-		
+
 		searchField.setLayout(handler.layoutDelegate);
 		searchField.setBorder(handler.borderDelegate);
 		searchField = null;
@@ -81,6 +81,9 @@ public class BasicSearchFieldUI extends PromptTextFieldUI {
 
 	public Dimension getPreferredSize(JComponent c) {
 		Dimension d = (Dimension) super.getPreferredSize(c).clone();
+                if(searchField == null){
+                    return d;
+                }
 		Insets insets = handler.getOriginalInsets();
 		Insets margin = searchField.getButtonMargin();
 
@@ -141,7 +144,8 @@ public class BasicSearchFieldUI extends PromptTextFieldUI {
 			if (borderDelegate == null || searchField == null) {
 				return null;
 			}
-			Insets insets = (Insets) borderDelegate.getBorderInsets(null).clone();
+			Insets insets = (Insets) borderDelegate.getBorderInsets(null)
+					.clone();
 
 			return insets;
 		}
@@ -161,7 +165,8 @@ public class BasicSearchFieldUI extends PromptTextFieldUI {
 		}
 
 		protected Rectangle getVisibleTextRect() {
-			Rectangle alloc = (Rectangle) SwingUtilities.getLocalBounds(searchField).clone();
+			Rectangle alloc = (Rectangle) SwingUtilities.getLocalBounds(
+					searchField).clone();
 			Insets insets = (Insets) getOriginalInsets().clone();
 
 			if (insets != null) {
@@ -235,7 +240,7 @@ public class BasicSearchFieldUI extends PromptTextFieldUI {
 		}
 
 		public void propertyChange(PropertyChangeEvent evt) {
-			if("border".equals(evt.getPropertyName())){
+			if ("border".equals(evt.getPropertyName())) {
 				replaceBorderIfNecessary();
 			}
 		}
