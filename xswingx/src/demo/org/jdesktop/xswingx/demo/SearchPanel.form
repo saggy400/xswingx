@@ -33,13 +33,7 @@
   <SubComponents>
     <Component class="org.jdesktop.xswingx.JXSearchField" name="jXSearchField1">
       <Properties>
-        <Property name="layoutStyle" type="org.jdesktop.xswingx.JXSearchField$LayoutStyle" editor="org.netbeans.modules.form.editors.EnumEditor">
-          <SerializedValue value="-84,-19,0,5,126,114,0,46,111,114,103,46,106,100,101,115,107,116,111,112,46,120,115,119,105,110,103,120,46,74,88,83,101,97,114,99,104,70,105,101,108,100,36,76,97,121,111,117,116,83,116,121,108,101,0,0,0,0,0,0,0,0,18,0,0,120,114,0,14,106,97,118,97,46,108,97,110,103,46,69,110,117,109,0,0,0,0,0,0,0,0,18,0,0,120,112,116,0,5,86,73,83,84,65"/>
-        </Property>
         <Property name="prompt" type="java.lang.String" value="Type to Search"/>
-        <Property name="promptColor" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-          <Color blue="0" green="c8" id="orange" palette="1" red="ff" type="palette"/>
-        </Property>
         <Property name="promptFontStyle" type="java.lang.Integer" value="2"/>
       </Properties>
     </Component>
