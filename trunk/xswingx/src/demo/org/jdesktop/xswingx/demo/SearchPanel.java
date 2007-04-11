@@ -26,9 +26,7 @@ public class SearchPanel extends javax.swing.JPanel {
     private void initComponents() {
         jXSearchField1 = new org.jdesktop.xswingx.JXSearchField();
 
-        jXSearchField1.setLayoutStyle(org.jdesktop.xswingx.JXSearchField.LayoutStyle.VISTA);
         jXSearchField1.setPrompt("Type to Search");
-        jXSearchField1.setPromptColor(java.awt.Color.orange);
         jXSearchField1.setPromptFontStyle(java.awt.Font.ITALIC);
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
