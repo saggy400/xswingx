@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.beans.PropertyChangeEvent;
@@ -13,6 +14,7 @@ import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.KeyStroke;
+import javax.swing.border.Border;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.plaf.TextUI;
@@ -35,8 +37,6 @@ public class JXSearchField extends JXPromptField {
 		LookAndFeelAddons.contribute(new JXSearchFieldAddon());
 	}
 
-	private static final Insets NO_INSETS = new Insets(0, 0, 0, 0);
-
 	private PropertyChangeHandler propertyChangeHandler = new PropertyChangeHandler();
 
 	private ClearAction clearAction;
@@ -48,9 +48,12 @@ public class JXSearchField extends JXPromptField {
 	private Insets buttonMargin;
 
 	private LayoutStyle layoutStyle = LayoutStyle.MAC;
+	
+	private boolean fireActionOnTextChange;
 
 	public JXSearchField() {
-		// We cannot register the ClearTextAction through the Input- and ActionMap,
+		// We cannot register the ClearTextAction through the Input- and
+		// ActionMap,
 		// because ToolTipManager registers the escape key with an action that
 		// hides the tooltip every time the tooltip is changed and then the
 		// ClearTextAction will never be called.
@@ -62,8 +65,20 @@ public class JXSearchField extends JXPromptField {
 				}
 			}
 		});
-
+		addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				System.err.println(e);
+			}
+		});
 		propertyChangeHandler.install();
+	}
+
+	public boolean isFireActionOnTextChange() {
+		return fireActionOnTextChange;
+	}
+
+	public void setFireActionOnTextChange(boolean fireActionOnTextChange) {
+		this.fireActionOnTextChange = fireActionOnTextChange;
 	}
 
 	protected void installPromptSupport(String labelText, Color labelTextColor) {
@@ -92,7 +107,8 @@ public class JXSearchField extends JXPromptField {
 	}
 
 	public void setButtonMargin(Insets buttonMargin) {
-		firePropertyChange("buttonMargin", this.buttonMargin, this.buttonMargin = buttonMargin);
+		firePropertyChange("buttonMargin", this.buttonMargin,
+				this.buttonMargin = buttonMargin);
 	}
 
 	public ClearAction getClearAction() {
@@ -116,7 +132,8 @@ public class JXSearchField extends JXPromptField {
 	protected JButton createClearButton() {
 		IconButton btn = new IconButton();
 		btn.addActionListener(getClearAction());
-		btn.setToolTipText((String) getClearAction().getValue(ClearAction.LONG_DESCRIPTION));
+		btn.setToolTipText((String) getClearAction().getValue(
+				ClearAction.LONG_DESCRIPTION));
 
 		return btn;
 	}
@@ -151,17 +168,16 @@ public class JXSearchField extends JXPromptField {
 	protected class IconButton extends JButton {
 		public IconButton() {
 			setFocusable(false);
-			setMargin(null);
+			setMargin(BasicSearchFieldUI.NO_INSETS);
 
-			// Windows UI will add 1 pixel for width and haight, if this is true
+			// Windows UI will add 1 pixel for width and height, if this is true
 			setFocusPainted(false);
 
 			setBorderPainted(false);
 			setContentAreaFilled(false);
 			setIconTextGap(0);
 
-			// Motif overrides null Border
-			setBorder(BorderFactory.createEmptyBorder());
+			setBorder(null);
 
 			setOpaque(false);
 
@@ -169,8 +185,9 @@ public class JXSearchField extends JXPromptField {
 		}
 
 		// Windows UI overrides Insets.
+		// Who knows what other UIs are doing...
 		public Insets getInsets() {
-			return NO_INSETS;
+			return BasicSearchFieldUI.NO_INSETS;
 		}
 
 		public Insets getInsets(Insets insets) {
@@ -180,13 +197,18 @@ public class JXSearchField extends JXPromptField {
 		public Insets getMargin() {
 			return getInsets();
 		}
+
+		public void setBorder(Border border) {
+			// Don't let Motif overwrite my Border
+			super.setBorder(BorderFactory.createEmptyBorder());
+		}
 	}
 
 	class ClearAction extends AbstractAction {
 		public ClearAction() {
 			putValue(LONG_DESCRIPTION, "Clear Search Text");
 		}
-		
+
 		public void actionPerformed(ActionEvent e) {
 			clear();
 		}
@@ -241,6 +263,10 @@ public class JXSearchField extends JXPromptField {
 		}
 
 		private void update(Document doc) {
+			if(isFireActionOnTextChange()){
+				postActionEvent();
+			}
+			
 			if (clearButton != null) {
 				clearButton.setVisible(doc != null && doc.getLength() > 0);
 			}

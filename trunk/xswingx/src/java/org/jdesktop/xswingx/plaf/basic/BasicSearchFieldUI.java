@@ -26,6 +26,8 @@ public class BasicSearchFieldUI extends PromptTextFieldUI {
 
 	private Handler handler = new Handler();
 
+	public static final Insets NO_INSETS = new Insets(0, 0, 0, 0);
+
 	public BasicSearchFieldUI(TextUI delegate) {
 		super(delegate);
 	}
@@ -74,12 +76,12 @@ public class BasicSearchFieldUI extends PromptTextFieldUI {
 	}
 
 	public void uninstallUI(JComponent c) {
+		super.uninstallUI(c);
 		searchField.removePropertyChangeListener(handler);
 
 		searchField.setLayout(handler.layoutDelegate);
 		searchField.setBorder(handler.borderDelegate);
 		searchField = null;
-		super.uninstallUI(c);
 	}
 
 	protected void replaceLayoutIfNecessary() {
@@ -106,7 +108,7 @@ public class BasicSearchFieldUI extends PromptTextFieldUI {
 			return d;
 		}
 
-		Insets insets = handler.getOriginalInsets();
+		Insets insets = handler.getRealBorderInsets();
 		Insets margin = searchField.getButtonMargin();
 
 		int buttonHeight = Math.max(searchButton() != null ? searchButton()
@@ -143,59 +145,56 @@ public class BasicSearchFieldUI extends PromptTextFieldUI {
 		private LayoutManager layoutDelegate;
 
 		public Insets getBorderInsets(Component c) {
-			if (borderDelegate == null) {
-				return null;
+			if (searchField == null) {
+				return NO_INSETS;
 			}
 
-			Insets insets = (Insets) borderDelegate.getBorderInsets(c).clone();
-			if (searchButton() != null && clearButton() != null) {
-				if (searchField.isVistaLayoutStyle()) {
-					insets.right += Math.max(
-							searchButton().getPreferredSize().width,
-							clearButton().getPreferredSize().width);
-				} else {
-					insets.left += searchButton().getPreferredSize().width;
-					insets.right += clearButton().getPreferredSize().width;
-				}
+			// include margin here
+			Insets insets = borderDelegate != null ? (Insets) borderDelegate
+					.getBorderInsets(c).clone() : NO_INSETS;
+			if (searchField.isVistaLayoutStyle()) {
+				insets.right += Math.max(searchButtonWidth(),
+						clearButtonWidth());
+			} else {
+				insets.left += searchButtonWidth();
+				insets.right += clearButtonWidth();
 			}
 
-			if (searchField != null && searchField.getButtonMargin() != null) {
-				insets.top += searchField.getButtonMargin().top;
-				insets.left += searchField.getButtonMargin().left;
-				insets.bottom += searchField.getButtonMargin().bottom;
-				insets.right += searchField.getButtonMargin().right;
+			Insets margin = searchField.getButtonMargin();
+			if (margin != null) {
+				insets.top += margin.top;
+				insets.left += margin.left;
+				insets.bottom += margin.bottom;
+				insets.right += margin.right;
 			}
 			return insets;
 		}
 
-		public Insets getOriginalInsets() {
-			if (borderDelegate == null || searchField == null) {
-				return null;
+		private int searchButtonWidth() {
+			return searchButton() != null ? searchButton().getPreferredSize().width
+					: 0;
+		}
+
+		private int clearButtonWidth() {
+			return clearButton() != null ? clearButton().getPreferredSize().width
+					: 0;
+		}
+
+		public Insets getRealBorderInsets() {
+			if (borderDelegate == null) {
+				return NO_INSETS;
 			}
+			// don't include margin
 			Insets insets = (Insets) borderDelegate.getBorderInsets(null)
 					.clone();
 
 			return insets;
 		}
 
-		public boolean isBorderOpaque() {
-			if (borderDelegate == null) {
-				return false;
-			}
-			return borderDelegate.isBorderOpaque();
-		}
-
-		public void paintBorder(Component c, Graphics g, int x, int y,
-				int width, int height) {
-			if (borderDelegate != null) {
-				borderDelegate.paintBorder(c, g, x, y, width, height);
-			}
-		}
-
 		protected Rectangle getVisibleTextRect() {
 			Rectangle alloc = (Rectangle) SwingUtilities
 					.getLocalBounds(searchField);
-			Insets insets = (Insets) getOriginalInsets().clone();
+			Insets insets = getRealBorderInsets();
 
 			if (insets != null) {
 				alloc.x += insets.left;
@@ -204,7 +203,7 @@ public class BasicSearchFieldUI extends PromptTextFieldUI {
 				alloc.height -= insets.top + insets.bottom;
 			}
 
-			Insets margin = (Insets) searchField.getButtonMargin();
+			Insets margin = searchField.getButtonMargin();
 			if (margin != null) {
 				alloc.x += margin.left;
 				alloc.y += margin.top;
@@ -213,18 +212,6 @@ public class BasicSearchFieldUI extends PromptTextFieldUI {
 			}
 
 			return alloc;
-		}
-
-		public void addLayoutComponent(String name, Component c) {
-			layoutDelegate.addLayoutComponent(name, c);
-		}
-
-		public void removeLayoutComponent(Component c) {
-			layoutDelegate.removeLayoutComponent(c);
-		}
-
-		public Dimension minimumLayoutSize(Container parent) {
-			return layoutDelegate.minimumLayoutSize(parent);
 		}
 
 		public void layoutContainer(Container parent) {
@@ -263,14 +250,40 @@ public class BasicSearchFieldUI extends PromptTextFieldUI {
 			return (int) (rect.getCenterY() - (size.height / 2));
 		}
 
-		public Dimension preferredLayoutSize(Container parent) {
-			return null; //never called
-		}
-
 		public void propertyChange(PropertyChangeEvent evt) {
 			if ("border".equals(evt.getPropertyName())) {
 				replaceBorderIfNecessary();
 			}
+		}
+
+		public void addLayoutComponent(String name, Component c) {
+			layoutDelegate.addLayoutComponent(name, c);
+		}
+
+		public void removeLayoutComponent(Component c) {
+			layoutDelegate.removeLayoutComponent(c);
+		}
+
+		public Dimension minimumLayoutSize(Container parent) {
+			return layoutDelegate.minimumLayoutSize(parent);
+		}
+
+		public boolean isBorderOpaque() {
+			if (borderDelegate == null) {
+				return false;
+			}
+			return borderDelegate.isBorderOpaque();
+		}
+
+		public void paintBorder(Component c, Graphics g, int x, int y,
+				int width, int height) {
+			if (borderDelegate != null) {
+				borderDelegate.paintBorder(c, g, x, y, width, height);
+			}
+		}
+
+		public Dimension preferredLayoutSize(Container parent) {
+			return null; // never called
 		}
 	}
 }

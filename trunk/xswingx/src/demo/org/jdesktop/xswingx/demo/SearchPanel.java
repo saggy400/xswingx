@@ -68,6 +68,11 @@ public class SearchPanel extends javax.swing.JPanel {
         jXTitledSeparator6 = new org.jdesktop.swingx.JXTitledSeparator();
         btnSearchIcon = new javax.swing.JButton();
         btnResetIcons = new javax.swing.JButton();
+        jXTitledSeparator7 = new org.jdesktop.swingx.JXTitledSeparator();
+        cbSearchOnTextChange = new javax.swing.JCheckBox();
+        jCheckBox2 = new javax.swing.JCheckBox();
+        jLabel6 = new javax.swing.JLabel();
+        lblSearchText = new javax.swing.JLabel();
 
         styleGroup.add(rbMac);
         styleGroup.add(rbVista);
@@ -77,6 +82,12 @@ public class SearchPanel extends javax.swing.JPanel {
         searchField.setColumns(15);
         searchField.setPrompt("Type to Search");
         searchField.setPromptFontStyle(java.awt.Font.ITALIC);
+        searchField.setFireActionOnTextChange(true);
+        searchField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchFieldActionPerformed(evt);
+            }
+        });
         searchField.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
             public void propertyChange(java.beans.PropertyChangeEvent evt) {
                 searchFieldPropertyChange(evt);
@@ -227,41 +238,74 @@ public class SearchPanel extends javax.swing.JPanel {
             }
         });
 
+        jXTitledSeparator7.setTitle("Action");
+
+        cbSearchOnTextChange.setSelected(searchField.isFireActionOnTextChange());
+        cbSearchOnTextChange.setText("Search On Text Change");
+        cbSearchOnTextChange.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        cbSearchOnTextChange.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        cbSearchOnTextChange.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                cbSearchOnTextChangeStateChanged(evt);
+            }
+        });
+
+        jCheckBox2.setSelected(true);
+        jCheckBox2.setText("Search On Enter");
+        jCheckBox2.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        jCheckBox2.setEnabled(false);
+        jCheckBox2.setMargin(new java.awt.Insets(0, 0, 0, 0));
+
+        jLabel6.setFont(jLabel6.getFont().deriveFont(jLabel6.getFont().getStyle() | java.awt.Font.BOLD));
+        jLabel6.setText("Searching for:");
+
+        lblSearchText.setText("nothing yet");
+
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(layout.createSequentialGroup()
+                .addContainerGap()
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(jXTitledSeparator7, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 434, Short.MAX_VALUE)
                     .add(layout.createSequentialGroup()
-                        .addContainerGap()
+                        .add(searchField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(jLabel3, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 254, Short.MAX_VALUE))
+                    .add(layout.createSequentialGroup()
+                        .add(10, 10, 10)
                         .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(jXTitledSeparator3, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 434, Short.MAX_VALUE)
                             .add(layout.createSequentialGroup()
-                                .add(10, 10, 10)
-                                .add(rbMac)
+                                .add(17, 17, 17)
+                                .add(jLabel6)
                                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                                .add(rbVista))
-                            .add(jXTitledSeparator1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 434, Short.MAX_VALUE)
+                                .add(lblSearchText))
                             .add(layout.createSequentialGroup()
-                                .add(searchField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                .add(cbSearchOnTextChange)
                                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                                .add(jLabel3, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 254, Short.MAX_VALUE))
-                            .add(jXTitledSeparator2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 434, Short.MAX_VALUE)
-                            .add(layout.createSequentialGroup()
-                                .add(10, 10, 10)
-                                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                                    .add(layout.createSequentialGroup()
-                                        .add(rbLineBorder)
-                                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                                        .add(slBorderThickness, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 381, Short.MAX_VALUE))
-                                    .add(rbDefaultBorder))
-                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED))))
+                                .add(jCheckBox2))))
                     .add(layout.createSequentialGroup()
-                        .add(20, 20, 20)
+                        .add(10, 10, 10)
+                        .add(rbMac)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(rbVista))
+                    .add(jXTitledSeparator1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 434, Short.MAX_VALUE)
+                    .add(jXTitledSeparator3, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 434, Short.MAX_VALUE)
+                    .add(layout.createSequentialGroup()
+                        .add(10, 10, 10)
                         .add(txtPromptField, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 424, Short.MAX_VALUE))
+                    .add(jXTitledSeparator2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 434, Short.MAX_VALUE)
                     .add(layout.createSequentialGroup()
-                        .add(22, 22, 22)
+                        .add(10, 10, 10)
+                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                            .add(layout.createSequentialGroup()
+                                .add(rbLineBorder)
+                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                                .add(slBorderThickness, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 381, Short.MAX_VALUE))
+                            .add(rbDefaultBorder)))
+                    .add(layout.createSequentialGroup()
+                        .add(12, 12, 12)
                         .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                             .add(org.jdesktop.layout.GroupLayout.TRAILING, jLabel2)
                             .add(org.jdesktop.layout.GroupLayout.TRAILING, jLabel1))
@@ -270,31 +314,24 @@ public class SearchPanel extends javax.swing.JPanel {
                             .add(txtBtnMargin, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 347, Short.MAX_VALUE)
                             .add(txtMargin, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 347, Short.MAX_VALUE)))
                     .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
-                        .addContainerGap()
                         .add(jXTitledSeparator4, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 321, Short.MAX_VALUE)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(jLabel4))
                     .add(org.jdesktop.layout.GroupLayout.TRAILING, btnResetMargins)
                     .add(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(layout.createSequentialGroup()
-                                .add(10, 10, 10)
-                                .add(cbFixedSize)
-                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                                .add(spnColumns, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                                .add(jLabel5))
-                            .add(jXTitledSeparator5, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 434, Short.MAX_VALUE)))
-                    .add(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
-                                .add(10, 10, 10)
-                                .add(btnSearchIcon)
-                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 172, Short.MAX_VALUE)
-                                .add(btnResetIcons))
-                            .add(jXTitledSeparator6, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 434, Short.MAX_VALUE))))
+                        .add(10, 10, 10)
+                        .add(cbFixedSize)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(spnColumns, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(jLabel5))
+                    .add(jXTitledSeparator5, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 434, Short.MAX_VALUE)
+                    .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
+                        .add(10, 10, 10)
+                        .add(btnSearchIcon)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 172, Short.MAX_VALUE)
+                        .add(btnResetIcons))
+                    .add(jXTitledSeparator6, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 434, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -305,11 +342,25 @@ public class SearchPanel extends javax.swing.JPanel {
                     .add(searchField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(jLabel3))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(jXTitledSeparator7, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 14, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(cbSearchOnTextChange)
+                    .add(jCheckBox2))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(jLabel6)
+                    .add(lblSearchText))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(jXTitledSeparator1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(rbMac)
                     .add(rbVista))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(jXTitledSeparator3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(txtPromptField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(jXTitledSeparator2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
@@ -317,11 +368,7 @@ public class SearchPanel extends javax.swing.JPanel {
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
                     .add(slBorderThickness, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .add(rbLineBorder, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jXTitledSeparator3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(txtPromptField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(rbLineBorder))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
                     .add(jLabel4)
@@ -357,6 +404,16 @@ public class SearchPanel extends javax.swing.JPanel {
         layout.linkSize(new java.awt.Component[] {jLabel3, searchField}, org.jdesktop.layout.GroupLayout.VERTICAL);
 
     }// </editor-fold>//GEN-END:initComponents
+
+    private void cbSearchOnTextChangeStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_cbSearchOnTextChangeStateChanged
+        searchField.setFireActionOnTextChange(cbSearchOnTextChange.isSelected());
+    }//GEN-LAST:event_cbSearchOnTextChangeStateChanged
+
+    private void searchFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchFieldActionPerformed
+        lblSearchText.setText(searchField.getText());
+        lblSearchText.revalidate();
+        lblSearchText.repaint();
+    }//GEN-LAST:event_searchFieldActionPerformed
 
     private void btnResetIconsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetIconsActionPerformed
         searchField.getSearchButton().setIcon(UIManager.getIcon("SearchField.icon"));
@@ -453,17 +510,22 @@ public class SearchPanel extends javax.swing.JPanel {
     private javax.swing.JButton btnResetMargins;
     private javax.swing.JButton btnSearchIcon;
     private javax.swing.JCheckBox cbFixedSize;
+    private javax.swing.JCheckBox cbSearchOnTextChange;
+    private javax.swing.JCheckBox jCheckBox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private org.jdesktop.swingx.JXTitledSeparator jXTitledSeparator1;
     private org.jdesktop.swingx.JXTitledSeparator jXTitledSeparator2;
     private org.jdesktop.swingx.JXTitledSeparator jXTitledSeparator3;
     private org.jdesktop.swingx.JXTitledSeparator jXTitledSeparator4;
     private org.jdesktop.swingx.JXTitledSeparator jXTitledSeparator5;
     private org.jdesktop.swingx.JXTitledSeparator jXTitledSeparator6;
+    private org.jdesktop.swingx.JXTitledSeparator jXTitledSeparator7;
+    private javax.swing.JLabel lblSearchText;
     private javax.swing.JRadioButton rbDefaultBorder;
     private javax.swing.JRadioButton rbLineBorder;
     private javax.swing.JRadioButton rbMac;
