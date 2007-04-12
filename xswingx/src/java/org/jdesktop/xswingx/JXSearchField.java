@@ -39,7 +39,7 @@ public class JXSearchField extends JXPromptField {
 
 	private PropertyChangeHandler propertyChangeHandler = new PropertyChangeHandler();
 
-	private ClearTextAction clearTextAction;
+	private ClearAction clearAction;
 
 	private JButton searchButton;
 
@@ -58,7 +58,7 @@ public class JXSearchField extends JXPromptField {
 			public void keyPressed(KeyEvent e) {
 				if (CLEAR_KEY.equals(KeyStroke.getKeyStroke(e.getKeyCode(), e
 						.getModifiers()))) {
-					getClearTextAction().clear();
+					getClearAction().clear();
 				}
 			}
 		});
@@ -95,11 +95,15 @@ public class JXSearchField extends JXPromptField {
 		firePropertyChange("buttonMargin", this.buttonMargin, this.buttonMargin = buttonMargin);
 	}
 
-	public ClearTextAction getClearTextAction() {
-		if (clearTextAction == null) {
-			clearTextAction = new ClearTextAction();
+	public ClearAction getClearAction() {
+		if (clearAction == null) {
+			clearAction = createClearAction();
 		}
-		return clearTextAction;
+		return clearAction;
+	}
+
+	protected ClearAction createClearAction() {
+		return new ClearAction();
 	}
 
 	public JButton getClearButton() {
@@ -111,7 +115,8 @@ public class JXSearchField extends JXPromptField {
 
 	protected JButton createClearButton() {
 		IconButton btn = new IconButton();
-		btn.addActionListener(getClearTextAction());
+		btn.addActionListener(getClearAction());
+		btn.setToolTipText((String) getClearAction().getValue(ClearAction.LONG_DESCRIPTION));
 
 		return btn;
 	}
@@ -177,7 +182,11 @@ public class JXSearchField extends JXPromptField {
 		}
 	}
 
-	class ClearTextAction extends AbstractAction {
+	class ClearAction extends AbstractAction {
+		public ClearAction() {
+			putValue(LONG_DESCRIPTION, "Clear Search Text");
+		}
+		
 		public void actionPerformed(ActionEvent e) {
 			clear();
 		}

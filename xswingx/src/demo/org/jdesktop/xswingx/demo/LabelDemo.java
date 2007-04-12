@@ -237,30 +237,32 @@ public class LabelDemo extends javax.swing.JFrame {
      */
     public static void main(String args[]) {
 //    	System.setProperty("apple.laf.useScreenMenuBar", "true");
-//        try {
-//            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-//        } catch (ClassNotFoundException e) {
-//            // TODO Auto-generated catch block
-//            e.printStackTrace();
-//        } catch (InstantiationException e) {
-//            // TODO Auto-generated catch block
-//            e.printStackTrace();
-//        } catch (IllegalAccessException e) {
-//            // TODO Auto-generated catch block
-//            e.printStackTrace();
-//        } catch (UnsupportedLookAndFeelException e) {
-//            // TODO Auto-generated catch block
-//            e.printStackTrace();
-//        }
+        try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InstantiationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (UnsupportedLookAndFeelException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         
+    	Plastic3DLookAndFeel.setHighContrastFocusColorsEnabled(true);
     	UIManager.installLookAndFeel("JGoodies Windows", WindowsLookAndFeel.class.getName());
-        UIManager.installLookAndFeel("JGoodies Plastic 3D", Plastic3DLookAndFeel.class.getName());
+        UIManager.installLookAndFeel("JGoodies Plastic", Plastic3DLookAndFeel.class.getName());
         UIManager.installLookAndFeel("JGoodies Plastic XP", PlasticXPLookAndFeel.class.getName());
         
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 LabelDemo ld = new LabelDemo();
                 ld.getTabbedPane().addTab("Search Field", new SearchPanel());
+                ld.pack();
                 ld.setVisible(true);
             }
         });
