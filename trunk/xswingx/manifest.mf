@@ -1,14 +1,14 @@
 Manifest-Version: 1.0
 X-COMMENT: Main-Class will be added automatically by build
 
-Name: org/jdesktop/swingx/JXPromptField.class
+Name: org/jdesktop/xswingx/JXPromptField.class
 Java-Bean: True
 
-Name: org/jdesktop/swingx/JXPromptArea.class
+Name: org/jdesktop/xswingx/JXPromptArea.class
 Java-Bean: True
 
-Name: org/jdesktop/swingx/JXFormattedPromptField.class
+Name: org/jdesktop/xswingx/JXFormattedPromptField.class
 Java-Bean: True
 
-Name: org/jdesktop/swingx/JXSearchField.class
+Name: org/jdesktop/xswingx/JXSearchField.class
 Java-Bean: True
