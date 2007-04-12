@@ -80,6 +80,7 @@ public class SearchPanel extends javax.swing.JPanel {
         borderGroup.add(rbLineBorder);
 
         searchField.setColumns(15);
+        searchField.setLayoutStyle(org.jdesktop.xswingx.JXSearchField.LayoutStyle.VISTA);
         searchField.setPrompt("Type to Search");
         searchField.setPromptFontStyle(java.awt.Font.ITALIC);
         searchField.setFireActionOnTextChange(true);
@@ -272,7 +273,7 @@ public class SearchPanel extends javax.swing.JPanel {
                     .add(layout.createSequentialGroup()
                         .add(searchField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(jLabel3, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 254, Short.MAX_VALUE))
+                        .add(jLabel3, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 279, Short.MAX_VALUE))
                     .add(layout.createSequentialGroup()
                         .add(10, 10, 10)
                         .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -447,31 +448,29 @@ public class SearchPanel extends javax.swing.JPanel {
     
     private void searchFieldPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_searchFieldPropertyChange
         if(change) return;
-        
+        change = true;
         if("margin".equals(evt.getPropertyName())){
             txtMargin.setValue(searchField.getMargin());
         }
         if("buttonMargin".equals(evt.getPropertyName())){
             txtBtnMargin.setValue(searchField.getButtonMargin());
         }
+        searchFieldChanged();
+        change = false;
     }//GEN-LAST:event_searchFieldPropertyChange
     
     private void btnMarginChanged(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_btnMarginChanged
-        change = true;
+        if(change) return;
         if("value".equals(evt.getPropertyName())){
             searchField.setButtonMargin((Insets) txtBtnMargin.getValue());
         }
-        searchFieldChanged();
-        change = false;
     }//GEN-LAST:event_btnMarginChanged
     
     private void marginChanged(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_marginChanged
-        change = true;
+        if(change) return;
         if("value".equals(evt.getPropertyName())){
             searchField.setMargin((Insets) txtMargin.getValue());
         }
-        searchFieldChanged();
-        change = false;
     }//GEN-LAST:event_marginChanged
     
     private void promptMayChanged(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_promptMayChanged
@@ -539,7 +538,7 @@ public class SearchPanel extends javax.swing.JPanel {
     private org.jdesktop.xswingx.JXPromptField txtPromptField;
     // End of variables declaration//GEN-END:variables
     
-    class InsetsFormatter extends JFormattedTextField.AbstractFormatter{
+    public static class InsetsFormatter extends JFormattedTextField.AbstractFormatter{
         public Object stringToValue(String text) throws ParseException {
             String[] s = text.split(",");
             if(s.length == 4){
