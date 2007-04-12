@@ -99,7 +99,7 @@ public class JXSearchField extends JXPromptField {
 
 	public void setLayoutStyle(LayoutStyle layoutStyle) {
 		this.layoutStyle = layoutStyle;
-		propertyChangeHandler.update(getDocument());
+		propertyChangeHandler.updateButtonVisibility(getDocument());
 	}
 
 	public Insets getButtonMargin() {
@@ -268,6 +268,10 @@ public class JXSearchField extends JXPromptField {
 				postActionEvent();
 			}
 			
+			updateButtonVisibility(doc);
+		}
+
+		private void updateButtonVisibility(Document doc) {
 			if (clearButton != null) {
 				clearButton.setVisible(doc != null && doc.getLength() > 0);
 			}
