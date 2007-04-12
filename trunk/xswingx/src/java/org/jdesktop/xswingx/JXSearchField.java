@@ -215,6 +215,7 @@ public class JXSearchField extends JXPromptField {
 
 		public void clear() {
 			setText(null);
+			requestFocusInWindow();
 		}
 	}
 
