@@ -28,7 +28,7 @@
           <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jXTitledSeparator7" alignment="0" pref="459" max="32767" attributes="0"/>
+                  <Component id="jXTitledSeparator7" alignment="0" pref="461" max="32767" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="searchField" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
@@ -56,20 +56,20 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="rbVista" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <Component id="jXTitledSeparator1" alignment="0" pref="459" max="32767" attributes="0"/>
-                  <Component id="jXTitledSeparator3" alignment="0" pref="459" max="32767" attributes="0"/>
+                  <Component id="jXTitledSeparator1" alignment="0" pref="461" max="32767" attributes="0"/>
+                  <Component id="jXTitledSeparator3" alignment="0" pref="461" max="32767" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
-                      <Component id="txtPromptField" pref="449" max="32767" attributes="0"/>
+                      <Component id="txtPromptField" pref="451" max="32767" attributes="0"/>
                   </Group>
-                  <Component id="jXTitledSeparator2" alignment="0" pref="459" max="32767" attributes="0"/>
+                  <Component id="jXTitledSeparator2" alignment="0" pref="461" max="32767" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="10" pref="10" max="10" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="rbLineBorder" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="slBorderThickness" pref="406" max="32767" attributes="0"/>
+                              <Component id="slBorderThickness" pref="408" max="32767" attributes="0"/>
                           </Group>
                           <Component id="rbDefaultBorder" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
@@ -82,16 +82,24 @@
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="txtBtnMargin" alignment="0" pref="372" max="32767" attributes="0"/>
-                          <Component id="txtMargin" alignment="0" pref="372" max="32767" attributes="0"/>
+                          <Component id="txtBtnMargin" alignment="0" pref="374" max="32767" attributes="0"/>
+                          <Component id="txtMargin" alignment="0" pref="374" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
-                      <Component id="jXTitledSeparator4" pref="346" max="32767" attributes="0"/>
+                      <Component id="jXTitledSeparator4" pref="348" max="32767" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Component id="btnResetMargins" alignment="1" min="-2" max="-2" attributes="0"/>
+                  <Component id="jXTitledSeparator5" alignment="0" pref="461" max="32767" attributes="0"/>
+                  <Group type="102" alignment="1" attributes="0">
+                      <EmptySpace min="10" pref="10" max="10" attributes="0"/>
+                      <Component id="btnSearchIcon" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace pref="199" max="32767" attributes="0"/>
+                      <Component id="btnResetIcons" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <Component id="jXTitledSeparator6" alignment="0" pref="461" max="32767" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="10" pref="10" max="10" attributes="0"/>
                       <Component id="cbFixedSize" min="-2" max="-2" attributes="0"/>
@@ -99,15 +107,9 @@
                       <Component id="spnColumns" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace pref="150" max="32767" attributes="0"/>
+                      <Component id="cbOpaqueWhenFocused" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <Component id="jXTitledSeparator5" alignment="0" pref="459" max="32767" attributes="0"/>
-                  <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace min="10" pref="10" max="10" attributes="0"/>
-                      <Component id="btnSearchIcon" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="197" max="32767" attributes="0"/>
-                      <Component id="btnResetIcons" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <Component id="jXTitledSeparator6" alignment="0" pref="459" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -184,6 +186,7 @@
                   <Component id="cbFixedSize" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="spnColumns" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="cbOpaqueWhenFocused" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="32767" attributes="0"/>
           </Group>
@@ -492,6 +495,22 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="nothing yet"/>
       </Properties>
+    </Component>
+    <Component class="javax.swing.JCheckBox" name="cbOpaqueWhenFocused">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Only Opaque when Focused"/>
+        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+          <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
+            <EmptyBorder bottom="0" left="0" right="0" top="0"/>
+          </Border>
+        </Property>
+        <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
+          <Insets value="[0, 0, 0, 0]"/>
+        </Property>
+      </Properties>
+      <Events>
+        <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="cbOpaqueWhenFocusedStateChanged"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>
