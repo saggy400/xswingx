@@ -67,4 +67,13 @@
     nbproject/build-impl.xml file. 
 
     -->
+	<target name="bundle-prompt-only" depends="jar">
+		<jar destfile="${dist.dir}/prompt.jar">
+			<zipfileset src="${dist.dir}/xswingx.jar">
+				<exclude name="**/*Test*"/>
+				<include name="**/PromptSupport*"/>
+				<include name="**/plaf/*Prompt*"/>
+			</zipfileset>
+		</jar>
+	</target>
 </project>
