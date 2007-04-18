@@ -47,3 +47,7 @@ What you get is this:
 || Metal || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_metal.png] || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_metal_searching.png] || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_metal_clearing.png] ||
 || Windows XP || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_xp.png] || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_xp_searching.png] || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_xp_clearing.png] ||
 
+You can also make the search field more _Vista_ like by calling `searchField.setLayoutStyle(LayoutStyle.VISTA);`:
+|| *LnF* || *Default* || *With Search Text* || *Clearing* ||
+|| Metal || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_metal_vista.png] || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_metal_vista_searching.png] || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_metal_vista_clearing.png] ||
+|| Windows XP || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_xp_vista.png] || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_xp_vista_searching.png] || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_xp_vista_clearing.png] ||
