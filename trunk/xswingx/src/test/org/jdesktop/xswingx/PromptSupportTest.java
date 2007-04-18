@@ -64,15 +64,15 @@ public class PromptSupportTest {
 
     @Test
     public void testGetFocusBehavior() throws Exception {
-        assertEquals(FocusBehavior.HIDE_LABEL, PromptSupport.getFocusBehavior(txt));
+        assertEquals(FocusBehavior.HIDE_PROMPT, PromptSupport.getFocusBehavior(txt));
     }
 
     @Test
     public void testSetFocusBehavior() throws Exception {
-        PromptSupport.setFocusBehavior(FocusBehavior.HIGHLIGHT_LABEL, txt);
+        PromptSupport.setFocusBehavior(FocusBehavior.HIGHLIGHT_PROMPT, txt);
 
-        assertEquals(FocusBehavior.HIGHLIGHT_LABEL, PromptSupport.getFocusBehavior(txt));
-        assertEquals(FocusBehavior.HIGHLIGHT_LABEL, txt.getClientProperty(PromptSupport.FOCUS_BEHAVIOR));
+        assertEquals(FocusBehavior.HIGHLIGHT_PROMPT, PromptSupport.getFocusBehavior(txt));
+        assertEquals(FocusBehavior.HIGHLIGHT_PROMPT, txt.getClientProperty(PromptSupport.FOCUS_BEHAVIOR));
     }
 
     @Test
