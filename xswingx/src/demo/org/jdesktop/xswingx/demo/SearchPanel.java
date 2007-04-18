@@ -16,6 +16,7 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JFormattedTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.LineBorder;
 import javax.swing.text.DefaultFormatterFactory;
@@ -455,6 +456,7 @@ public class SearchPanel extends javax.swing.JPanel {
         if("buttonMargin".equals(evt.getPropertyName())){
             txtBtnMargin.setValue(searchField.getButtonMargin());
         }
+        searchFieldChanged();
         change = false;
     }//GEN-LAST:event_searchFieldPropertyChange
     
@@ -498,9 +500,13 @@ public class SearchPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_layoutStyleChanged
     
     private void searchFieldChanged() {
-        validate();
-        searchField.revalidate();
-        searchField.repaint();
+    	SwingUtilities.invokeLater(new Runnable(){
+    		public void run() {
+    			validate();
+    	        searchField.revalidate();
+    	        searchField.repaint();
+    		}
+    	});
     }
     
     
