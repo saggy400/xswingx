@@ -10,7 +10,7 @@ After that, `textComponent`, if it is a `JTextField`, should look like this:
 || JGoodies Plastic XP || [http://xswingx.googlecode.com/svn/wiki/images/textfield_plasticxp_unfocused.png] ||
 
 =Use the Prompt Text Components=
-If you are creating a new form, you probably want to use a graphical editor like _JFormDesigner_ or _Matisse_ to change you text components properties. In this case it is handy to use one of the prebuilt text components, which support prompt customization via JavaBean properties: [http://xswingx.googlecode.com/svn/trunk/xswingx/src/java/org/jdesktop/xswingx/JXPromptField.java JXPromptField], [http://xswingx.googlecode.com/svn/trunk/xswingx/src/java/org/jdesktop/xswingx/JXPromptArea.java JXPromptArea], or [http://xswingx.googlecode.com/svn/trunk/xswingx/src/java/org/jdesktop/xswingx/JXFormattedPromptField.java JXFormattedPromptField]. These classes simply extend JTextField, JTextArea, or JFormattedTextField respectively, and add properties supported by PromptSupport.
+If you are creating a new form, you probably want to use a graphical editor like _JFormDesigner_ or _Matisse_ to change you text components properties. In this case it is handy to use one of the prebuilt text components, which support prompt customization via JavaBean properties: [http://xswingx.googlecode.com/svn/trunk/xswingx/src/java/org/jdesktop/xswingx/JXPromptField.java JXPromptField], [http://xswingx.googlecode.com/svn/trunk/xswingx/src/java/org/jdesktop/xswingx/JXPromptArea.java JXPromptArea], or [http://xswingx.googlecode.com/svn/trunk/xswingx/src/java/org/jdesktop/xswingx/JXFormattedPromptField.java JXFormattedPromptField]. These classes simply extend JTextField, JTextArea, or JFormattedTextField respectively, and add properties supported by [http://xswingx.googlecode.com/svn/trunk/xswingx/src/java/org/jdesktop/xswingx/PromptSupport.java PromptSupport].
 
 =Customize the Prompt=
 ==Focus Behavior==
@@ -30,7 +30,6 @@ The font of the prompt text by default is the same as the text component's font,
 
 By default, the color used for the prompt text is the text component's disabled text color, but yout can change this with the `PromptSupport.setPromptColor()` method.
 `PromptSupport.setPromptColor(Color.RED)` gives you: [http://xswingx.googlecode.com/svn/wiki/images/textfield_xp_red.png]
-
 
 
 
