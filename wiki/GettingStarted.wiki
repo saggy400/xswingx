@@ -3,7 +3,11 @@
 Download [http://xswingx.googlecode.com/files/xswingx.zip xswingx.zip] from the _Downloads_ section if you want to use all xswingx features, or download [http://xswingx.googlecode.com/files/prompt.jar prompt.jar], if you just want to add a prompt to your existing text components.
 
 =Add a Prompt to Your Existing Text Component=
-Simply call `PromptSupport.install("Prompt Text", textComponent)`, where `textComponent` is an instance of `JTextComponent`.
+Just invoke
+{{{
+PromptSupport.install("Prompt Text", textComponent)
+}}}
+, where `textComponent` is an instance of `JTextComponent`.
 
 After that, `textComponent`, if it is a `JTextField`, should look like this:
 
@@ -46,7 +50,10 @@ searchField.setPrompt("Type to Search");
 What you get is this:
 || *LnF* || *Default* || *With Search Text* || *Clearing* ||
 || Metal || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_metal.png] || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_metal_searching.png] || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_metal_clearing.png] ||
-|| Windows XP || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_xp.png] || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_xp_searching.png] || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_xp_clearing.png] ||
+|| Windows XP || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_xp.png] || 
+[http://xswingx.googlecode.com/svn/wiki/images/searchfield_xp_searching.png] || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_xp_clearing.png] ||
+|| Vista || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_vista.png] || 
+[http://xswingx.googlecode.com/svn/wiki/images/searchfield_vista_searching.png] || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_vista_clearing.png] ||
 
 You can also make the search field more _Vista_ like by calling 
 {{{
