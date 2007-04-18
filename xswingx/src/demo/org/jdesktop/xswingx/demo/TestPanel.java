@@ -6,6 +6,16 @@
 
 package org.jdesktop.xswingx.demo;
 
+import java.awt.Color;
+import java.awt.FlowLayout;
+
+import javax.swing.JFrame;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+
+import org.jdesktop.xswingx.PromptSupport;
+
 /**
  *
  * @author  peterw
@@ -34,7 +44,7 @@ public class TestPanel extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         jLabelTextArea1 = new org.jdesktop.xswingx.JXPromptArea();
 
-        jLabelTextField1.setPrompt("Default");
+        jLabelTextField1.setPrompt("Prompt Text");
 
         jLabelTextField2.setColumns(20);
         jLabelTextField2.setPrompt("20 Columns");
@@ -65,7 +75,7 @@ public class TestPanel extends javax.swing.JPanel {
 
         jLabelTextArea1.setColumns(20);
         jLabelTextArea1.setRows(5);
-        jLabelTextArea1.setPrompt("TextArea");
+        jLabelTextArea1.setPrompt("Prompt Text");
         jScrollPane1.setViewportView(jLabelTextArea1);
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
@@ -125,4 +135,22 @@ public class TestPanel extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
     
+    public static void main(String[] args) {
+		JFrame f = new JFrame();
+		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		f.setLayout(new FlowLayout());
+		f.add(new JTextField());
+		JTextField tf = new JTextField();
+		f.add(tf);
+		PromptSupport.install("Enter Text", tf);
+		
+		JTextArea ta = new JTextArea();
+		ta.setColumns(10);
+		ta.setRows(5);
+		f.add(new JScrollPane(ta));
+		PromptSupport.install("Enter Text", ta);
+		
+		f.pack();
+		f.setVisible(true);
+	}
 }
