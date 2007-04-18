@@ -1,6 +1,5 @@
 #labels Featured
 =Add a Prompt to Your Existing Text Component=
-
 Simply call `PromptSupport.install("Prompt Text", textComponent)`, where `textComponent` is an instance of `JTextComponent`.
 
 After that, `textComponent`, if it is a `JTextField`, should look like this:
@@ -23,6 +22,8 @@ This behavior can be customized with the `PromptSupport.setFocusBehavior(focusBe
 ==Font Style and Color==
 The font of the prompt text by default is the same as the text component's font, but sometimes you want the prompt text to be different. You can make the prompt text plain, *bold*, _italic_, or both *_bold and italic_*.
 
+|| *Plain* || *Italic* || *Bold* || *Bold and Italic* ||
+|| [http://xswingx.googlecode.com/svn/wiki/images/textfield_xp_unfocused.png] || [http://xswingx.googlecode.com/svn/wiki/images/textfield_xp_italic.png] || [http://xswingx.googlecode.com/svn/wiki/images/textfield_xp_bold.png] || [http://xswingx.googlecode.com/svn/wiki/images/textfield_xp_bolditalic.png] ||
 
 
 
