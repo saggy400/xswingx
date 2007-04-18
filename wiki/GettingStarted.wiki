@@ -42,4 +42,6 @@ It's easy to create a search field:
 JXSearchField searchField = new JXSearchField();
 searchField.setPrompt("Type to Search");
 }}}
-
+What you get is this:
+|| Metal || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_metal.png] ||
+|| Windows XP || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_xp.png] ||
