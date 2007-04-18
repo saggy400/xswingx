@@ -61,17 +61,19 @@ searchField.setLayoutStyle(LayoutStyle.VISTA);
 || *LnF* || *Default* || *With Search Text* || *Clearing* ||
 || Metal || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_metal_vista.png] || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_metal_vista_searching.png] || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_metal_vista_clearing.png] ||
 || Windows XP || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_xp_vista.png] || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_xp_vista_searching.png] || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_xp_vista_clearing.png] ||
+|| Vista || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_vista_vista.png] || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_vista_vista_searching.png] || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_vista_vista_clearing.png] ||
 
 To make the search field look even more like in _Vista_, make the prompt _italic_:
 {{{
 searchField.setPromptFontStyle(Font.ITALIC);
 }}}
-[http://xswingx.googlecode.com/svn/wiki/images/searchfield_xp_vista_italic.png]
+[http://xswingx.googlecode.com/svn/wiki/images/searchfield_vista_vista_italic.png]
 
 It's recommended to register an `ActionListener` to get notified when the search text changes to perform a search. If you only want to perform a search, when the _notify_ action is invoked (typically that is, when the _Enter_ key is pressed), call
 {{{
 searchField.setFireActionOnTextChange(false);
 }}}
+
 
 
 
