@@ -5,7 +5,7 @@ Download [http://xswingx.googlecode.com/files/xswingx.zip xswingx.zip] from the 
 =Add a Prompt to Your Existing Text Component=
 Just invoke
 {{{
-PromptSupport.install("Prompt Text", textComponent)
+PromptSupport.install("Prompt Text", textComponent);
 }}}
 Where `textComponent` is an instance of `JTextComponent`.
 
@@ -76,7 +76,6 @@ It's recommended to register an `ActionListener` to get notified when the search
 {{{
 searchField.setFireActionOnTextChange(false);
 }}}
-
 
 
 
