@@ -14,6 +14,7 @@ After that, `textComponent`, if it is a `JTextField`, should look like this:
 || Metal || [http://xswingx.googlecode.com/svn/wiki/images/textfield_metal.png] ||
 || Windows XP || [http://xswingx.googlecode.com/svn/wiki/images/textfield_xp.png] ||
 || Vista || [http://xswingx.googlecode.com/svn/wiki/images/textfield_vista.png] ||
+|| Mac || [http://xswingx.googlecode.com/svn/wiki/images/textfield_mac.png] ||
 || Motif || [http://xswingx.googlecode.com/svn/wiki/images/textfield_motif.png] ||
 || JGoodies Plastic XP || [http://xswingx.googlecode.com/svn/wiki/images/textfield_plasticxp.png] ||
 
@@ -51,7 +52,8 @@ What you get is this:
 || *LnF* || *Default* || *With Search Text* || *Clearing* ||
 || Metal || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_metal.png] || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_metal_searching.png] || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_metal_clearing.png] ||
 || Windows XP || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_xp.png] || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_xp_searching.png] || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_xp_clearing.png] ||
-|| Vista|| [http://xswingx.googlecode.com/svn/wiki/images/searchfield_vista.png] || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_vista_searching.png] || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_vista_clearing.png] ||
+|| Vista || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_vista.png] || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_vista_searching.png] || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_vista_clearing.png] ||
+|| Mac || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_mac.png] || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_mac_searching.png] || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_mac_clearing.png] ||
 
 You can also make the search field more _Vista_ like by calling 
 {{{
@@ -62,6 +64,7 @@ searchField.setLayoutStyle(LayoutStyle.VISTA);
 || Metal || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_metal_vista.png] || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_metal_vista_searching.png] || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_metal_vista_clearing.png] ||
 || Windows XP || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_xp_vista.png] || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_xp_vista_searching.png] || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_xp_vista_clearing.png] ||
 || Vista || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_vista_vista.png] || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_vista_vista_searching.png] || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_vista_vista_clearing.png] ||
+|| Mac || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_mac_vista.png] || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_mac_vista_searching.png] || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_mac_vista_clearing.png] ||
 
 To make the search field look even more like in _Vista_, make the prompt _italic_:
 {{{
@@ -73,6 +76,9 @@ It's recommended to register an `ActionListener` to get notified when the search
 {{{
 searchField.setFireActionOnTextChange(false);
 }}}
+
+
+
 
 
 
