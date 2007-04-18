@@ -14,7 +14,6 @@ import org.jdesktop.xswingx.plaf.PromptTextAreaUI;
 import org.jdesktop.xswingx.plaf.PromptTextFieldUI;
 import org.jdesktop.xswingx.plaf.PromptTextUI;
 
-
 /**
  * <p>
  * Sets label text, label text color and {@link FocusBehavior} properties on a
@@ -23,10 +22,9 @@ import org.jdesktop.xswingx.plaf.PromptTextUI;
  * </p>
  * 
  * <p>
- * This class is used by {@link JXPromptField},
- * {@link JXFormattedPromptField} and {@link JXPromptArea} to get and set
- * label properties. {@link PromptTextUI} retrieves these properties using
- * PromptSupport.
+ * This class is used by {@link JXPromptField}, {@link JXFormattedPromptField}
+ * and {@link JXPromptArea} to get and set label properties.
+ * {@link PromptTextUI} retrieves these properties using PromptSupport.
  * </p>
  * 
  * @see JXPromptField
@@ -78,6 +76,19 @@ public class PromptSupport {
 		 */
 		HIDE_LABEL
 	};
+
+	/**
+	 * Installs a prompt on <code>textComponent</code> by calling
+	 * {@link #install(String, Color, JTextComponent)} with <code>null</code>
+	 * color.
+	 * 
+	 * @param promptText
+	 * @param textComponent
+	 */
+	public static void install(String promptText,
+			final JTextComponent textComponent) {
+		install(promptText, null, textComponent);
+	}
 
 	/**
 	 * <p>
@@ -160,14 +171,14 @@ public class PromptSupport {
 	 * Get the {@link FocusBehavior} of <code>textComponent</code>.
 	 * 
 	 * @param textComponent
-	 * @return the {@link FocusBehavior} or {@link FocusBehavior#SHOW_LABEL} if
+	 * @return the {@link FocusBehavior} or {@link FocusBehavior#HIDE_LABEL} if
 	 *         none is set
 	 */
 	public static FocusBehavior getFocusBehavior(JTextComponent textComponent) {
 		FocusBehavior fb = (FocusBehavior) textComponent
 				.getClientProperty(FOCUS_BEHAVIOR);
 		if (fb == null) {
-			fb = FocusBehavior.SHOW_LABEL;
+			fb = FocusBehavior.HIDE_LABEL;
 		}
 		return fb;
 	}
@@ -206,8 +217,7 @@ public class PromptSupport {
 	 * @param promptText
 	 * @param textComponent
 	 */
-	public static void setPrompt(String promptText,
-			JTextComponent textComponent) {
+	public static void setPrompt(String promptText, JTextComponent textComponent) {
 		// display labelText as tooltip by default
 		if (textComponent.getToolTipText() == null
 				|| textComponent.getToolTipText().equals(
@@ -219,7 +229,8 @@ public class PromptSupport {
 	}
 
 	/**
-	 * Get the color of the prompt text.
+	 * Get the color of the prompt text. If no color has been set, the
+	 * <code>textComponent</code>s disabled text color will be returned.
 	 * 
 	 * @param textComponent
 	 * @return the color of the prompt text or
