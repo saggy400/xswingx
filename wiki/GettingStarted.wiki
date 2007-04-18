@@ -1,4 +1,4 @@
 #labels Featured
-=Adding a Prompt to Your Existing Text Component=
+==Adding a Prompt to Your Existing Text Component==
 
-Simply call 'PromptSupport.install("Prompt Text", textComponent)', where 'textComponent' is your existing 'JTextComponent' instance.
+Simply call `PromptSupport.install("Prompt Text", textComponent)`, where `textComponent` is an instance of `JTextComponent`.
