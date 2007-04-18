@@ -1,5 +1,5 @@
 #labels Featured
-==Adding a Prompt to Your Existing Text Component==
+==Add a Prompt to Your Existing Text Component==
 
 Simply call `PromptSupport.install("Prompt Text", textComponent)`, where `textComponent` is an instance of `JTextComponent`.
 
@@ -10,6 +10,14 @@ After that, `textComponent`, if it is a `JTextField`, should look like this:
 || Motif || [http://xswingx.googlecode.com/svn/wiki/images/textfield_motif_unfocused.png] ||
 || JGoodies Plastic XP || [http://xswingx.googlecode.com/svn/wiki/images/textfield_plasticxp_unfocused.png] ||
 
+==Customize the Prompt==
+By default, the prompt text will be hidden, when the text component is focused:
+[http://xswingx.googlecode.com/svn/wiki/images/textfield_xp_focused_hidden.png]
+
+This behavior can be customized with the `PromptSupport.setFocusBehavior(focusBehavior)` method. The prompt text can be hidden, shown, or highlighted when the text component gets the focus (and no text is entered), as indicated in the screenshots below.
+
+|| *FocusBehavior.HIDE_PROMPT* || *FocusBehavior.SHOW_PROMPT* || *FocusBehavior.HIGHLIGHT_PROMPT* || 
+|| [http://xswingx.googlecode.com/svn/wiki/images/textfield_xp_focused_hidden.png] || [http://xswingx.googlecode.com/svn/wiki/images/textfield_xp_focused_shown.png] || [http://xswingx.googlecode.com/svn/wiki/images/textfield_xp_focused_highlighted.png] ||
 
 
 
