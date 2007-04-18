@@ -1,4 +1,7 @@
 #labels Featured
+=Get the Library=
+Download [http://xswingx.googlecode.com/files/xswingx.zip xswingx.zip] from the _Downloads_ section if you want to use all xswingx features, or download [http://xswingx.googlecode.com/files/prompt.jar prompt.jar], if you just want to add a prompt to your existing text components.
+
 =Add a Prompt to Your Existing Text Component=
 Simply call `PromptSupport.install("Prompt Text", textComponent)`, where `textComponent` is an instance of `JTextComponent`.
 
@@ -30,7 +33,6 @@ The font of the prompt text by default is the same as the text component's font,
 
 By default, the color used for the prompt text is the text component's disabled text color, but yout can change this with the `PromptSupport.setPromptColor()` method.
 `PromptSupport.setPromptColor(Color.RED)` gives you: [http://xswingx.googlecode.com/svn/wiki/images/textfield_xp_red.png]
-
 
 
 
