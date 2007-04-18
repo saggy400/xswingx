@@ -2,3 +2,16 @@
 ==Adding a Prompt to Your Existing Text Component==
 
 Simply call `PromptSupport.install("Prompt Text", textComponent)`, where `textComponent` is an instance of `JTextComponent`.
+
+After that, `textComponent` should look like this:
+
+|| Metal || [http://xswingx.googlecode.com/svn/wiki/images/textfield_metal_unfocused.png] ||
+|| Windows XP || [http://xswingx.googlecode.com/svn/wiki/images/textfield_xp_unfocused.png] ||
+|| Motif || [http://xswingx.googlecode.com/svn/wiki/images/textfield_motif_unfocused.png] ||
+
+
+
+
+
+
+
