@@ -69,6 +69,8 @@ public class LabelDemo extends javax.swing.JFrame {
                         } catch (UnsupportedLookAndFeelException e1) {
                             // TODO Auto-generated catch block
                             e1.printStackTrace();
+                        }catch(Exception ex){
+                        	ex.printStackTrace();
                         }
                     }
                 });
@@ -92,7 +94,7 @@ public class LabelDemo extends javax.swing.JFrame {
                 });
             }
             
-            final JMenu lsm = new JMenu("Label Style");
+            final JMenu lsm = new JMenu("Prompt Style");
             add(lsm);
             ButtonGroup fontGroup = new ButtonGroup();
             final JRadioButtonMenuItem dtri = new JRadioButtonMenuItem("Default");
