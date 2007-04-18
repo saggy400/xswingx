@@ -7,7 +7,7 @@ Just invoke
 {{{
 PromptSupport.install("Prompt Text", textComponent)
 }}}
-, where `textComponent` is an instance of `JTextComponent`.
+Where `textComponent` is an instance of `JTextComponent`.
 
 After that, `textComponent`, if it is a `JTextField`, should look like this:
 
@@ -50,10 +50,8 @@ searchField.setPrompt("Type to Search");
 What you get is this:
 || *LnF* || *Default* || *With Search Text* || *Clearing* ||
 || Metal || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_metal.png] || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_metal_searching.png] || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_metal_clearing.png] ||
-|| Windows XP || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_xp.png] || 
-[http://xswingx.googlecode.com/svn/wiki/images/searchfield_xp_searching.png] || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_xp_clearing.png] ||
-|| Vista || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_vista.png] || 
-[http://xswingx.googlecode.com/svn/wiki/images/searchfield_vista_searching.png] || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_vista_clearing.png] ||
+|| Windows XP || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_xp.png] || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_xp_searching.png] || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_xp_clearing.png] ||
+|| Vista|| [http://xswingx.googlecode.com/svn/wiki/images/searchfield_vista.png] || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_vista_searching.png] || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_vista_clearing.png] ||
 
 You can also make the search field more _Vista_ like by calling 
 {{{
@@ -74,3 +72,9 @@ It's recommended to register an `ActionListener` to get notified when the search
 {{{
 searchField.setFireActionOnTextChange(false);
 }}}
+
+
+
+
+
+
