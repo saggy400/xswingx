@@ -66,15 +66,15 @@ public class PromptSupport {
 		/**
 		 * Keep the prompt text visible.
 		 */
-		SHOW_LABEL,
+		SHOW_PROMPT,
 		/**
 		 * Highlight the prompt text as it would be selected.
 		 */
-		HIGHLIGHT_LABEL,
+		HIGHLIGHT_PROMPT,
 		/**
 		 * Hide the prompt text.
 		 */
-		HIDE_LABEL
+		HIDE_PROMPT
 	};
 
 	/**
@@ -171,14 +171,14 @@ public class PromptSupport {
 	 * Get the {@link FocusBehavior} of <code>textComponent</code>.
 	 * 
 	 * @param textComponent
-	 * @return the {@link FocusBehavior} or {@link FocusBehavior#HIDE_LABEL} if
+	 * @return the {@link FocusBehavior} or {@link FocusBehavior#HIDE_PROMPT} if
 	 *         none is set
 	 */
 	public static FocusBehavior getFocusBehavior(JTextComponent textComponent) {
 		FocusBehavior fb = (FocusBehavior) textComponent
 				.getClientProperty(FOCUS_BEHAVIOR);
 		if (fb == null) {
-			fb = FocusBehavior.HIDE_LABEL;
+			fb = FocusBehavior.HIDE_PROMPT;
 		}
 		return fb;
 	}
