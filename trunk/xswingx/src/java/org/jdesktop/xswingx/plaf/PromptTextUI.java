@@ -103,14 +103,14 @@ public abstract class PromptTextUI extends TextUI {
         if (promptComponent == null) {
             promptComponent = createPromptComponent();
         }
-        if (txt.isFocusOwner() && PromptSupport.getFocusBehavior(txt) == FocusBehavior.HIDE_LABEL) {
+        if (txt.isFocusOwner() && PromptSupport.getFocusBehavior(txt) == FocusBehavior.HIDE_PROMPT) {
             promptComponent.setText(null);
         } else {
             promptComponent.setText(PromptSupport.getPrompt(txt));
         }
 
         promptComponent.getHighlighter().removeAllHighlights();
-        if (txt.isFocusOwner() && PromptSupport.getFocusBehavior(txt) == FocusBehavior.HIGHLIGHT_LABEL) {
+        if (txt.isFocusOwner() && PromptSupport.getFocusBehavior(txt) == FocusBehavior.HIGHLIGHT_PROMPT) {
             promptComponent.setForeground(txt.getSelectedTextColor());
             try {
                 promptComponent.getHighlighter().addHighlight(0, promptComponent.getText().length(),
