@@ -190,7 +190,7 @@ public class LabelDemo extends javax.swing.JFrame {
     /** Creates new form LabelDemo */
     public LabelDemo() {
         initComponents();
-        this.focusBehavior = FocusBehavior.HIGHLIGHT_LABEL;
+        this.focusBehavior = FocusBehavior.HIGHLIGHT_PROMPT;
         updateLabelTextComponents();
         setJMenuBar(new Menu());
     }
