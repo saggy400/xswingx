@@ -455,7 +455,6 @@ public class SearchPanel extends javax.swing.JPanel {
         if("buttonMargin".equals(evt.getPropertyName())){
             txtBtnMargin.setValue(searchField.getButtonMargin());
         }
-        searchFieldChanged();
         change = false;
     }//GEN-LAST:event_searchFieldPropertyChange
     
@@ -464,6 +463,7 @@ public class SearchPanel extends javax.swing.JPanel {
         if("value".equals(evt.getPropertyName())){
             searchField.setButtonMargin((Insets) txtBtnMargin.getValue());
         }
+        searchFieldChanged();
     }//GEN-LAST:event_btnMarginChanged
     
     private void marginChanged(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_marginChanged
@@ -471,6 +471,7 @@ public class SearchPanel extends javax.swing.JPanel {
         if("value".equals(evt.getPropertyName())){
             searchField.setMargin((Insets) txtMargin.getValue());
         }
+        searchFieldChanged();
     }//GEN-LAST:event_marginChanged
     
     private void promptMayChanged(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_promptMayChanged
