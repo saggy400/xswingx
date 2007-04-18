@@ -64,7 +64,7 @@ public class PromptSupportTest {
 
     @Test
     public void testGetFocusBehavior() throws Exception {
-        assertEquals(FocusBehavior.SHOW_LABEL, PromptSupport.getFocusBehavior(txt));
+        assertEquals(FocusBehavior.HIDE_LABEL, PromptSupport.getFocusBehavior(txt));
     }
 
     @Test
