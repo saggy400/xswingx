@@ -28,6 +28,14 @@ public class JXPromptField extends JTextField {
 		installPromptSupport(labelText, labelTextColor);
 	}
 
+	/**
+	 * Calls
+	 * {@link PromptSupport#install(String, javax.swing.text.JTextComponent)}.
+	 * Override this method to customize or disable prompt support.
+	 * 
+	 * @param labelText
+	 * @param labelTextColor
+	 */
 	protected void installPromptSupport(String labelText, Color labelTextColor) {
 		PromptSupport.install(labelText, labelTextColor, this);
 	}
