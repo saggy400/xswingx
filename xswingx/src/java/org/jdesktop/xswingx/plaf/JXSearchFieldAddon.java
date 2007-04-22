@@ -28,8 +28,15 @@ public class JXSearchFieldAddon extends AbstractComponentAddon {
 						getIcon("basic/resources/clear_rollover.png"),
 						"SearchField.clearPressedIcon",
 						getIcon("basic/resources/clear_pressed.png"),
-						"SearchField.buttonMargin",
-						new InsetsUIResource(1, 1, 1, 1) }));
+						"SearchField.buttonMargin"}));
+	}
+
+	@Override
+	protected void addMetalDefaults(LookAndFeelAddons addon,
+			List<Object> defaults) {
+		super.addMetalDefaults(addon, defaults);
+		defaults.addAll(Arrays.asList(new Object[] { new InsetsUIResource(1, 1,
+				2, 1) }));
 	}
 
 	protected void addWindowsDefaults(LookAndFeelAddons addon,
@@ -46,6 +53,22 @@ public class JXSearchFieldAddon extends AbstractComponentAddon {
 						getIcon("windows/resources/clear_pressed.png"),
 						"SearchField.buttonMargin",
 						new InsetsUIResource(0, 0, 0, 0) }));
+	}
+
+	protected void addMacDefaults(LookAndFeelAddons addon, List<Object> defaults) {
+		super.addMacDefaults(addon, defaults);
+		defaults
+				.addAll(Arrays.asList(new Object[] { "SearchField.icon",
+						getIcon("macosx/resources/search.png"),
+						"SearchField.clearIcon",
+						getIcon("macosx/resources/clear.png"),
+						"SearchField.clearRolloverIcon",
+						getIcon("macosx/resources/clear_rollover.png"),
+						"SearchField.clearPressedIcon",
+						getIcon("macosx/resources/clear_pressed.png"),
+						"SearchField.buttonMargin",
+						new InsetsUIResource(0, 0, 0, 0) }));
+
 	}
 
 	private IconUIResource getIcon(String resourceName) {
