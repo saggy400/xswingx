@@ -50,11 +50,7 @@ public class BasicSearchFieldUI extends PromptTextFieldUI {
 					.getInsets("SearchField.buttonMargin"));
 		}
 
-		if (searchButton() != null) {
-			if (shouldReplaceResource(searchButton().getIcon())) {
-				searchButton().setIcon(UIManager.getIcon("SearchField.icon"));
-			}
-		}
+		updateSearchButtonIcon();
 
 		if (clearButton() != null) {
 			if (shouldReplaceResource(clearButton().getIcon())) {
@@ -73,6 +69,18 @@ public class BasicSearchFieldUI extends PromptTextFieldUI {
 
 		replaceBorderIfNecessary();
 		replaceLayoutIfNecessary();
+	}
+
+	protected void updateSearchButtonIcon() {
+		if (searchButton() != null
+				&& shouldReplaceResource(searchButton().getIcon())) {
+			if (searchField.getSearchPopupMenu() == null) {
+				searchButton().setIcon(UIManager.getIcon("SearchField.icon"));
+			} else {
+				searchButton().setIcon(
+						UIManager.getIcon("SearchField.popupIcon"));
+			}
+		}
 	}
 
 	public void uninstallUI(JComponent c) {
@@ -251,8 +259,15 @@ public class BasicSearchFieldUI extends PromptTextFieldUI {
 		}
 
 		public void propertyChange(PropertyChangeEvent evt) {
-			if ("border".equals(evt.getPropertyName())) {
-				replaceBorderIfNecessary();
+			String prop = evt.getPropertyName();
+			Object src = evt.getSource();
+
+			if (src.equals(searchField)) {
+				if ("border".equals(prop)) {
+					replaceBorderIfNecessary();
+				} else if ("searchPopupMenu".equals(prop)) {
+					updateSearchButtonIcon();
+				}
 			}
 		}
 
