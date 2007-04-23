@@ -13,6 +13,7 @@ import java.lang.reflect.Method;
 
 import javax.accessibility.Accessible;
 import javax.swing.JComponent;
+import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.TextUI;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Caret;
@@ -297,11 +298,14 @@ public abstract class PromptTextUI extends TextUI {
 	}
 
 	/**
-	 * Tries to call {@link Component#getBaseline(int, int)} on the delegate via
-	 * Reflection. Workaround to maintain compatibility with Java 5. Ideally we
-	 * should also override {@link #getBaselineResizeBehavior(JComponent)}, but
-	 * that's impossible since the {@link BaselineResizeBehavior} class, which
-	 * does not exist in Java 5, is involved.
+	 * Tries to call {@link ComponentUI#getBaseline(int, int)} on the delegate
+	 * via Reflection. Workaround to maintain compatibility with Java 5. Ideally
+	 * we should also override {@link #getBaselineResizeBehavior(JComponent)},
+	 * but that's impossible since the {@link BaselineResizeBehavior} class,
+	 * which does not exist in Java 5, is involved.
+	 * 
+	 * @return the baseline, or -2 if <code>getBaseline</code> could not be
+	 *         invoked on the delegate.
 	 */
 	public int getBaseline(JComponent c, int width, int height) {
 		try {
