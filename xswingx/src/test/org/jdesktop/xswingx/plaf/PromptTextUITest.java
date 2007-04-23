@@ -1,9 +1,6 @@
 package org.jdesktop.xswingx.plaf;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -14,9 +11,8 @@ import java.util.Arrays;
 import javax.swing.BorderFactory;
 import javax.swing.text.JTextComponent;
 
-
+import org.jdesktop.swingx.util.JVM;
 import org.jdesktop.xswingx.PromptSupport;
-import org.jdesktop.xswingx.plaf.PromptTextUI;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -30,6 +26,16 @@ public abstract class PromptTextUITest {
     }
 
     public abstract void setup();
+    
+    @Test
+    public void testGetBaseLine() {
+    	int baseline = ui.getBaseline(textComponent, textComponent.getWidth(), textComponent.getHeight());
+		if(JVM.current().isOrLater(JVM.JDK1_6)){
+    		assertNotSame(-2, baseline);
+    	}else{
+    		assertSame(-2, baseline);
+    	}
+    }
 
     @Test
     public void testInstallUI() {
