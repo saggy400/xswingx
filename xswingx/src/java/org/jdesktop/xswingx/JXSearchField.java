@@ -3,7 +3,6 @@ package org.jdesktop.xswingx;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Insets;
-import java.awt.Component.BaselineResizeBehavior;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -35,18 +34,6 @@ public class JXSearchField extends JXPromptField {
 	// ensure at least the default ui is registered
 	static {
 		LookAndFeelAddons.contribute(new JXSearchFieldAddon());
-	}
-	
-	@Override
-	public int getBaseline(int arg0, int arg1) {
-		// TODO Auto-generated method stub
-		return super.getBaseline(arg0, arg1);
-	}
-	
-	@Override
-	public BaselineResizeBehavior getBaselineResizeBehavior() {
-		// TODO Auto-generated method stub
-		return super.getBaselineResizeBehavior();
 	}
 
 	private PropertyChangeHandler propertyChangeHandler = new PropertyChangeHandler();
