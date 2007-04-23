@@ -3,6 +3,7 @@ package org.jdesktop.xswingx;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Insets;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -12,7 +13,11 @@ import java.beans.PropertyChangeListener;
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JPopupMenu;
 import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
+import javax.swing.UIDefaults;
 import javax.swing.border.Border;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -40,6 +45,8 @@ public class JXSearchField extends JXPromptField {
 
 	private ClearAction clearAction;
 
+	private SearchAction searchAction;
+
 	private JButton searchButton;
 
 	private JButton clearButton;
@@ -47,15 +54,18 @@ public class JXSearchField extends JXPromptField {
 	private Insets buttonMargin;
 
 	private LayoutStyle layoutStyle = LayoutStyle.MAC;
-	
+
 	private boolean fireActionOnTextChange;
+
+	private boolean fireActionOnButtonClick;
+
+	private JPopupMenu searchPopupMenu;
 
 	public JXSearchField() {
 		// We cannot register the ClearTextAction through the Input- and
-		// ActionMap,
-		// because ToolTipManager registers the escape key with an action that
-		// hides the tooltip every time the tooltip is changed and then the
-		// ClearTextAction will never be called.
+		// ActionMap because ToolTipManager registers the escape key with an
+		// action that hides the tooltip every time the tooltip is changed and
+		// then the ClearTextAction will never be called.
 		addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent e) {
 				if (CLEAR_KEY.equals(KeyStroke.getKeyStroke(e.getKeyCode(), e
@@ -73,6 +83,30 @@ public class JXSearchField extends JXPromptField {
 
 	public void setFireActionOnTextChange(boolean fireActionOnTextChange) {
 		this.fireActionOnTextChange = fireActionOnTextChange;
+	}
+
+	public boolean isFireActionOnButtonClick() {
+		return fireActionOnButtonClick;
+	}
+
+	/**
+	 * <p>
+	 * Fire an {@link ActionEvent}, when the user clicks the search button.
+	 * </p>
+	 * <p>
+	 * When a <code>searchPopupMenu</code> is installed, no action is fired,
+	 * even if this property is <code>true</code>.
+	 * </p>
+	 * <p>
+	 * When {@link LayoutStyle} is {@link LayoutStyle#VISTA}, the clear button
+	 * will never be shown if this property is <code>true</code>.
+	 * </p>
+	 * 
+	 * @param fireActionOnButtonClick
+	 */
+	public void setFireActionOnButtonClick(boolean fireActionOnButtonClick) {
+		this.fireActionOnButtonClick = fireActionOnButtonClick;
+		propertyChangeHandler.updateButtonVisibility(getDocument());
 	}
 
 	protected void installPromptSupport(String labelText, Color labelTextColor) {
@@ -125,15 +159,20 @@ public class JXSearchField extends JXPromptField {
 
 	protected JButton createClearButton() {
 		IconButton btn = new IconButton();
-		btn.addActionListener(getClearAction());
-		btn.setToolTipText((String) getClearAction().getValue(
-				ClearAction.LONG_DESCRIPTION));
+		btn.setAction(getClearAction());
 
 		return btn;
 	}
 
-	public void setClearButton(JButton clearButton) {
-		this.clearButton = clearButton;
+	public SearchAction getSearchAction() {
+		if (searchAction == null) {
+			searchAction = createSearchAction();
+		}
+		return searchAction;
+	}
+
+	protected SearchAction createSearchAction() {
+		return new SearchAction();
 	}
 
 	public JButton getSearchButton() {
@@ -144,11 +183,51 @@ public class JXSearchField extends JXPromptField {
 	}
 
 	protected JButton createSearchButton() {
-		return new IconButton();
+		final IconButton searchButton = new IconButton();
+		searchButton.setAction(getSearchAction());
+
+		return searchButton;
 	}
 
-	public void setSearchButton(JButton searchButton) {
-		this.searchButton = searchButton;
+	public void setEditable(boolean b) {
+		super.setEditable(b);
+		updateButtonState();
+	}
+
+	public void setEnabled(boolean enabled) {
+		super.setEnabled(enabled);
+		updateButtonState();
+	}
+
+	private void updateButtonState() {
+		getClearAction().setEnabled(isEditable() & isEnabled());
+		getSearchAction().setEnabled(isEnabled());
+	}
+
+	/**
+	 * <p>
+	 * Sets the menu, which will be displayed when the user presses the search
+	 * button. The icon of the search button will be changed to the
+	 * {@link UIDefaults} value "SearchField.icon", if
+	 * <code>searchPopupMenu</code> is <code>null</code>, or
+	 * "SearchField.popupIcon" otherwise.
+	 * </p>
+	 * <p>
+	 * We could use the <code>searchButton</code>s
+	 * <code>componentPopupMenu</code> property instead of introducing another
+	 * property, if {@link JComponent#setComponentPopupMenu(JPopupMenu)} would
+	 * just fire a {@link PropertyChangeEvent}...
+	 * </p>
+	 * 
+	 * @param searchPopupMenu
+	 */
+	public void setSearchPopupMenu(JPopupMenu searchPopupMenu) {
+		firePropertyChange("searchPopupMenu", this.searchPopupMenu,
+				this.searchPopupMenu = searchPopupMenu);
+	}
+
+	public JPopupMenu getSearchPopupMenu() {
+		return searchPopupMenu;
 	}
 
 	public void setUI(TextUI ui) {
@@ -159,7 +238,7 @@ public class JXSearchField extends JXPromptField {
 		}
 	}
 
-	protected class IconButton extends JButton {
+	public static class IconButton extends JButton {
 		public IconButton() {
 			setFocusable(false);
 			setMargin(BasicSearchFieldUI.NO_INSETS);
@@ -200,7 +279,7 @@ public class JXSearchField extends JXPromptField {
 
 	class ClearAction extends AbstractAction {
 		public ClearAction() {
-			putValue(LONG_DESCRIPTION, "Clear Search Text");
+			putValue(SHORT_DESCRIPTION, "Clear Search Text");
 		}
 
 		public void actionPerformed(ActionEvent e) {
@@ -210,6 +289,21 @@ public class JXSearchField extends JXPromptField {
 		public void clear() {
 			setText(null);
 			requestFocusInWindow();
+		}
+	}
+
+	public class SearchAction extends AbstractAction {
+		public SearchAction() {
+		}
+
+		public void actionPerformed(ActionEvent e) {
+			if (getSearchPopupMenu() != null) {
+				Rectangle r = SwingUtilities.getLocalBounds(searchButton);
+
+				getSearchPopupMenu().show(searchButton, r.x, r.y + r.height);
+			} else if (isFireActionOnButtonClick()) {
+				postActionEvent();
+			}
 		}
 	}
 
@@ -258,16 +352,18 @@ public class JXSearchField extends JXPromptField {
 		}
 
 		private void update(Document doc) {
-			if(isFireActionOnTextChange()){
+			if (isFireActionOnTextChange()) {
 				postActionEvent();
 			}
-			
+
 			updateButtonVisibility(doc);
 		}
 
 		private void updateButtonVisibility(Document doc) {
 			if (clearButton != null) {
-				clearButton.setVisible(doc != null && doc.getLength() > 0);
+				clearButton
+						.setVisible((!isFireActionOnButtonClick() || isMacLayoutStyle())
+								&& doc != null && doc.getLength() > 0);
 			}
 			if (searchButton != null) {
 				if (isVistaLayoutStyle()) {
