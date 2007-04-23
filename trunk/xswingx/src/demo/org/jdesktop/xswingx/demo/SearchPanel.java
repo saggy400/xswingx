@@ -6,6 +6,7 @@
 
 package org.jdesktop.xswingx.demo;
 
+import com.sun.corba.se.impl.interceptors.PICurrent;
 import java.awt.Color;
 import java.awt.Insets;
 import java.awt.event.FocusEvent;
@@ -18,6 +19,7 @@ import java.text.ParseException;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JFormattedTextField;
+import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.LineBorder;
@@ -81,6 +83,8 @@ public class SearchPanel extends javax.swing.JPanel {
         jLabel6 = new javax.swing.JLabel();
         lblSearchText = new javax.swing.JLabel();
         cbOpaqueWhenFocused = new javax.swing.JCheckBox();
+        cbPopup = new javax.swing.JCheckBox();
+        cbButtonClick = new javax.swing.JCheckBox();
 
         styleGroup.add(rbMac);
         styleGroup.add(rbVista);
@@ -102,7 +106,7 @@ public class SearchPanel extends javax.swing.JPanel {
             }
         });
 
-        jXTitledSeparator1.setTitle("Layout Style");
+        jXTitledSeparator1.setTitle("Style");
 
         rbMac.setSelected(searchField.isMacLayoutStyle());
         rbMac.setText("Mac");
@@ -278,6 +282,24 @@ public class SearchPanel extends javax.swing.JPanel {
             }
         });
 
+        cbPopup.setText("With Popup Menu");
+        cbPopup.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        cbPopup.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        cbPopup.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbPopupActionPerformed(evt);
+            }
+        });
+
+        cbButtonClick.setText("Search On Button Click");
+        cbButtonClick.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        cbButtonClick.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        cbButtonClick.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbButtonClickActionPerformed(evt);
+            }
+        });
+
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -300,13 +322,17 @@ public class SearchPanel extends javax.swing.JPanel {
                                 .add(lblSearchText))
                             .add(layout.createSequentialGroup()
                                 .add(cbSearchOnTextChange)
+                                .add(6, 6, 6)
+                                .add(cbButtonClick)
                                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                                 .add(jCheckBox2))))
                     .add(layout.createSequentialGroup()
                         .add(10, 10, 10)
                         .add(rbMac)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(rbVista))
+                        .add(rbVista)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 266, Short.MAX_VALUE)
+                        .add(cbPopup))
                     .add(jXTitledSeparator1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 461, Short.MAX_VALUE)
                     .add(jXTitledSeparator3, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 461, Short.MAX_VALUE)
                     .add(layout.createSequentialGroup()
@@ -365,7 +391,8 @@ public class SearchPanel extends javax.swing.JPanel {
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(cbSearchOnTextChange)
-                    .add(jCheckBox2))
+                    .add(jCheckBox2)
+                    .add(cbButtonClick))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jLabel6)
@@ -375,7 +402,8 @@ public class SearchPanel extends javax.swing.JPanel {
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(rbMac)
-                    .add(rbVista))
+                    .add(rbVista)
+                    .add(cbPopup))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(jXTitledSeparator3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
@@ -424,6 +452,24 @@ public class SearchPanel extends javax.swing.JPanel {
         layout.linkSize(new java.awt.Component[] {jLabel3, searchField}, org.jdesktop.layout.GroupLayout.VERTICAL);
 
     }// </editor-fold>//GEN-END:initComponents
+
+    private void cbButtonClickActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbButtonClickActionPerformed
+        searchField.setFireActionOnButtonClick(cbButtonClick.isSelected());
+    }//GEN-LAST:event_cbButtonClickActionPerformed
+
+    private void cbPopupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbPopupActionPerformed
+        if(cbPopup.isSelected()){
+            JPopupMenu pop = new JPopupMenu();
+            pop.add("Add");
+            pop.add("Any");
+            pop.add("Popup");
+            pop.add("Easily");
+            
+            searchField.setSearchPopupMenu(pop);
+        }else{
+            searchField.setSearchPopupMenu(null);
+        }
+    }//GEN-LAST:event_cbPopupActionPerformed
     
     private void cbOpaqueWhenFocusedStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_cbOpaqueWhenFocusedStateChanged
         opaqueHandler.setEnabled(cbOpaqueWhenFocused.isSelected());
@@ -537,8 +583,10 @@ public class SearchPanel extends javax.swing.JPanel {
     private javax.swing.JButton btnResetIcons;
     private javax.swing.JButton btnResetMargins;
     private javax.swing.JButton btnSearchIcon;
+    private javax.swing.JCheckBox cbButtonClick;
     private javax.swing.JCheckBox cbFixedSize;
     private javax.swing.JCheckBox cbOpaqueWhenFocused;
+    private javax.swing.JCheckBox cbPopup;
     private javax.swing.JCheckBox cbSearchOnTextChange;
     private javax.swing.JCheckBox jCheckBox2;
     private javax.swing.JLabel jLabel1;
