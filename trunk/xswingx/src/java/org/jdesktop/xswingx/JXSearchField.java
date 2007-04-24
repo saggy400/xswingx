@@ -28,13 +28,79 @@ import org.jdesktop.swingx.plaf.LookAndFeelAddons;
 import org.jdesktop.xswingx.plaf.JXSearchFieldAddon;
 import org.jdesktop.xswingx.plaf.basic.BasicSearchFieldUI;
 
+/**
+ * 
+ * 
+ * @author Peter Weishapl <petw@gmx.net>
+ * 
+ */
 public class JXSearchField extends JXPromptField {
 	private static final KeyStroke CLEAR_KEY = KeyStroke.getKeyStroke(
 			KeyEvent.VK_ESCAPE, 0);
 
+	/**
+	 * Defines, how the search and clear button are layouted.
+	 */
 	public enum LayoutStyle {
-		VISTA, MAC
+		/**
+		 * <p>
+		 * In VISTA layout style, the search button is placed on the right side
+		 * of the search field. If text is entered, the search button is
+		 * replaced by the clear button when the actual search mode is
+		 * {@link SearchMode#INSTANT}. When the search mode is
+		 * {@link SearchMode#REGULAR} the search button will always stay visible
+		 * and the clear button will never be shown. However, 'escape' can still
+		 * be pressed to invoke the clear action.
+		 * </p>
+		 * <p>
+		 * TODO: A search popup menu is not supported in VISTA layout style.
+		 * Consider adding a seperate popup button.
+		 * </p>
+		 */
+		VISTA,
+		/**
+		 * <p>
+		 * In MAC layout style, the search button is placed on the left side of
+		 * the search field and the clear button on the right side. The clear
+		 * button is only visible when text is present.
+		 * </p>
+		 * <p>
+		 * If a search popup menu is installed, the search button will trigger
+		 * the popup, and it's icon will be set to the UI property
+		 * "SearchField.popupIcon".
+		 * </p>
+		 */
+		MAC
 	};
+
+	public enum SearchMode {
+		/**
+		 * <p>
+		 * In REGULAR search mode, an action event is fired, when the user
+		 * presses enter or clicks the search button.
+		 * </p>
+		 * <p>
+		 * However, if a search popup menu is set and layout style is
+		 * {@link LayoutStyle#MAC}, no action will be fired, when the search
+		 * button is clicked, because instead the popup menu is shown. A search
+		 * can therefore only be triggered, by pressing the enter key.
+		 * </p>
+		 * <p>
+		 * The search button can have a rollover and a pressed icon, defined by
+		 * the "SearchField.rolloverIcon" and "SearchField.pressedIcon" UI
+		 * properties. These properties are only used when no search popup menu
+		 * is set.
+		 * </p>
+		 * 
+		 */
+		REGULAR,
+		/**
+		 * In INSTANT search mode, an action event is fired, when the user
+		 * presses enter or changes the search text. No rollover and pressed
+		 * icon is used for the search button.
+		 */
+		INSTANT
+	}
 
 	// ensure at least the default ui is registered
 	static {
@@ -55,9 +121,7 @@ public class JXSearchField extends JXPromptField {
 
 	private LayoutStyle layoutStyle = LayoutStyle.MAC;
 
-	private boolean fireActionOnTextChange;
-
-	private boolean fireActionOnButtonClick;
+	private SearchMode searchMode = SearchMode.INSTANT;
 
 	private JPopupMenu searchPopupMenu;
 
@@ -77,40 +141,25 @@ public class JXSearchField extends JXPromptField {
 		propertyChangeHandler.install();
 	}
 
-	public boolean isFireActionOnTextChange() {
-		return fireActionOnTextChange;
-	}
-
-	public void setFireActionOnTextChange(boolean fireActionOnTextChange) {
-		this.fireActionOnTextChange = fireActionOnTextChange;
-	}
-
-	public boolean isFireActionOnButtonClick() {
-		return fireActionOnButtonClick;
-	}
-
-	/**
-	 * <p>
-	 * Fire an {@link ActionEvent}, when the user clicks the search button.
-	 * </p>
-	 * <p>
-	 * When a <code>searchPopupMenu</code> is installed, no action is fired,
-	 * even if this property is <code>true</code>.
-	 * </p>
-	 * <p>
-	 * When {@link LayoutStyle} is {@link LayoutStyle#VISTA}, the clear button
-	 * will never be shown if this property is <code>true</code>.
-	 * </p>
-	 * 
-	 * @param fireActionOnButtonClick
-	 */
-	public void setFireActionOnButtonClick(boolean fireActionOnButtonClick) {
-		this.fireActionOnButtonClick = fireActionOnButtonClick;
-		propertyChangeHandler.updateButtonVisibility(getDocument());
-	}
-
 	protected void installPromptSupport(String labelText, Color labelTextColor) {
 		// don't! Handled by setUI
+	}
+
+	public SearchMode getSearchMode() {
+		return searchMode;
+	}
+
+	public boolean isInstantSearchMode() {
+		return SearchMode.INSTANT.equals(getSearchMode());
+	}
+
+	public boolean isRegularSearchMode() {
+		return SearchMode.REGULAR.equals(getSearchMode());
+	}
+
+	public void setSearchMode(SearchMode searchMode) {
+		firePropertyChange("searchMode", this.searchMode,
+				this.searchMode = searchMode);
 	}
 
 	public LayoutStyle getLayoutStyle() {
@@ -126,8 +175,8 @@ public class JXSearchField extends JXPromptField {
 	}
 
 	public void setLayoutStyle(LayoutStyle layoutStyle) {
-		this.layoutStyle = layoutStyle;
-		propertyChangeHandler.updateButtonVisibility(getDocument());
+		firePropertyChange("layoutStyle", this.layoutStyle,
+				this.layoutStyle = layoutStyle);
 	}
 
 	public Insets getButtonMargin() {
@@ -282,10 +331,17 @@ public class JXSearchField extends JXPromptField {
 			putValue(SHORT_DESCRIPTION, "Clear Search Text");
 		}
 
+		/**
+		 * Calls {@link #clear()}.
+		 */
 		public void actionPerformed(ActionEvent e) {
 			clear();
 		}
 
+		/**
+		 * Sets the search field's text to <code>null </code> and requests the
+		 * focus for the search field.
+		 */
 		public void clear() {
 			setText(null);
 			requestFocusInWindow();
@@ -296,14 +352,20 @@ public class JXSearchField extends JXPromptField {
 		public SearchAction() {
 		}
 
+		/**
+		 * If installed, displays the search popup menu beneath the search
+		 * button. Otherwise posts an action event. Then requests the focus for
+		 * the search field.
+		 */
 		public void actionPerformed(ActionEvent e) {
 			if (getSearchPopupMenu() != null) {
 				Rectangle r = SwingUtilities.getLocalBounds(searchButton);
 
 				getSearchPopupMenu().show(searchButton, r.x, r.y + r.height);
-			} else if (isFireActionOnButtonClick()) {
+			} else if (isRegularSearchMode()) {
 				postActionEvent();
 			}
+			requestFocusInWindow();
 		}
 	}
 
@@ -316,9 +378,9 @@ public class JXSearchField extends JXPromptField {
 		}
 
 		public void propertyChange(PropertyChangeEvent evt) {
-			String property = evt.getPropertyName();
+			String prop = evt.getPropertyName();
 
-			if ("document".equals(property)) {
+			if ("document".equals(prop)) {
 				Document doc = (Document) evt.getOldValue();
 				if (doc != null) {
 					uninstall(doc);
@@ -327,12 +389,14 @@ public class JXSearchField extends JXPromptField {
 				if (doc != null) {
 					install(doc);
 				}
+			} else if ("searchMode".equals(prop) || "layoutStyle".equals(prop)) {
+				updateButtonVisibility();
 			}
 		}
 
 		public void install(Document doc) {
 			doc.addDocumentListener(this);
-			update(doc);
+			update();
 		}
 
 		private void uninstall(Document doc) {
@@ -340,30 +404,30 @@ public class JXSearchField extends JXPromptField {
 		}
 
 		public void changedUpdate(DocumentEvent e) {
-			update(e.getDocument());
+			update();
 		}
 
 		public void insertUpdate(DocumentEvent e) {
-			update(e.getDocument());
+			update();
 		}
 
 		public void removeUpdate(DocumentEvent e) {
-			update(e.getDocument());
+			update();
 		}
 
-		private void update(Document doc) {
-			if (isFireActionOnTextChange()) {
+		private void update() {
+			if (isInstantSearchMode()) {
 				postActionEvent();
 			}
 
-			updateButtonVisibility(doc);
+			updateButtonVisibility();
 		}
 
-		private void updateButtonVisibility(Document doc) {
+		private void updateButtonVisibility() {
 			if (clearButton != null) {
 				clearButton
-						.setVisible((!isFireActionOnButtonClick() || isMacLayoutStyle())
-								&& doc != null && doc.getLength() > 0);
+						.setVisible((!isRegularSearchMode() || isMacLayoutStyle())
+								&& getText() != null && getText().length() > 0);
 			}
 			if (searchButton != null) {
 				if (isVistaLayoutStyle()) {
