@@ -11,6 +11,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.UIManager;
 
 import org.jdesktop.xswingx.JXSearchField.LayoutStyle;
+import org.jdesktop.xswingx.JXSearchField.SearchMode;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -34,12 +35,14 @@ public class JXSearchFieldTest {
 			}
 		});
 		action = false;
-		Assert.assertFalse(searchField.isFireActionOnTextChange());
+		Assert.assertTrue(searchField.isInstantSearchMode());
 		searchField.setText("search");
-		Assert.assertFalse(action);
-		searchField.setFireActionOnTextChange(true);
+		Assert.assertTrue(action);
+		
+		action = false;
+		searchField.setSearchMode(SearchMode.REGULAR);
 		searchField.setText("search2");
-		assertTrue(action);
+		assertFalse(action);
 	}
 
 	@Test
@@ -47,21 +50,23 @@ public class JXSearchFieldTest {
 		assertTrue(searchField.getSearchButton().isVisible());
 		assertFalse(searchField.getClearButton().isVisible());
 
+		assertTrue(searchField.isMacLayoutStyle());
+		assertTrue(searchField.isInstantSearchMode());
 		searchField.setText("text");
 		assertTrue(searchField.getSearchButton().isVisible());
 		assertTrue(searchField.getClearButton().isVisible());
 
-		searchField.setFireActionOnButtonClick(true);
-		assertTrue(searchField.getSearchButton().isVisible());
-		assertTrue(searchField.getClearButton().isVisible());
-
 		searchField.setLayoutStyle(LayoutStyle.VISTA);
+		assertFalse(searchField.getSearchButton().isVisible());
+		assertTrue(searchField.getClearButton().isVisible());
+		
+		searchField.setSearchMode(SearchMode.REGULAR);
 		assertTrue(searchField.getSearchButton().isVisible());
 		assertFalse(searchField.getClearButton().isVisible());
 	}
 
 	@Test
-	public void testFireActionOnButtonClick() throws Exception {
+	public void testSearchMode() throws Exception {
 		searchField.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.err.println(e);
@@ -69,11 +74,18 @@ public class JXSearchFieldTest {
 			}
 		});
 		action = false;
-		assertFalse(searchField.isFireActionOnButtonClick());
+		assertNull(searchField.getSearchButton().getRolloverIcon());
+		assertNull(searchField.getSearchButton().getPressedIcon());
+		assertTrue(searchField.isInstantSearchMode());
 		searchField.getSearchButton().doClick();
 		assertFalse(action);
+		searchField.setText("test");
+		assertTrue(action);
 
-		searchField.setFireActionOnButtonClick(true);
+		action = false;
+		searchField.setSearchMode(SearchMode.REGULAR);
+		assertNotNull(searchField.getSearchButton().getRolloverIcon());
+		assertNotNull(searchField.getSearchButton().getPressedIcon());
 		searchField.getSearchButton().doClick();
 		assertTrue(action);
 
@@ -101,6 +113,14 @@ public class JXSearchFieldTest {
 		searchField.setSearchPopupMenu(new JPopupMenu());
 		assertEquals(anotherIcon, searchField.getSearchButton()
 				.getIcon());
+	}
+	
+	@Test
+	public void testSetPopupAfterRegular() throws Exception {
+		searchField.setSearchMode(SearchMode.REGULAR);
+		searchField.setSearchPopupMenu(new JPopupMenu());
+		assertNull(searchField.getSearchButton().getRolloverIcon());
+		assertNull(searchField.getSearchButton().getPressedIcon());
 	}
 
 	@Test
@@ -132,5 +152,20 @@ public class JXSearchFieldTest {
 		assertTrue(searchField.getClearButton().isEnabled());
 		assertTrue(searchField.getSearchAction().isEnabled());
 		assertTrue(searchField.getSearchButton().isEnabled());
+	}
+	
+	@Test
+	public void testSetLayoutStyle() throws Exception {
+		assertSame(LayoutStyle.MAC, searchField.getLayoutStyle());
+		assertFalse(searchField.getClearButton().isVisible());
+		assertTrue(searchField.getSearchButton().isVisible());
+		
+		searchField.setText("test");
+		assertTrue(searchField.getClearButton().isVisible());
+		assertTrue(searchField.getSearchButton().isVisible());
+		
+		searchField.setLayoutStyle(LayoutStyle.VISTA);
+		assertTrue(searchField.getClearButton().isVisible());
+		assertFalse(searchField.getSearchButton().isVisible());
 	}
 }
