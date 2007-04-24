@@ -1,12 +1,10 @@
 package org.jdesktop.xswingx.plaf;
 
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.TextComponent;
-import java.awt.Component.BaselineResizeBehavior;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.lang.reflect.Method;
