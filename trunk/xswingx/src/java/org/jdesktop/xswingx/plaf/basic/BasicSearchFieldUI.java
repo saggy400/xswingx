@@ -76,9 +76,20 @@ public class BasicSearchFieldUI extends PromptTextFieldUI {
 				&& shouldReplaceResource(searchButton().getIcon())) {
 			if (searchField.getSearchPopupMenu() == null) {
 				searchButton().setIcon(UIManager.getIcon("SearchField.icon"));
+				if (searchField.isRegularSearchMode()) {
+					searchButton().setRolloverIcon(
+							UIManager.getIcon("SearchField.rolloverIcon"));
+					searchButton().setPressedIcon(
+							UIManager.getIcon("SearchField.pressedIcon"));
+				}else{
+					searchButton().setRolloverIcon(null);
+					searchButton().setPressedIcon(null);
+				}
 			} else {
 				searchButton().setIcon(
 						UIManager.getIcon("SearchField.popupIcon"));
+				searchButton().setRolloverIcon(null);
+				searchButton().setPressedIcon(null);
 			}
 		}
 	}
@@ -265,9 +276,9 @@ public class BasicSearchFieldUI extends PromptTextFieldUI {
 			if (src.equals(searchField)) {
 				if ("border".equals(prop)) {
 					replaceBorderIfNecessary();
-				} else if ("searchPopupMenu".equals(prop)) {
+				} else if ("searchPopupMenu".equals(prop) || "searchMode".equals(prop)) {
 					updateSearchButtonIcon();
-				}
+				} 
 			}
 		}
 
