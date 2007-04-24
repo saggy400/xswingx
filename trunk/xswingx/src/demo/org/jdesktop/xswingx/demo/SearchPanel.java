@@ -6,7 +6,6 @@
 
 package org.jdesktop.xswingx.demo;
 
-import com.sun.corba.se.impl.interceptors.PICurrent;
 import java.awt.Color;
 import java.awt.Insets;
 import java.awt.event.FocusEvent;
@@ -52,6 +51,7 @@ public class SearchPanel extends javax.swing.JPanel {
     private void initComponents() {
         styleGroup = new javax.swing.ButtonGroup();
         borderGroup = new javax.swing.ButtonGroup();
+        modeGroup = new javax.swing.ButtonGroup();
         searchField = new org.jdesktop.xswingx.JXSearchField();
         jXTitledSeparator1 = new org.jdesktop.swingx.JXTitledSeparator();
         rbMac = new javax.swing.JRadioButton();
@@ -78,23 +78,23 @@ public class SearchPanel extends javax.swing.JPanel {
         btnSearchIcon = new javax.swing.JButton();
         btnResetIcons = new javax.swing.JButton();
         jXTitledSeparator7 = new org.jdesktop.swingx.JXTitledSeparator();
-        cbSearchOnTextChange = new javax.swing.JCheckBox();
-        jCheckBox2 = new javax.swing.JCheckBox();
         jLabel6 = new javax.swing.JLabel();
         lblSearchText = new javax.swing.JLabel();
         cbOpaqueWhenFocused = new javax.swing.JCheckBox();
         cbPopup = new javax.swing.JCheckBox();
-        cbButtonClick = new javax.swing.JCheckBox();
+        rbInstant = new javax.swing.JRadioButton();
+        rbRegular = new javax.swing.JRadioButton();
 
         styleGroup.add(rbMac);
         styleGroup.add(rbVista);
         borderGroup.add(rbDefaultBorder);
         borderGroup.add(rbLineBorder);
+        modeGroup.add(rbInstant);
+        modeGroup.add(rbRegular);
 
         searchField.setColumns(15);
         searchField.setPrompt("Type to Search");
         searchField.setPromptFontStyle(java.awt.Font.ITALIC);
-        searchField.setFireActionOnTextChange(true);
         searchField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 searchFieldActionPerformed(evt);
@@ -250,23 +250,7 @@ public class SearchPanel extends javax.swing.JPanel {
             }
         });
 
-        jXTitledSeparator7.setTitle("Action");
-
-        cbSearchOnTextChange.setSelected(searchField.isFireActionOnTextChange());
-        cbSearchOnTextChange.setText("Search On Text Change");
-        cbSearchOnTextChange.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
-        cbSearchOnTextChange.setMargin(new java.awt.Insets(0, 0, 0, 0));
-        cbSearchOnTextChange.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                cbSearchOnTextChangeStateChanged(evt);
-            }
-        });
-
-        jCheckBox2.setSelected(true);
-        jCheckBox2.setText("Search On Enter");
-        jCheckBox2.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
-        jCheckBox2.setEnabled(false);
-        jCheckBox2.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        jXTitledSeparator7.setTitle("Search Mode");
 
         jLabel6.setFont(jLabel6.getFont().deriveFont(jLabel6.getFont().getStyle() | java.awt.Font.BOLD));
         jLabel6.setText("Searching for:");
@@ -291,12 +275,23 @@ public class SearchPanel extends javax.swing.JPanel {
             }
         });
 
-        cbButtonClick.setText("Search On Button Click");
-        cbButtonClick.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
-        cbButtonClick.setMargin(new java.awt.Insets(0, 0, 0, 0));
-        cbButtonClick.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbButtonClickActionPerformed(evt);
+        rbInstant.setSelected(searchField.isInstantSearchMode());
+        rbInstant.setText("Instant");
+        rbInstant.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        rbInstant.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        rbInstant.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                searchModeChanged(evt);
+            }
+        });
+
+        rbRegular.setSelected(searchField.isRegularSearchMode());
+        rbRegular.setText("Regular");
+        rbRegular.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        rbRegular.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        rbRegular.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                searchModeChanged(evt);
             }
         });
 
@@ -312,20 +307,6 @@ public class SearchPanel extends javax.swing.JPanel {
                         .add(searchField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(jLabel3, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 279, Short.MAX_VALUE))
-                    .add(layout.createSequentialGroup()
-                        .add(10, 10, 10)
-                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(layout.createSequentialGroup()
-                                .add(17, 17, 17)
-                                .add(jLabel6)
-                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                                .add(lblSearchText))
-                            .add(layout.createSequentialGroup()
-                                .add(cbSearchOnTextChange)
-                                .add(6, 6, 6)
-                                .add(cbButtonClick)
-                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                                .add(jCheckBox2))))
                     .add(layout.createSequentialGroup()
                         .add(10, 10, 10)
                         .add(rbMac)
@@ -376,7 +357,19 @@ public class SearchPanel extends javax.swing.JPanel {
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(jLabel5)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 150, Short.MAX_VALUE)
-                        .add(cbOpaqueWhenFocused)))
+                        .add(cbOpaqueWhenFocused))
+                    .add(layout.createSequentialGroup()
+                        .add(27, 27, 27)
+                        .add(jLabel6)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(lblSearchText, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 350, Short.MAX_VALUE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED))
+                    .add(layout.createSequentialGroup()
+                        .add(10, 10, 10)
+                        .add(rbInstant)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(rbRegular)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -390,9 +383,8 @@ public class SearchPanel extends javax.swing.JPanel {
                 .add(jXTitledSeparator7, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 14, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(cbSearchOnTextChange)
-                    .add(jCheckBox2)
-                    .add(cbButtonClick))
+                    .add(rbInstant)
+                    .add(rbRegular))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jLabel6)
@@ -453,9 +445,13 @@ public class SearchPanel extends javax.swing.JPanel {
 
     }// </editor-fold>//GEN-END:initComponents
 
-    private void cbButtonClickActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbButtonClickActionPerformed
-        searchField.setFireActionOnButtonClick(cbButtonClick.isSelected());
-    }//GEN-LAST:event_cbButtonClickActionPerformed
+    private void searchModeChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_searchModeChanged
+        if(rbInstant.isSelected()){
+            searchField.setSearchMode(JXSearchField.SearchMode.INSTANT);
+        }else{
+            searchField.setSearchMode(JXSearchField.SearchMode.REGULAR);
+        }
+    }//GEN-LAST:event_searchModeChanged
 
     private void cbPopupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbPopupActionPerformed
         if(cbPopup.isSelected()){
@@ -474,11 +470,7 @@ public class SearchPanel extends javax.swing.JPanel {
     private void cbOpaqueWhenFocusedStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_cbOpaqueWhenFocusedStateChanged
         opaqueHandler.setEnabled(cbOpaqueWhenFocused.isSelected());
     }//GEN-LAST:event_cbOpaqueWhenFocusedStateChanged
-    
-    private void cbSearchOnTextChangeStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_cbSearchOnTextChangeStateChanged
-        searchField.setFireActionOnTextChange(cbSearchOnTextChange.isSelected());
-    }//GEN-LAST:event_cbSearchOnTextChangeStateChanged
-    
+        
     private void searchFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchFieldActionPerformed
         lblSearchText.setText(searchField.getText());
         lblSearchText.revalidate();
@@ -583,12 +575,9 @@ public class SearchPanel extends javax.swing.JPanel {
     private javax.swing.JButton btnResetIcons;
     private javax.swing.JButton btnResetMargins;
     private javax.swing.JButton btnSearchIcon;
-    private javax.swing.JCheckBox cbButtonClick;
     private javax.swing.JCheckBox cbFixedSize;
     private javax.swing.JCheckBox cbOpaqueWhenFocused;
     private javax.swing.JCheckBox cbPopup;
-    private javax.swing.JCheckBox cbSearchOnTextChange;
-    private javax.swing.JCheckBox jCheckBox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -603,9 +592,12 @@ public class SearchPanel extends javax.swing.JPanel {
     private org.jdesktop.swingx.JXTitledSeparator jXTitledSeparator6;
     private org.jdesktop.swingx.JXTitledSeparator jXTitledSeparator7;
     private javax.swing.JLabel lblSearchText;
+    private javax.swing.ButtonGroup modeGroup;
     private javax.swing.JRadioButton rbDefaultBorder;
+    private javax.swing.JRadioButton rbInstant;
     private javax.swing.JRadioButton rbLineBorder;
     private javax.swing.JRadioButton rbMac;
+    private javax.swing.JRadioButton rbRegular;
     private javax.swing.JRadioButton rbVista;
     private org.jdesktop.xswingx.JXSearchField searchField;
     private javax.swing.JSlider slBorderThickness;
