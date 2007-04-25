@@ -62,17 +62,18 @@ public class JXSearchFieldAddon extends AbstractComponentAddon {
 				"SearchField.pressedIcon",
 				getIcon("windows/resources/search_pressed.png"),
 				"SearchField.popupIcon",
-				getIcon("windows/resources/search.png"),
+				getIcon("windows/resources/search_popup.png"),
 				"SearchField.popupRolloverIcon",
-				getIcon("windows/resources/search_rollover.png"),
+				getIcon("windows/resources/search_popup_rollover.png"),
 				"SearchField.popupPressedIcon",
-				getIcon("windows/resources/search_pressed.png"),
+				getIcon("windows/resources/search_popup_pressed.png"),
 				"SearchField.clearIcon",
 				getIcon("windows/resources/clear.png"),
 				"SearchField.clearRolloverIcon",
 				getIcon("windows/resources/clear_rollover.png"),
 				"SearchField.clearPressedIcon",
-				getIcon("windows/resources/clear_pressed.png") }));
+				getIcon("windows/resources/clear_pressed.png"),
+				"SearchField.useSeperatePopupButton", Boolean.TRUE }));
 
 		defaults.add("SearchField.buttonMargin");
 
@@ -138,7 +139,8 @@ public class JXSearchFieldAddon extends AbstractComponentAddon {
 
 	}
 
-	// Workaround: Only return true, when the current LnF is Windows or PlasticXP.
+	// Workaround: Only return true, when the current LnF is Windows or
+	// PlasticXP.
 	protected boolean isWindows(LookAndFeelAddons addon) {
 		return super.isWindows(addon)
 				&& (UIManager.getLookAndFeel().getClass().getName().indexOf(
