@@ -88,8 +88,9 @@ public class JXSearchField extends JXPromptField {
 		 * <p>
 		 * The search button can have a rollover and a pressed icon, defined by
 		 * the "SearchField.rolloverIcon" and "SearchField.pressedIcon" UI
-		 * properties. These properties are only used when no search popup menu
-		 * is set.
+		 * properties. When a search popup menu is set,
+		 * "SearchField.popupRolloverIcon" and "SearchField.popupPressedIcon"
+		 * are used.
 		 * </p>
 		 * 
 		 */
@@ -284,6 +285,13 @@ public class JXSearchField extends JXPromptField {
 			super.setUI(ui);
 		} else {
 			setUI(new BasicSearchFieldUI(ui));
+		}
+	}
+	
+	public void updateUI() {
+		super.updateUI();
+		if(getSearchPopupMenu() != null){
+			getSearchPopupMenu().updateUI();
 		}
 	}
 
