@@ -74,6 +74,7 @@ public class JXSearchFieldTest {
 			}
 		});
 		action = false;
+		assertSame(UIManager.getIcon("SearchField.icon"), searchField.getSearchButton().getIcon());
 		assertNull(searchField.getSearchButton().getRolloverIcon());
 		assertNull(searchField.getSearchButton().getPressedIcon());
 		assertTrue(searchField.isInstantSearchMode());
@@ -84,8 +85,8 @@ public class JXSearchFieldTest {
 
 		action = false;
 		searchField.setSearchMode(SearchMode.REGULAR);
-		assertNotNull(searchField.getSearchButton().getRolloverIcon());
-		assertNotNull(searchField.getSearchButton().getPressedIcon());
+		assertSame(UIManager.getIcon("SearchField.rolloverIcon"), searchField.getSearchButton().getRolloverIcon());
+		assertSame(UIManager.getIcon("SearchField.pressedIcon"), searchField.getSearchButton().getPressedIcon());
 		searchField.getSearchButton().doClick();
 		assertTrue(action);
 
