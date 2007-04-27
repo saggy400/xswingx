@@ -5,6 +5,8 @@ import static org.junit.Assert.*;
 import java.awt.IllegalComponentStateException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JPopupMenu;
@@ -17,7 +19,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class JXSearchFieldTest {
-	boolean action;
+	boolean eventReceived;
 
 	JXSearchField searchField;
 
@@ -31,18 +33,18 @@ public class JXSearchFieldTest {
 		searchField.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.err.println(e);
-				action = true;
+				eventReceived = true;
 			}
 		});
-		action = false;
+		eventReceived = false;
 		Assert.assertTrue(searchField.isInstantSearchMode());
 		searchField.setText("search");
-		Assert.assertTrue(action);
+		Assert.assertTrue(eventReceived);
 		
-		action = false;
+		eventReceived = false;
 		searchField.setSearchMode(SearchMode.REGULAR);
 		searchField.setText("search2");
-		assertFalse(action);
+		assertFalse(eventReceived);
 	}
 
 	@Test
@@ -70,34 +72,34 @@ public class JXSearchFieldTest {
 		searchField.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.err.println(e);
-				action = true;
+				eventReceived = true;
 			}
 		});
-		action = false;
+		eventReceived = false;
 		assertSame(UIManager.getIcon("SearchField.icon"), searchField.getSearchButton().getIcon());
 		assertNull(searchField.getSearchButton().getRolloverIcon());
 		assertNull(searchField.getSearchButton().getPressedIcon());
 		assertTrue(searchField.isInstantSearchMode());
 		searchField.getSearchButton().doClick();
-		assertFalse(action);
+		assertFalse(eventReceived);
 		searchField.setText("test");
-		assertTrue(action);
+		assertTrue(eventReceived);
 
-		action = false;
+		eventReceived = false;
 		searchField.setSearchMode(SearchMode.REGULAR);
 		assertSame(UIManager.getIcon("SearchField.rolloverIcon"), searchField.getSearchButton().getRolloverIcon());
 		assertSame(UIManager.getIcon("SearchField.pressedIcon"), searchField.getSearchButton().getPressedIcon());
 		searchField.getSearchButton().doClick();
-		assertTrue(action);
+		assertTrue(eventReceived);
 
-		action = false;
+		eventReceived = false;
 		searchField.setSearchPopupMenu(new JPopupMenu());
 		try {
 			searchField.getSearchButton().doClick();
 			fail("must try to show search popup");
 		} catch (IllegalComponentStateException ex) {
 		}
-		assertFalse(action);
+		assertFalse(eventReceived);
 	}
 
 	@Test
@@ -168,5 +170,19 @@ public class JXSearchFieldTest {
 		searchField.setLayoutStyle(LayoutStyle.VISTA);
 		assertTrue(searchField.getClearButton().isVisible());
 		assertFalse(searchField.getSearchButton().isVisible());
+	}
+	
+	@Test
+	public void testPopupButton() throws Exception {
+		assertFalse(searchField.isUseSeperatePopupButton());
+		searchField.addPropertyChangeListener("useSeperatePopupButton", new PropertyChangeListener(){
+			public void propertyChange(PropertyChangeEvent evt) {
+				eventReceived = true;
+			}
+		});
+		searchField.setUseSeperatePopupButton(true);
+		assertTrue(eventReceived);
+		assertNotSame(searchField.getSearchButton(), searchField.getPopupButton());
+		assertNotNull(searchField.getPopupButton());
 	}
 }

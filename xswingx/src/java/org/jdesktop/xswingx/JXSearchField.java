@@ -3,7 +3,6 @@ package org.jdesktop.xswingx;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Insets;
-import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -16,7 +15,6 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JPopupMenu;
 import javax.swing.KeyStroke;
-import javax.swing.SwingUtilities;
 import javax.swing.UIDefaults;
 import javax.swing.border.Border;
 import javax.swing.event.DocumentEvent;
@@ -118,6 +116,8 @@ public class JXSearchField extends JXPromptField {
 
 	private JButton clearButton;
 
+	private JButton popupButton;
+
 	private Insets buttonMargin;
 
 	private LayoutStyle layoutStyle = LayoutStyle.MAC;
@@ -125,6 +125,8 @@ public class JXSearchField extends JXPromptField {
 	private SearchMode searchMode = SearchMode.INSTANT;
 
 	private JPopupMenu searchPopupMenu;
+
+	private boolean useSeperatePopupButton;
 
 	public JXSearchField() {
 		// We cannot register the ClearTextAction through the Input- and
@@ -239,6 +241,32 @@ public class JXSearchField extends JXPromptField {
 		return searchButton;
 	}
 
+	/**
+	 * Returns the popup button.
+	 * 
+	 * @return
+	 */
+	public JButton getPopupButton() {
+		if (popupButton == null) {
+			popupButton = createPopupButton();
+		}
+		return popupButton;
+	}
+
+	protected JButton createPopupButton() {
+		return new IconButton();
+	}
+
+	public boolean isUseSeperatePopupButton() {
+		return useSeperatePopupButton;
+	}
+
+	public void setUseSeperatePopupButton(boolean useSeperatePopupButton) {
+		firePropertyChange("useSeperatePopupButton",
+				this.useSeperatePopupButton,
+				this.useSeperatePopupButton = useSeperatePopupButton);
+	}
+
 	public void setEditable(boolean b) {
 		super.setEditable(b);
 		updateButtonState();
@@ -287,10 +315,10 @@ public class JXSearchField extends JXPromptField {
 			setUI(new BasicSearchFieldUI(ui));
 		}
 	}
-	
+
 	public void updateUI() {
 		super.updateUI();
-		if(getSearchPopupMenu() != null){
+		if (getSearchPopupMenu() != null) {
 			getSearchPopupMenu().updateUI();
 		}
 	}
@@ -361,16 +389,11 @@ public class JXSearchField extends JXPromptField {
 		}
 
 		/**
-		 * If installed, displays the search popup menu beneath the search
-		 * button. Otherwise posts an action event. Then requests the focus for
-		 * the search field.
+		 * In regular search mode, posts an action event. Always requests the
+		 * focus for the search field.
 		 */
 		public void actionPerformed(ActionEvent e) {
-			if (getSearchPopupMenu() != null) {
-				Rectangle r = SwingUtilities.getLocalBounds(searchButton);
-
-				getSearchPopupMenu().show(searchButton, r.x, r.y + r.height);
-			} else if (isRegularSearchMode()) {
+			if (isRegularSearchMode()) {
 				postActionEvent();
 			}
 			requestFocusInWindow();

@@ -84,6 +84,7 @@ public class SearchPanel extends javax.swing.JPanel {
         cbPopup = new javax.swing.JCheckBox();
         rbInstant = new javax.swing.JRadioButton();
         rbRegular = new javax.swing.JRadioButton();
+        cbPopupButton = new javax.swing.JCheckBox();
 
         styleGroup.add(rbMac);
         styleGroup.add(rbVista);
@@ -295,6 +296,15 @@ public class SearchPanel extends javax.swing.JPanel {
             }
         });
 
+        cbPopupButton.setText("Use Seperate Popup Buton");
+        cbPopupButton.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        cbPopupButton.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        cbPopupButton.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                cbPopupButtonStateChanged(evt);
+            }
+        });
+
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -306,15 +316,20 @@ public class SearchPanel extends javax.swing.JPanel {
                     .add(layout.createSequentialGroup()
                         .add(searchField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(jLabel3, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 279, Short.MAX_VALUE))
+                        .add(jLabel3, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE))
+                    .add(jXTitledSeparator1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 461, Short.MAX_VALUE)
+                    .add(layout.createSequentialGroup()
+                        .add(27, 27, 27)
+                        .add(jLabel6)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(lblSearchText, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 350, Short.MAX_VALUE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED))
                     .add(layout.createSequentialGroup()
                         .add(10, 10, 10)
-                        .add(rbMac)
+                        .add(rbInstant)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(rbVista)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 266, Short.MAX_VALUE)
-                        .add(cbPopup))
-                    .add(jXTitledSeparator1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 461, Short.MAX_VALUE)
+                        .add(rbRegular)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED))
                     .add(jXTitledSeparator3, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 461, Short.MAX_VALUE)
                     .add(layout.createSequentialGroup()
                         .add(10, 10, 10)
@@ -359,17 +374,16 @@ public class SearchPanel extends javax.swing.JPanel {
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 150, Short.MAX_VALUE)
                         .add(cbOpaqueWhenFocused))
                     .add(layout.createSequentialGroup()
-                        .add(27, 27, 27)
-                        .add(jLabel6)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(lblSearchText, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 350, Short.MAX_VALUE)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED))
-                    .add(layout.createSequentialGroup()
                         .add(10, 10, 10)
-                        .add(rbInstant)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(rbRegular)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)))
+                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                            .add(layout.createSequentialGroup()
+                                .add(cbPopup)
+                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                                .add(cbPopupButton))
+                            .add(layout.createSequentialGroup()
+                                .add(rbMac)
+                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                                .add(rbVista)))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -394,8 +408,11 @@ public class SearchPanel extends javax.swing.JPanel {
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(rbMac)
-                    .add(rbVista)
-                    .add(cbPopup))
+                    .add(rbVista))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(cbPopup)
+                    .add(cbPopupButton))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(jXTitledSeparator3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
@@ -444,6 +461,10 @@ public class SearchPanel extends javax.swing.JPanel {
         layout.linkSize(new java.awt.Component[] {jLabel3, searchField}, org.jdesktop.layout.GroupLayout.VERTICAL);
 
     }// </editor-fold>//GEN-END:initComponents
+
+    private void cbPopupButtonStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_cbPopupButtonStateChanged
+        searchField.setUseSeperatePopupButton(cbPopupButton.isSelected());
+    }//GEN-LAST:event_cbPopupButtonStateChanged
 
     private void searchModeChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_searchModeChanged
         if(rbInstant.isSelected()){
@@ -516,6 +537,9 @@ public class SearchPanel extends javax.swing.JPanel {
         if("buttonMargin".equals(evt.getPropertyName())){
             txtBtnMargin.setValue(searchField.getButtonMargin());
         }
+        if("useSeperatePopupButton".equals(evt.getPropertyName())){
+            cbPopupButton.setSelected(searchField.isUseSeperatePopupButton());
+        }
         searchFieldChanged();
         change = false;
     }//GEN-LAST:event_searchFieldPropertyChange
@@ -578,6 +602,7 @@ public class SearchPanel extends javax.swing.JPanel {
     private javax.swing.JCheckBox cbFixedSize;
     private javax.swing.JCheckBox cbOpaqueWhenFocused;
     private javax.swing.JCheckBox cbPopup;
+    private javax.swing.JCheckBox cbPopupButton;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
