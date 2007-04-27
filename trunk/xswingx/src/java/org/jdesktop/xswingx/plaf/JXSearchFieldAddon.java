@@ -73,7 +73,7 @@ public class JXSearchFieldAddon extends AbstractComponentAddon {
 				getIcon("windows/resources/clear_rollover.png"),
 				"SearchField.clearPressedIcon",
 				getIcon("windows/resources/clear_pressed.png"),
-				"SearchField.useSeperatePopupButton", Boolean.TRUE }));
+				"SearchField.useSeperatePopupButton", Boolean.TRUE, "SearchField.popupOffset", -1 }));
 
 		defaults.add("SearchField.buttonMargin");
 
@@ -84,7 +84,6 @@ public class JXSearchFieldAddon extends AbstractComponentAddon {
 		if (JVM.current().isOrLater(JVM.JDK1_6)
 				&& UIManager.getLookAndFeel().getClass().getName().indexOf(
 						"Classic") == -1) {
-			System.err.println("modern");
 			defaults.add(new InsetsUIResource(0, -1, 0, -1));
 		} else {
 			defaults.add(new InsetsUIResource(0, 0, 0, 0));
