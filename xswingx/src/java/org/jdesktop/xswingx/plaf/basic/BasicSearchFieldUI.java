@@ -334,7 +334,7 @@ public class BasicSearchFieldUI extends PromptTextFieldUI {
 					replaceBorderIfNecessary();
 				} else if ("searchPopupMenu".equals(prop)
 						|| "searchMode".equals(prop)
-						|| "usingSeperatePopupButton".equals(prop)) {
+						|| "useSeperatePopupButton".equals(prop)) {
 					updateSearchButton();
 				}
 			}
