@@ -1,7 +1,7 @@
 #labels Featured
 *Why should I use the prompt support provided by xswingx? I could easily write my own "prompt support" with a `FocusListener`, `getText`, `setText` and `setForeground`.*
 
-Well, that sounds comlicated. But it could be so easy: Just download [http://xswingx.googlecode.com/files/prompt.jar prompt.jar] (<10kB), add it to your classpath and call:
+Well, that sounds pretty complicated. But it could be so easy: Just download [http://xswingx.googlecode.com/files/prompt.jar prompt.jar] (<10kB), add it to your classpath and call:
 {{{
 PromptSupport.install("My Prompt", myTextComponent);
 }}}
@@ -15,5 +15,4 @@ Most importantly, the prompt support doesn't modify your text component's `Docum
 
 `PromptSupport` uses `JComponent`s [http://java.sun.com/j2se/1.4.2/docs/api/javax/swing/JComponent.html#putClientProperty(java.lang.Object,%20java.lang.Object) client properties] to get and set it's properties.
 Furthermore, the text component's UI delegate is wrapped by a custom delegate that reads these properties and renders the prompt accordingly.
-
 
