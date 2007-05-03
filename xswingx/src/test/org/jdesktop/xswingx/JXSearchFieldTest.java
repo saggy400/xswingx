@@ -2,15 +2,19 @@ package org.jdesktop.xswingx;
 
 import static org.junit.Assert.*;
 
+import java.awt.Component;
+import java.awt.Graphics;
 import java.awt.IllegalComponentStateException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JPopupMenu;
 import javax.swing.UIManager;
+import javax.swing.plaf.UIResource;
 
 import org.jdesktop.xswingx.JXSearchField.LayoutStyle;
 import org.jdesktop.xswingx.JXSearchField.SearchMode;
@@ -103,22 +107,6 @@ public class JXSearchFieldTest {
 	}
 
 	@Test
-	public void testSearchButtonPopupMenu() throws Exception {
-		searchField.setSearchPopupMenu(new JPopupMenu());
-		assertNotNull(searchField.getSearchButton().getIcon());
-		assertEquals(UIManager.getIcon("SearchField.popupIcon"),
-				searchField.getSearchButton().getIcon());
-		searchField.setSearchPopupMenu(null);
-		assertEquals(UIManager.getIcon("SearchField.icon"), searchField
-				.getSearchButton().getIcon());
-		ImageIcon anotherIcon = new ImageIcon();
-		searchField.getSearchButton().setIcon(anotherIcon);
-		searchField.setSearchPopupMenu(new JPopupMenu());
-		assertEquals(anotherIcon, searchField.getSearchButton()
-				.getIcon());
-	}
-	
-	@Test
 	public void testSetPopupAfterRegular() throws Exception {
 		searchField.setSearchMode(SearchMode.REGULAR);
 		searchField.setSearchPopupMenu(new JPopupMenu());
@@ -184,5 +172,83 @@ public class JXSearchFieldTest {
 		assertTrue(eventReceived);
 		assertNotSame(searchField.getSearchButton(), searchField.getPopupButton());
 		assertNotNull(searchField.getPopupButton());
+	}
+	
+	@Test
+	public void testSearchButtonIcons() throws Exception {
+		UIManager.put("SearchField.icon", new TestIcon("SearchField.icon"));
+		UIManager.put("SearchField.rolloverIcon", new TestIcon("SearchField.rolloverIcon"));
+		UIManager.put("SearchField.pressedIcon", new TestIcon("SearchField.pressedIcon"));
+		
+		UIManager.put("SearchField.popupIcon", new TestIcon("SearchField.popupIcon"));
+		UIManager.put("SearchField.popupRolloverIcon", new TestIcon("SearchField.popupRolloverIcon"));
+		UIManager.put("SearchField.popupPressedIcon", new TestIcon("SearchField.popupPressedIcon"));
+		
+		UIManager.put("SearchField.clearIcon", new TestIcon("SearchField.clearIcon"));
+		UIManager.put("SearchField.clearRolloverIcon", new TestIcon("SearchField.clearRolloverIcon"));
+		UIManager.put("SearchField.clearPressedIcon", new TestIcon("SearchField.clearPressedIcon"));
+		
+		searchField.updateUI();
+		
+		assertSame(UIManager.getIcon("SearchField.icon"),
+				searchField.getSearchButton().getIcon());
+		assertFalse(searchField.isRegularSearchMode());
+		assertNull(searchField.getSearchButton().getRolloverIcon());
+		assertNull(searchField.getSearchButton().getPressedIcon());
+		
+		searchField.setSearchMode(SearchMode.REGULAR);
+		assertSame(UIManager.getIcon("SearchField.icon"),
+				searchField.getSearchButton().getIcon());
+		assertSame(UIManager.getIcon("SearchField.rolloverIcon"),
+				searchField.getSearchButton().getRolloverIcon());
+		assertSame(UIManager.getIcon("SearchField.pressedIcon"),
+				searchField.getSearchButton().getPressedIcon());
+		
+		searchField.setSearchPopupMenu(new JPopupMenu());
+		assertNotNull(searchField.getSearchButton().getIcon());
+		assertEquals(UIManager.getIcon("SearchField.popupIcon"),
+				searchField.getSearchButton().getIcon());
+		searchField.setSearchPopupMenu(null);
+		assertEquals(UIManager.getIcon("SearchField.icon"), searchField
+				.getSearchButton().getIcon());
+		ImageIcon anotherIcon = new ImageIcon();
+		searchField.getSearchButton().setIcon(anotherIcon);
+		searchField.setSearchPopupMenu(new JPopupMenu());
+		assertEquals(anotherIcon, searchField.getSearchButton()
+				.getIcon());
+	}
+	
+	class TestIcon implements Icon, UIResource{
+		private String name;
+
+		public TestIcon(String name) {
+			this.name = name;
+		}
+		
+		public int getIconHeight() {
+			return 0;
+		}
+
+		public int getIconWidth() {
+			return 0;
+		}
+
+		public void paintIcon(Component c, Graphics g, int x, int y) {
+		}
+		
+		public boolean equals(Object obj) {
+			if (!(obj instanceof TestIcon)) {
+				return false;
+			}
+			return name.equals(((TestIcon)obj).name);
+		}
+		
+		public int hashCode() {
+			return name.hashCode();
+		}
+		
+		public String toString() {
+			return name;
+		}
 	}
 }
