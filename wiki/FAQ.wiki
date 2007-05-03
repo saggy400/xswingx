@@ -1,0 +1,15 @@
+#labels Featured
+*Why should I use the prompt support provided by xswingx? I could easily write my own "prompt support" with a `FocusListener`, `getText`, `setText` and `setForeground`.*
+
+Well, that sounds comlicated. But it could be so easy: Just download [http://xswingx.googlecode.com/files/prompt.jar prompt.jar] (<10kB), add it to your classpath and call:
+{{{
+PromptSupport.install("My Prompt", myTextComponent);
+}}}
+Writing your own "prompt support" certainly requires both, more code and effort.
+
+xswingx's prompt support is also flexible. You can change the *focus behavior* (hide prompt, show prompt or highlight prompt), the prompt's foreground *color* and even the *font style* (Italic, like it the Windows Vista search box, if you like).
+
+Most importantly, the prompt support doesn't modify your text component's `Document`. Therefore no unwanted `DocumentEvent`s are fired and `getText` always returns the real text - not the prompt!
+
+
+
