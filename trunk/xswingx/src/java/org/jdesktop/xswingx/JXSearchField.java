@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.beans.PropertyChangeEvent;
@@ -15,6 +16,7 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JPopupMenu;
 import javax.swing.KeyStroke;
+import javax.swing.Timer;
 import javax.swing.UIDefaults;
 import javax.swing.border.Border;
 import javax.swing.event.DocumentEvent;
@@ -50,10 +52,6 @@ public class JXSearchField extends JXPromptField {
 		 * and the clear button will never be shown. However, 'escape' can still
 		 * be pressed to invoke the clear action.
 		 * </p>
-		 * <p>
-		 * TODO: A search popup menu is not supported in VISTA layout style.
-		 * Consider adding a seperate popup button.
-		 * </p>
 		 */
 		VISTA,
 		/**
@@ -61,11 +59,6 @@ public class JXSearchField extends JXPromptField {
 		 * In MAC layout style, the search button is placed on the left side of
 		 * the search field and the clear button on the right side. The clear
 		 * button is only visible when text is present.
-		 * </p>
-		 * <p>
-		 * If a search popup menu is installed, the search button will trigger
-		 * the popup, and it's icon will be set to the UI property
-		 * "SearchField.popupIcon".
 		 * </p>
 		 */
 		MAC
@@ -106,7 +99,7 @@ public class JXSearchField extends JXPromptField {
 		LookAndFeelAddons.contribute(new JXSearchFieldAddon());
 	}
 
-	private PropertyChangeHandler propertyChangeHandler = new PropertyChangeHandler();
+	private ChangeHandler propertyChangeHandler = new ChangeHandler();
 
 	private ClearAction clearAction;
 
@@ -120,13 +113,19 @@ public class JXSearchField extends JXPromptField {
 
 	private Insets buttonMargin;
 
-	private LayoutStyle layoutStyle = LayoutStyle.MAC;
+	private LayoutStyle layoutStyle;
 
 	private SearchMode searchMode = SearchMode.INSTANT;
 
 	private JPopupMenu searchPopupMenu;
 
 	private boolean useSeperatePopupButton;
+
+	private boolean useSeperatePopupButtonSet;
+
+	private boolean layoutStyleSet;
+	
+	private int instantSearchDelay;
 
 	public JXSearchField() {
 		// We cannot register the ClearTextAction through the Input- and
@@ -165,6 +164,15 @@ public class JXSearchField extends JXPromptField {
 				this.searchMode = searchMode);
 	}
 
+	public int getInstantSearchDelay() {
+		return instantSearchDelay;
+	}
+
+	public void setInstantSearchDelay(int instantSearchDelay) {
+		firePropertyChange("instantSearchDelay", this.instantSearchDelay,
+				this.instantSearchDelay = instantSearchDelay);
+	}
+
 	public LayoutStyle getLayoutStyle() {
 		return layoutStyle;
 	}
@@ -178,6 +186,7 @@ public class JXSearchField extends JXPromptField {
 	}
 
 	public void setLayoutStyle(LayoutStyle layoutStyle) {
+		layoutStyleSet = true;
 		firePropertyChange("layoutStyle", this.layoutStyle,
 				this.layoutStyle = layoutStyle);
 	}
@@ -262,6 +271,7 @@ public class JXSearchField extends JXPromptField {
 	}
 
 	public void setUseSeperatePopupButton(boolean useSeperatePopupButton) {
+		useSeperatePopupButtonSet = true;
 		firePropertyChange("useSeperatePopupButton",
 				this.useSeperatePopupButton,
 				this.useSeperatePopupButton = useSeperatePopupButton);
@@ -320,6 +330,26 @@ public class JXSearchField extends JXPromptField {
 		super.updateUI();
 		if (getSearchPopupMenu() != null) {
 			getSearchPopupMenu().updateUI();
+		}
+	}
+
+	public void customSetUIProperty(String propertyName, Object value) {
+		customSetUIProperty(propertyName, value, false);
+	}
+	
+	public void customSetUIProperty(String propertyName, Object value, boolean reset) {
+		if (propertyName == "useSeperatePopupButton") {
+			if (!useSeperatePopupButtonSet || reset) {
+				setUseSeperatePopupButton(((Boolean) value).booleanValue());
+				useSeperatePopupButtonSet = false;
+			}
+		}else if (propertyName == "layoutStyle") {
+			if (!layoutStyleSet || reset) {
+				setLayoutStyle((LayoutStyle)value);
+				layoutStyleSet = false;
+			}
+		}else{
+			throw new IllegalArgumentException();
 		}
 	}
 
@@ -389,20 +419,29 @@ public class JXSearchField extends JXPromptField {
 		}
 
 		/**
-		 * In regular search mode, posts an action event. Always requests the
-		 * focus for the search field.
+		 * In regular search mode posts an action event. The action event is not
+		 * posted if a search popup menu is set and no seperate popup button is
+		 * used (thus, the search button is used as the popup button). Always
+		 * requests the focus for the search field.
 		 */
 		public void actionPerformed(ActionEvent e) {
-			if (isRegularSearchMode()) {
+			if (isRegularSearchMode()
+					&& (isUseSeperatePopupButton() || getSearchPopupMenu() == null)) {
 				postActionEvent();
 			}
 			requestFocusInWindow();
 		}
 	}
 
-	class PropertyChangeHandler implements PropertyChangeListener,
-			DocumentListener {
-
+	class ChangeHandler implements PropertyChangeListener,
+			DocumentListener, ActionListener {
+		private Timer instantSearch;
+		
+		public ChangeHandler() {
+			instantSearch = new Timer(0, this);
+			instantSearch.setRepeats(false);
+		}
+		
 		public void install() {
 			install(getDocument());
 			addPropertyChangeListener(this);
@@ -448,7 +487,9 @@ public class JXSearchField extends JXPromptField {
 
 		private void update() {
 			if (isInstantSearchMode()) {
-				postActionEvent();
+				instantSearch.stop();
+				instantSearch.setInitialDelay(getInstantSearchDelay());
+				instantSearch.start();
 			}
 
 			updateButtonVisibility();
@@ -467,6 +508,10 @@ public class JXSearchField extends JXPromptField {
 					searchButton.setVisible(true);
 				}
 			}
+		}
+
+		public void actionPerformed(ActionEvent e) {
+			postActionEvent();
 		}
 	}
 }
