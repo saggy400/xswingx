@@ -12,6 +12,7 @@ import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
@@ -22,8 +23,6 @@ import javax.swing.plaf.UIResource;
 
 import org.jdesktop.xswingx.JXSearchField;
 import org.jdesktop.xswingx.plaf.PromptTextFieldUI;
-
-import com.sun.org.apache.xml.internal.utils.UnImplNode;
 
 public class BasicSearchFieldUI extends PromptTextFieldUI {
 	private JXSearchField searchField;
@@ -46,14 +45,21 @@ public class BasicSearchFieldUI extends PromptTextFieldUI {
 		searchField.add(clearButton());
 		searchField.add(popupButton());
 
-		if (UIManager.getBoolean("SearchField.useSeperatePopupButton")) {
-			searchField.setUseSeperatePopupButton(true);
-		}
-
 		searchField.addPropertyChangeListener(handler);
 	}
 
 	protected void installDefaults() {
+		if (UIManager.getBoolean("SearchField.useSeperatePopupButton")) {
+			searchField.customSetUIProperty("useSeperatePopupButton",
+					Boolean.TRUE);
+		} else {
+			searchField.customSetUIProperty("useSeperatePopupButton",
+					Boolean.FALSE);
+		}
+
+		searchField.customSetUIProperty("layoutStyle", UIManager
+				.get("SearchField.layoutStyle"));
+
 		if (shouldReplaceResource(searchField.getButtonMargin())) {
 			searchField.setButtonMargin(UIManager
 					.getInsets("SearchField.buttonMargin"));
@@ -82,20 +88,28 @@ public class BasicSearchFieldUI extends PromptTextFieldUI {
 
 	protected void updateSearchButton() {
 		searchButton().removeActionListener(handler);
-		if (searchButton() != null
-				&& shouldReplaceResource(searchButton().getIcon())) {
+		if (searchButton() != null) {
 			if (searchField.getSearchPopupMenu() == null
 					|| usingSeperatePopupButton()) {
-				searchButton().setIcon(UIManager.getIcon("SearchField.icon"));
+				searchButton()
+						.setIcon(
+								getNewIcon(searchButton().getIcon(),
+										"SearchField.icon"));
 				if (searchField.isRegularSearchMode()) {
 					searchButton().setRolloverIcon(
-							UIManager.getIcon("SearchField.rolloverIcon"));
+							getNewIcon(searchButton().getRolloverIcon(),
+									"SearchField.rolloverIcon"));
 					searchButton().setPressedIcon(
-							UIManager.getIcon("SearchField.pressedIcon"));
+							getNewIcon(searchButton().getPressedIcon(),
+									"SearchField.pressedIcon"));
 				} else {
 					// no action, therefore no rollover icon.
-					searchButton().setRolloverIcon(null);
-					searchButton().setPressedIcon(null);
+					if (shouldReplaceResource(searchButton().getRolloverIcon())) {
+						searchButton().setRolloverIcon(null);
+					}
+					if (shouldReplaceResource(searchButton().getPressedIcon())) {
+						searchButton().setPressedIcon(null);
+					}
 				}
 			} else if (!usingSeperatePopupButton()) {
 				installPopupIcons(searchButton());
@@ -103,8 +117,7 @@ public class BasicSearchFieldUI extends PromptTextFieldUI {
 			}
 		}
 		if (popupButton() != null) {
-			if (shouldReplaceResource(popupButton().getIcon())
-					&& usingSeperatePopupButton()) {
+			if (usingSeperatePopupButton()) {
 				installPopupIcons(popupButton());
 				popupButton().addActionListener(handler);
 			}
@@ -113,9 +126,11 @@ public class BasicSearchFieldUI extends PromptTextFieldUI {
 	}
 
 	private void installPopupIcons(JButton btn) {
-		btn.setIcon(UIManager.getIcon("SearchField.popupIcon"));
-		btn.setRolloverIcon(UIManager.getIcon("SearchField.popupRolloverIcon"));
-		btn.setPressedIcon(UIManager.getIcon("SearchField.popupPressedIcon"));
+		btn.setIcon(getNewIcon(btn.getIcon(), "SearchField.popupIcon"));
+		btn.setRolloverIcon(getNewIcon(btn.getRolloverIcon(),
+				"SearchField.popupRolloverIcon"));
+		btn.setPressedIcon(getNewIcon(btn.getPressedIcon(),
+				"SearchField.popupPressedIcon"));
 	}
 
 	public void uninstallUI(JComponent c) {
@@ -172,6 +187,14 @@ public class BasicSearchFieldUI extends PromptTextFieldUI {
 
 	protected boolean shouldReplaceResource(Object o) {
 		return o == null || o instanceof UIResource;
+	}
+
+	protected Icon getNewIcon(Icon icon, String resKey) {
+		Icon uiIcon = UIManager.getIcon(resKey);
+		if (shouldReplaceResource(icon)) {
+			return uiIcon;
+		}
+		return icon;
 	}
 
 	protected JButton clearButton() {
@@ -378,7 +401,11 @@ public class BasicSearchFieldUI extends PromptTextFieldUI {
 				Component src = (Component) e.getSource();
 
 				Rectangle r = SwingUtilities.getLocalBounds(src);
-				searchField.getSearchPopupMenu().show(src, r.x, r.y + r.height);
+				int popupWidth = searchField.getSearchPopupMenu()
+						.getPreferredSize().width;
+				int x = searchField.isVistaLayoutStyle() || usingSeperatePopupButton() ? r.x + r.width - popupWidth
+						: r.x;
+				searchField.getSearchPopupMenu().show(src, x, r.y + r.height);
 			}
 		}
 	}

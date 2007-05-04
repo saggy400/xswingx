@@ -1,6 +1,10 @@
 package org.jdesktop.xswingx;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.awt.Component;
 import java.awt.Graphics;
@@ -11,7 +15,6 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JPopupMenu;
 import javax.swing.UIManager;
 import javax.swing.plaf.UIResource;
@@ -161,32 +164,14 @@ public class JXSearchFieldTest {
 	}
 	
 	@Test
-	public void testPopupButton() throws Exception {
-		assertFalse(searchField.isUseSeperatePopupButton());
-		searchField.addPropertyChangeListener("useSeperatePopupButton", new PropertyChangeListener(){
-			public void propertyChange(PropertyChangeEvent evt) {
-				eventReceived = true;
-			}
-		});
-		searchField.setUseSeperatePopupButton(true);
-		assertTrue(eventReceived);
-		assertNotSame(searchField.getSearchButton(), searchField.getPopupButton());
-		assertNotNull(searchField.getPopupButton());
-	}
-	
-	@Test
 	public void testSearchButtonIcons() throws Exception {
-		UIManager.put("SearchField.icon", new TestIcon("SearchField.icon"));
-		UIManager.put("SearchField.rolloverIcon", new TestIcon("SearchField.rolloverIcon"));
-		UIManager.put("SearchField.pressedIcon", new TestIcon("SearchField.pressedIcon"));
+		UIManager.put("SearchField.icon", new TestIconUI("SearchField.icon"));
+		UIManager.put("SearchField.rolloverIcon", new TestIconUI("SearchField.rolloverIcon"));
+		UIManager.put("SearchField.pressedIcon", new TestIconUI("SearchField.pressedIcon"));
 		
-		UIManager.put("SearchField.popupIcon", new TestIcon("SearchField.popupIcon"));
-		UIManager.put("SearchField.popupRolloverIcon", new TestIcon("SearchField.popupRolloverIcon"));
-		UIManager.put("SearchField.popupPressedIcon", new TestIcon("SearchField.popupPressedIcon"));
-		
-		UIManager.put("SearchField.clearIcon", new TestIcon("SearchField.clearIcon"));
-		UIManager.put("SearchField.clearRolloverIcon", new TestIcon("SearchField.clearRolloverIcon"));
-		UIManager.put("SearchField.clearPressedIcon", new TestIcon("SearchField.clearPressedIcon"));
+		UIManager.put("SearchField.clearIcon", new TestIconUI("SearchField.clearIcon"));
+		UIManager.put("SearchField.clearRolloverIcon", new TestIconUI("SearchField.clearRolloverIcon"));
+		UIManager.put("SearchField.clearPressedIcon", new TestIconUI("SearchField.clearPressedIcon"));
 		
 		searchField.updateUI();
 		
@@ -204,21 +189,132 @@ public class JXSearchFieldTest {
 		assertSame(UIManager.getIcon("SearchField.pressedIcon"),
 				searchField.getSearchButton().getPressedIcon());
 		
-		searchField.setSearchPopupMenu(new JPopupMenu());
-		assertNotNull(searchField.getSearchButton().getIcon());
-		assertEquals(UIManager.getIcon("SearchField.popupIcon"),
+		TestIcon diff = new TestIcon("different");
+		searchField.getSearchButton().setRolloverIcon(diff);
+		searchField.updateUI();
+		assertSame(diff,
+				searchField.getSearchButton().getRolloverIcon());
+		searchField.getSearchButton().setPressedIcon(diff);
+		searchField.updateUI();
+		assertSame(diff,
+				searchField.getSearchButton().getPressedIcon());
+		searchField.getSearchButton().setIcon(diff);
+		searchField.updateUI();
+		assertSame(diff,
 				searchField.getSearchButton().getIcon());
-		searchField.setSearchPopupMenu(null);
-		assertEquals(UIManager.getIcon("SearchField.icon"), searchField
-				.getSearchButton().getIcon());
-		ImageIcon anotherIcon = new ImageIcon();
-		searchField.getSearchButton().setIcon(anotherIcon);
-		searchField.setSearchPopupMenu(new JPopupMenu());
-		assertEquals(anotherIcon, searchField.getSearchButton()
-				.getIcon());
 	}
 	
-	class TestIcon implements Icon, UIResource{
+	@Test
+	public void testPopupIcons() throws Exception {
+		UIManager.put("SearchField.popupIcon", new TestIconUI("SearchField.popupIcon"));
+		UIManager.put("SearchField.popupRolloverIcon", new TestIconUI("SearchField.popupRolloverIcon"));
+		UIManager.put("SearchField.popupPressedIcon", new TestIconUI("SearchField.popupPressedIcon"));
+		searchField.setSearchPopupMenu(new JPopupMenu());
+		
+		assertSame(UIManager.getIcon("SearchField.popupIcon"),
+				searchField.getSearchButton().getIcon());
+		assertSame(UIManager.getIcon("SearchField.popupRolloverIcon"),
+				searchField.getSearchButton().getRolloverIcon());
+		assertSame(UIManager.getIcon("SearchField.popupPressedIcon"),
+				searchField.getSearchButton().getPressedIcon());
+		
+		searchField.setUseSeperatePopupButton(true);
+		
+		assertSame(UIManager.getIcon("SearchField.icon"),
+				searchField.getSearchButton().getIcon());
+		
+		searchField.setSearchMode(SearchMode.REGULAR);
+		assertSame(UIManager.getIcon("SearchField.rolloverIcon"),
+				searchField.getSearchButton().getRolloverIcon());
+		assertSame(UIManager.getIcon("SearchField.pressedIcon"),
+				searchField.getSearchButton().getPressedIcon());
+		
+		assertSame(UIManager.getIcon("SearchField.popupIcon"),
+				searchField.getPopupButton().getIcon());
+		assertSame(UIManager.getIcon("SearchField.popupRolloverIcon"),
+				searchField.getPopupButton().getRolloverIcon());
+		assertSame(UIManager.getIcon("SearchField.popupPressedIcon"),
+				searchField.getPopupButton().getPressedIcon());
+	}
+	
+	@Test
+	public void testPopupButton() throws Exception {
+		searchField.setSearchPopupMenu(new JPopupMenu());
+		assertFalse(searchField.getPopupButton().isVisible());
+		
+		assertFalse(searchField.isUseSeperatePopupButton());
+		searchField.addPropertyChangeListener("useSeperatePopupButton", new PropertyChangeListener(){
+			public void propertyChange(PropertyChangeEvent evt) {
+				eventReceived = true;
+			}
+		});
+		searchField.setUseSeperatePopupButton(true);
+		assertTrue(eventReceived);
+		assertTrue(searchField.getPopupButton().isVisible());
+		
+		searchField.setSearchPopupMenu(null);
+		assertFalse(searchField.getPopupButton().isVisible());
+	}
+	
+	@Test
+	public void testSearchOnClick() throws Exception {
+		searchField.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				eventReceived = true;
+			}
+		});
+		assertFalse(searchField.isRegularSearchMode());
+		searchField.getSearchAction().actionPerformed(null);
+		assertFalse(eventReceived);
+		
+		searchField.setSearchMode(SearchMode.REGULAR);
+		searchField.getSearchAction().actionPerformed(null);
+		assertTrue(eventReceived);
+		
+		eventReceived = false;
+		assertFalse(searchField.isUseSeperatePopupButton());
+		searchField.setSearchPopupMenu(new JPopupMenu());
+		searchField.getSearchAction().actionPerformed(null);
+		assertFalse(eventReceived);
+		
+		searchField.setUseSeperatePopupButton(true);
+		searchField.getSearchAction().actionPerformed(null);
+		assertTrue(eventReceived);
+	}
+	
+	@Test
+	public void testSeperatePopupDefault() throws Exception {
+		UIManager.put("SearchField.useSeperatePopupButton", Boolean.FALSE);
+		searchField.updateUI();
+		assertFalse(searchField.isUseSeperatePopupButton());
+		
+		UIManager.put("SearchField.useSeperatePopupButton", Boolean.TRUE);
+		searchField.updateUI();
+		assertTrue(searchField.isUseSeperatePopupButton());
+		
+		UIManager.put("SearchField.useSeperatePopupButton", Boolean.TRUE);
+		searchField.setUseSeperatePopupButton(false);
+		searchField.updateUI();
+		assertFalse(searchField.isUseSeperatePopupButton());
+	}
+	
+	@Test
+	public void testLayoutDefault() throws Exception {
+		UIManager.put("SearchField.layoutStyle", LayoutStyle.VISTA);
+		searchField.updateUI();
+		assertFalse(searchField.isMacLayoutStyle());
+		
+		UIManager.put("SearchField.layoutStyle", LayoutStyle.MAC);
+		searchField.updateUI();
+		assertFalse(searchField.isVistaLayoutStyle());
+		
+		UIManager.put("SearchField.layoutStyle", LayoutStyle.MAC);
+		searchField.setLayoutStyle(LayoutStyle.VISTA);
+		searchField.updateUI();
+		assertTrue(searchField.isVistaLayoutStyle());
+	}
+	
+	class TestIcon implements Icon{
 		private String name;
 
 		public TestIcon(String name) {
@@ -249,6 +345,12 @@ public class JXSearchFieldTest {
 		
 		public String toString() {
 			return name;
+		}
+	}
+	
+	class TestIconUI extends TestIcon implements UIResource{
+		public TestIconUI(String name) {
+			super(name);
 		}
 	}
 }

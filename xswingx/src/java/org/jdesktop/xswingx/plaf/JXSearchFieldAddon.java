@@ -12,6 +12,7 @@ import javax.swing.plaf.InsetsUIResource;
 import org.jdesktop.swingx.plaf.AbstractComponentAddon;
 import org.jdesktop.swingx.plaf.LookAndFeelAddons;
 import org.jdesktop.swingx.util.JVM;
+import org.jdesktop.xswingx.JXSearchField.LayoutStyle;
 
 public class JXSearchFieldAddon extends AbstractComponentAddon {
 	public JXSearchFieldAddon() {
@@ -22,7 +23,8 @@ public class JXSearchFieldAddon extends AbstractComponentAddon {
 			List<Object> defaults) {
 		super.addBasicDefaults(addon, defaults);
 		defaults
-				.addAll(Arrays.asList(new Object[] { "SearchField.icon",
+				.addAll(Arrays.asList(new Object[] { "SearchField.layoutStyle",
+						LayoutStyle.MAC, "SearchField.icon",
 						getIcon("basic/resources/search.png"),
 						"SearchField.rolloverIcon",
 						getIcon("basic/resources/search_rollover.png"),
@@ -55,7 +57,8 @@ public class JXSearchFieldAddon extends AbstractComponentAddon {
 	protected void addWindowsDefaults(LookAndFeelAddons addon,
 			List<Object> defaults) {
 		super.addWindowsDefaults(addon, defaults);
-		defaults.addAll(Arrays.asList(new Object[] { "SearchField.icon",
+		defaults.addAll(Arrays.asList(new Object[] { "SearchField.layoutStyle",
+				LayoutStyle.VISTA, "SearchField.icon",
 				getIcon("windows/resources/search.png"),
 				"SearchField.rolloverIcon",
 				getIcon("windows/resources/search_rollover.png"),
@@ -73,7 +76,8 @@ public class JXSearchFieldAddon extends AbstractComponentAddon {
 				getIcon("windows/resources/clear_rollover.png"),
 				"SearchField.clearPressedIcon",
 				getIcon("windows/resources/clear_pressed.png"),
-				"SearchField.useSeperatePopupButton", Boolean.TRUE, "SearchField.popupOffset", -1 }));
+				"SearchField.useSeperatePopupButton", Boolean.TRUE,
+				"SearchField.popupOffset", -1 }));
 
 		defaults.add("SearchField.buttonMargin");
 

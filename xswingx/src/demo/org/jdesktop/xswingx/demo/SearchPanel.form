@@ -30,29 +30,36 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="jXTitledSeparator7" alignment="0" pref="461" max="32767" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="searchField" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jLabel3" pref="280" max="32767" attributes="0"/>
+                      <Component id="jLabel3" pref="306" max="32767" attributes="0"/>
                   </Group>
                   <Component id="jXTitledSeparator1" alignment="0" pref="461" max="32767" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
-                      <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" max="-2" attributes="0"/>
-                      <Component id="lblSearchText" pref="350" max="32767" attributes="0"/>
-                      <EmptySpace min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="10" pref="10" max="10" attributes="0"/>
-                      <Component id="rbInstant" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="rbRegular" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <EmptySpace min="17" pref="17" max="17" attributes="0"/>
+                                      <Component id="cbPopupButton" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Component id="cbPopup" alignment="0" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace pref="176" max="32767" attributes="0"/>
+                              <Component id="btnResetStyle" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="rbMac" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="rbVista" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
                   </Group>
                   <Component id="jXTitledSeparator3" alignment="0" pref="461" max="32767" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
@@ -108,17 +115,20 @@
                       <Component id="cbOpaqueWhenFocused" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
+                      <EmptySpace min="10" pref="10" max="10" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
-                              <Component id="cbPopup" min="-2" max="-2" attributes="0"/>
+                              <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="cbPopupButton" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblSearchText" pref="367" max="32767" attributes="0"/>
                           </Group>
+                          <Component id="rbRegular" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
-                              <Component id="rbMac" min="-2" max="-2" attributes="0"/>
+                              <Component id="rbInstant" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="rbVista" min="-2" max="-2" attributes="0"/>
+                              <Component id="spnDelay" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="jLabel7" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
@@ -138,11 +148,14 @@
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jXTitledSeparator7" min="-2" pref="14" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
+              <Component id="rbRegular" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="rbInstant" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="rbRegular" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="spnDelay" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLabel7" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="13" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel6" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="lblSearchText" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -150,18 +163,22 @@
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jXTitledSeparator1" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="rbMac" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="rbVista" alignment="3" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="1" attributes="0">
+                  <Group type="102" alignment="1" attributes="0">
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="rbMac" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="rbVista" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="cbPopup" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" max="-2" attributes="0"/>
+                      <Component id="cbPopupButton" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <Component id="btnResetStyle" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="cbPopup" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="cbPopupButton" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace max="-2" attributes="0"/>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
               <Component id="jXTitledSeparator3" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
               <Component id="txtPromptField" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jXTitledSeparator2" min="-2" max="-2" attributes="0"/>
@@ -229,9 +246,6 @@
     </Component>
     <Component class="javax.swing.JRadioButton" name="rbMac">
       <Properties>
-        <Property name="selected" type="boolean" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-          <Connection component="searchField" name="macLayoutStyle" type="property"/>
-        </Property>
         <Property name="text" type="java.lang.String" value="Mac"/>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
           <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
@@ -248,9 +262,6 @@
     </Component>
     <Component class="javax.swing.JRadioButton" name="rbVista">
       <Properties>
-        <Property name="selected" type="boolean" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-          <Connection component="searchField" name="vistaLayoutStyle" type="property"/>
-        </Property>
         <Property name="text" type="java.lang.String" value="Vista"/>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
           <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
@@ -550,6 +561,9 @@
     </Component>
     <Component class="javax.swing.JCheckBox" name="cbPopupButton">
       <Properties>
+        <Property name="selected" type="boolean" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection component="searchField" name="useSeperatePopupButton" type="property"/>
+        </Property>
         <Property name="text" type="java.lang.String" value="Use Seperate Popup Buton"/>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
           <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
@@ -562,6 +576,24 @@
       </Properties>
       <Events>
         <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="cbPopupButtonStateChanged"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnResetStyle">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Reset to Default"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnResetStyleActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel7">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Milliseconds delay."/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JSpinner" name="spnDelay">
+      <Events>
+        <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="spnDelayStateChanged"/>
       </Events>
     </Component>
   </SubComponents>
