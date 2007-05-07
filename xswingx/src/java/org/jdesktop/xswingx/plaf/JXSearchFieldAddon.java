@@ -52,7 +52,7 @@ public class JXSearchFieldAddon extends AbstractComponentAddon {
 		defaults
 				.addAll(Arrays.asList(new Object[] {
 						"SearchField.buttonMargin",
-						new InsetsUIResource(1, 1, 2, 2) }));
+						new InsetsUIResource(0, 0, 1, 1) }));
 	}
 
 	protected void addWindowsDefaults(LookAndFeelAddons addon,
@@ -151,14 +151,6 @@ public class JXSearchFieldAddon extends AbstractComponentAddon {
 				&& (UIManager.getLookAndFeel().getClass().getName().indexOf(
 						"Windows") != -1 || UIManager.getLookAndFeel()
 						.getClass().getName().indexOf("PlasticXP") != -1);
-	}
-
-	//Also return true when lnf is "Plastic" but not "XP".
-	protected boolean isMetal(LookAndFeelAddons addon) {
-		return super.isMetal(addon)
-				|| (UIManager.getLookAndFeel().getClass().getName().indexOf(
-						"Plastic") != -1 && UIManager.getLookAndFeel()
-						.getClass().getName().indexOf("XP") == -1);
 	}
 
 	private IconUIResource getIcon(String resourceName) {

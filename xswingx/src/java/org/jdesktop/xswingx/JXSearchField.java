@@ -507,6 +507,7 @@ public class JXSearchField extends JXPromptField {
 		private void update() {
 			if (isInstantSearchMode()) {
 				instantSearch.stop();
+				// only use timer when delay greater 0.
 				if (getInstantSearchDelay() > 0) {
 					instantSearch.setInitialDelay(getInstantSearchDelay());
 					instantSearch.start();
