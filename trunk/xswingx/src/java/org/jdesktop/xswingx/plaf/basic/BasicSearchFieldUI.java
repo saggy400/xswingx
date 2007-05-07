@@ -59,6 +59,8 @@ public class BasicSearchFieldUI extends PromptTextFieldUI {
 
 		searchField.customSetUIProperty("layoutStyle", UIManager
 				.get("SearchField.layoutStyle"));
+		searchField.customSetUIProperty("promptFontStyle", UIManager
+				.get("SearchField.promptFontStyle"));
 
 		if (shouldReplaceResource(searchField.getButtonMargin())) {
 			searchField.setButtonMargin(UIManager

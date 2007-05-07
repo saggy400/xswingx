@@ -7,6 +7,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.awt.Component;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.IllegalComponentStateException;
 import java.awt.event.ActionEvent;
@@ -312,6 +313,22 @@ public class JXSearchFieldTest {
 		searchField.setLayoutStyle(LayoutStyle.VISTA);
 		searchField.updateUI();
 		assertTrue(searchField.isVistaLayoutStyle());
+	}
+	
+	@Test
+	public void testPromptFontStyleDefault() throws Exception {
+		UIManager.put("SearchField.promptFontStyle", Font.ITALIC);
+		searchField.updateUI();
+		assertSame(Font.ITALIC, searchField.getPromptFontStyle());
+		
+		UIManager.put("SearchField.promptFontStyle", null);
+		searchField.updateUI();
+		assertNull(searchField.getPromptFontStyle());
+		
+		UIManager.put("SearchField.promptFontStyle", Font.BOLD);
+		searchField.setPromptFontStyle(null);
+		searchField.updateUI();
+		assertNull(searchField.getPromptFontStyle());
 	}
 	
 	class TestIcon implements Icon{

@@ -1,5 +1,6 @@
 package org.jdesktop.xswingx.plaf;
 
+import java.awt.Font;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
@@ -51,13 +52,14 @@ public class JXSearchFieldAddon extends AbstractComponentAddon {
 		defaults
 				.addAll(Arrays.asList(new Object[] {
 						"SearchField.buttonMargin",
-						new InsetsUIResource(1, 1, 2, 1) }));
+						new InsetsUIResource(1, 1, 2, 2) }));
 	}
 
 	protected void addWindowsDefaults(LookAndFeelAddons addon,
 			List<Object> defaults) {
 		super.addWindowsDefaults(addon, defaults);
-		defaults.addAll(Arrays.asList(new Object[] { "SearchField.layoutStyle",
+		defaults.addAll(Arrays.asList(new Object[] { "SearchField.promptFontStyle",
+				Font.ITALIC, "SearchField.layoutStyle",
 				LayoutStyle.VISTA, "SearchField.icon",
 				getIcon("windows/resources/search.png"),
 				"SearchField.rolloverIcon",
@@ -149,6 +151,14 @@ public class JXSearchFieldAddon extends AbstractComponentAddon {
 				&& (UIManager.getLookAndFeel().getClass().getName().indexOf(
 						"Windows") != -1 || UIManager.getLookAndFeel()
 						.getClass().getName().indexOf("PlasticXP") != -1);
+	}
+
+	//Also return true when lnf is "Plastic" but not "XP".
+	protected boolean isMetal(LookAndFeelAddons addon) {
+		return super.isMetal(addon)
+				|| (UIManager.getLookAndFeel().getClass().getName().indexOf(
+						"Plastic") != -1 && UIManager.getLookAndFeel()
+						.getClass().getName().indexOf("XP") == -1);
 	}
 
 	private IconUIResource getIcon(String resourceName) {

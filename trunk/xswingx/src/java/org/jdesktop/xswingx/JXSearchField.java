@@ -124,10 +124,18 @@ public class JXSearchField extends JXPromptField {
 	private boolean useSeperatePopupButtonSet;
 
 	private boolean layoutStyleSet;
-	
+
 	private int instantSearchDelay;
 
+	private boolean promptFontStyleSet;
+
 	public JXSearchField() {
+		this(null);
+	}
+
+	public JXSearchField(String prompt) {
+		setPrompt(prompt);
+
 		// We cannot register the ClearTextAction through the Input- and
 		// ActionMap because ToolTipManager registers the escape key with an
 		// action that hides the tooltip every time the tooltip is changed and
@@ -333,22 +341,33 @@ public class JXSearchField extends JXPromptField {
 		}
 	}
 
+	public void setPromptFontStyle(Integer fontStyle) {
+		super.setPromptFontStyle(fontStyle);
+		promptFontStyleSet = true;
+	}
+
 	public void customSetUIProperty(String propertyName, Object value) {
 		customSetUIProperty(propertyName, value, false);
 	}
-	
-	public void customSetUIProperty(String propertyName, Object value, boolean reset) {
+
+	public void customSetUIProperty(String propertyName, Object value,
+			boolean reset) {
 		if (propertyName == "useSeperatePopupButton") {
 			if (!useSeperatePopupButtonSet || reset) {
 				setUseSeperatePopupButton(((Boolean) value).booleanValue());
 				useSeperatePopupButtonSet = false;
 			}
-		}else if (propertyName == "layoutStyle") {
+		} else if (propertyName == "layoutStyle") {
 			if (!layoutStyleSet || reset) {
-				setLayoutStyle((LayoutStyle)value);
+				setLayoutStyle((LayoutStyle) value);
 				layoutStyleSet = false;
 			}
-		}else{
+		} else if (propertyName == "promptFontStyle") {
+			if (!promptFontStyleSet || reset) {
+				setPromptFontStyle((Integer) value);
+				promptFontStyleSet = false;
+			}
+		} else {
 			throw new IllegalArgumentException();
 		}
 	}
@@ -433,15 +452,15 @@ public class JXSearchField extends JXPromptField {
 		}
 	}
 
-	class ChangeHandler implements PropertyChangeListener,
-			DocumentListener, ActionListener {
+	class ChangeHandler implements PropertyChangeListener, DocumentListener,
+			ActionListener {
 		private Timer instantSearch;
-		
+
 		public ChangeHandler() {
 			instantSearch = new Timer(0, this);
 			instantSearch.setRepeats(false);
 		}
-		
+
 		public void install() {
 			install(getDocument());
 			addPropertyChangeListener(this);
@@ -488,8 +507,12 @@ public class JXSearchField extends JXPromptField {
 		private void update() {
 			if (isInstantSearchMode()) {
 				instantSearch.stop();
-				instantSearch.setInitialDelay(getInstantSearchDelay());
-				instantSearch.start();
+				if (getInstantSearchDelay() > 0) {
+					instantSearch.setInitialDelay(getInstantSearchDelay());
+					instantSearch.start();
+				} else {
+					postActionEvent();
+				}
 			}
 
 			updateButtonVisibility();
