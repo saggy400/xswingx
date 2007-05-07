@@ -298,6 +298,7 @@ public class JXSearchField extends JXPromptField {
 	private void updateButtonState() {
 		getClearAction().setEnabled(isEditable() & isEnabled());
 		getSearchAction().setEnabled(isEnabled());
+		getPopupButton().setEnabled(isEnabled());
 	}
 
 	/**
