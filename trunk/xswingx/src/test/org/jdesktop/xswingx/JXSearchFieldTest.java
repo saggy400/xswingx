@@ -126,6 +126,7 @@ public class JXSearchFieldTest {
 		assertFalse(searchField.getClearButton().isEnabled());
 		assertTrue(searchField.getSearchAction().isEnabled());
 		assertTrue(searchField.getSearchButton().isEnabled());
+		assertTrue(searchField.getPopupButton().isEnabled());
 
 		searchField.setEditable(true);
 		searchField.setEnabled(false);
@@ -133,6 +134,7 @@ public class JXSearchFieldTest {
 		assertFalse(searchField.getClearButton().isEnabled());
 		assertFalse(searchField.getSearchAction().isEnabled());
 		assertFalse(searchField.getSearchButton().isEnabled());
+		assertFalse(searchField.getPopupButton().isEnabled());
 
 		searchField.setEditable(false);
 		searchField.setEnabled(false);
@@ -140,6 +142,7 @@ public class JXSearchFieldTest {
 		assertFalse(searchField.getClearButton().isEnabled());
 		assertFalse(searchField.getSearchAction().isEnabled());
 		assertFalse(searchField.getSearchButton().isEnabled());
+		assertFalse(searchField.getPopupButton().isEnabled());
 
 		searchField.setEditable(true);
 		searchField.setEnabled(true);
@@ -147,6 +150,7 @@ public class JXSearchFieldTest {
 		assertTrue(searchField.getClearButton().isEnabled());
 		assertTrue(searchField.getSearchAction().isEnabled());
 		assertTrue(searchField.getSearchButton().isEnabled());
+		assertTrue(searchField.getPopupButton().isEnabled());
 	}
 	
 	@Test
