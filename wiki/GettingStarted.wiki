@@ -96,6 +96,17 @@ searchField.setSearchMode(SearchMode.REGULAR);
 An action event is fired when the _notify_ action is invoked (typically that is, when the _Enter_ key is pressed) and when the search button is pressed.
 
 
+==Adding a Popup Menu==
+Set a search popup menu by calling:
+{{{
+searchField.setSearchPopupMenu(popupMenu);
+}}}
+The search field will automatically change it's icon and display the popup menu appropriately:
+||*Metal*||[http://xswingx.googlecode.com/svn/wiki/images/searchfield_metal_popup.png]||
+||*Motif*||[http://xswingx.googlecode.com/svn/wiki/images/searchfield_motif_popup.png]||
+||*Windows XP*||[http://xswingx.googlecode.com/svn/wiki/images/searchfield_xp_popup.png]||
+
+
 
 
 
