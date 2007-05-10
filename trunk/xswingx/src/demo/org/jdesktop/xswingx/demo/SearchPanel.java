@@ -103,7 +103,6 @@ public class SearchPanel extends javax.swing.JPanel {
 
         searchField.setColumns(15);
         searchField.setPrompt("Type to Search");
-        searchField.setPromptFontStyle(java.awt.Font.ITALIC);
         searchField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 searchFieldActionPerformed(evt);
@@ -391,15 +390,6 @@ public class SearchPanel extends javax.swing.JPanel {
                     .add(jXTitledSeparator6, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 461, Short.MAX_VALUE)
                     .add(layout.createSequentialGroup()
                         .add(10, 10, 10)
-                        .add(cbFixedSize)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(spnColumns, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(jLabel5)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 150, Short.MAX_VALUE)
-                        .add(cbOpaqueWhenFocused))
-                    .add(layout.createSequentialGroup()
-                        .add(10, 10, 10)
                         .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                             .add(layout.createSequentialGroup()
                                 .add(jLabel6)
@@ -411,7 +401,16 @@ public class SearchPanel extends javax.swing.JPanel {
                                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                                 .add(spnDelay, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                                .add(jLabel7)))))
+                                .add(jLabel7))))
+                    .add(layout.createSequentialGroup()
+                        .add(10, 10, 10)
+                        .add(cbFixedSize)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(spnColumns, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(jLabel5)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 150, Short.MAX_VALUE)
+                        .add(cbOpaqueWhenFocused)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -511,6 +510,8 @@ public class SearchPanel extends javax.swing.JPanel {
         
         searchField.customSetUIProperty("layoutStyle", UIManager
                 .get("SearchField.layoutStyle"), true);
+        searchField.customSetUIProperty("promptFontStyle", UIManager
+                .get("SearchField.promptFontStyle"), true);
     }//GEN-LAST:event_btnResetStyleActionPerformed
     
     private void cbPopupButtonStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_cbPopupButtonStateChanged
