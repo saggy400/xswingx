@@ -264,7 +264,6 @@ public class LabelDemo extends javax.swing.JFrame {
             public void run() {
                 LabelDemo ld = new LabelDemo();
                 ld.getTabbedPane().addTab("Search Field", new SearchPanel());
-                ld.getTabbedPane().addTab("Search Field 2", new SearchPanel2());
                 ld.pack();
                 ld.setVisible(true);
             }
