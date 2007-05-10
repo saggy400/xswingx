@@ -51,6 +51,7 @@ searchField.setPrompt("Type to Search");
 What you get is this:
 || *LnF* || *Default* || *With Search Text* ||
 || Metal || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_metal.png] || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_metal_searching.png] ||
+|| Motif || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_motif.png] || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_motif_searching.png] ||
 || Windows XP || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_xp.png] || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_xp_searching.png] ||
 || Vista || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_vista.png] || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_vista_searching.png] ||
 || Mac || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_mac.png] || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_mac_searching.png] || 
