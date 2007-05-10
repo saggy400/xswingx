@@ -12,7 +12,6 @@ import javax.swing.plaf.InsetsUIResource;
 
 import org.jdesktop.swingx.plaf.AbstractComponentAddon;
 import org.jdesktop.swingx.plaf.LookAndFeelAddons;
-import org.jdesktop.swingx.util.JVM;
 import org.jdesktop.xswingx.JXSearchField.LayoutStyle;
 
 public class JXSearchFieldAddon extends AbstractComponentAddon {
@@ -26,21 +25,21 @@ public class JXSearchFieldAddon extends AbstractComponentAddon {
 		defaults
 				.addAll(Arrays.asList(new Object[] { "SearchField.layoutStyle",
 						LayoutStyle.MAC, "SearchField.icon",
-						getIcon("basic/resources/search.png"),
+						getIcon("basic/resources/search.gif"),
 						"SearchField.rolloverIcon",
-						getIcon("basic/resources/search_rollover.png"),
+						getIcon("basic/resources/search_rollover.gif"),
 						"SearchField.pressedIcon",
-						getIcon("basic/resources/search.png"),
+						getIcon("basic/resources/search.gif"),
 						"SearchField.popupIcon",
-						getIcon("basic/resources/search_popup.png"),
+						getIcon("basic/resources/search_popup.gif"),
 						"SearchField.popupRolloverIcon",
-						getIcon("basic/resources/search_popup_rollover.png"),
+						getIcon("basic/resources/search_popup_rollover.gif"),
 						"SearchField.clearIcon",
-						getIcon("basic/resources/clear.png"),
+						getIcon("basic/resources/clear.gif"),
 						"SearchField.clearRolloverIcon",
-						getIcon("basic/resources/clear_rollover.png"),
+						getIcon("basic/resources/clear_rollover.gif"),
 						"SearchField.clearPressedIcon",
-						getIcon("basic/resources/clear_pressed.png"),
+						getIcon("basic/resources/clear_pressed.gif"),
 						"SearchField.buttonMargin",
 						new InsetsUIResource(1, 1, 1, 1) }));
 	}
@@ -61,34 +60,32 @@ public class JXSearchFieldAddon extends AbstractComponentAddon {
 		defaults.addAll(Arrays.asList(new Object[] { "SearchField.promptFontStyle",
 				Font.ITALIC, "SearchField.layoutStyle",
 				LayoutStyle.VISTA, "SearchField.icon",
-				getIcon("windows/resources/search.png"),
+				getIcon("windows/resources/search.gif"),
 				"SearchField.rolloverIcon",
-				getIcon("windows/resources/search_rollover.png"),
+				getIcon("windows/resources/search_rollover.gif"),
 				"SearchField.pressedIcon",
-				getIcon("windows/resources/search_pressed.png"),
+				getIcon("windows/resources/search_pressed.gif"),
 				"SearchField.popupIcon",
-				getIcon("windows/resources/search_popup.png"),
+				getIcon("windows/resources/search_popup.gif"),
 				"SearchField.popupRolloverIcon",
-				getIcon("windows/resources/search_popup_rollover.png"),
+				getIcon("windows/resources/search_popup_rollover.gif"),
 				"SearchField.popupPressedIcon",
-				getIcon("windows/resources/search_popup_pressed.png"),
+				getIcon("windows/resources/search_popup_pressed.gif"),
 				"SearchField.clearIcon",
-				getIcon("windows/resources/clear.png"),
+				getIcon("windows/resources/clear.gif"),
 				"SearchField.clearRolloverIcon",
-				getIcon("windows/resources/clear_rollover.png"),
+				getIcon("windows/resources/clear_rollover.gif"),
 				"SearchField.clearPressedIcon",
-				getIcon("windows/resources/clear_pressed.png"),
+				getIcon("windows/resources/clear_pressed.gif"),
 				"SearchField.useSeperatePopupButton", Boolean.TRUE,
 				"SearchField.popupOffset", -1 }));
 
 		defaults.add("SearchField.buttonMargin");
 
-		// JDK's earlier than 5 can't cope with transparent png's...
-		// So, in Java 6 or later, do it like 'Windows Media Player' in XP:
-		// replace the border line with the search button line on rollover.
+		// Do it like 'Windows Media Player' in XP:
+		// Replace the border line with the search button line on rollover.
 		// But not in classic mode!
-		if (JVM.current().isOrLater(JVM.JDK1_6)
-				&& UIManager.getLookAndFeel().getClass().getName().indexOf(
+		if (UIManager.getLookAndFeel().getClass().getName().indexOf(
 						"Classic") == -1) {
 			defaults.add(new InsetsUIResource(0, -1, 0, -1));
 		} else {
