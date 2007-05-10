@@ -49,11 +49,11 @@ JXSearchField searchField = new JXSearchField();
 searchField.setPrompt("Type to Search");
 }}}
 What you get is this:
-|| *LnF* || *Default* || *With Search Text* || *Clearing* ||
-|| Metal || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_metal.png] || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_metal_searching.png] || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_metal_clearing.png] ||
-|| Windows XP || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_xp.png] || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_xp_searching.png] || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_xp_clearing.png] ||
-|| Vista || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_vista.png] || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_vista_searching.png] || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_vista_clearing.png] ||
-|| Mac || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_mac.png] || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_mac_searching.png] || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_mac_clearing.png] ||
+|| *LnF* || *Default* || *With Search Text* ||
+|| Metal || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_metal.png] || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_metal_searching.png] ||
+|| Windows XP || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_xp.png] || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_xp_searching.png] ||
+|| Vista || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_vista.png] || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_vista_searching.png] ||
+|| Mac || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_mac.png] || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_mac_searching.png] || 
 
 You can also make the search field more _Vista_ like by calling 
 {{{
@@ -76,6 +76,7 @@ It's recommended to register an `ActionListener` to get notified when the search
 {{{
 searchField.setFireActionOnTextChange(false);
 }}}
+
 
 
 
