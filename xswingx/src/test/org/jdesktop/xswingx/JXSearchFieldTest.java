@@ -4,12 +4,14 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.fail;
 
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.IllegalComponentStateException;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
@@ -18,6 +20,7 @@ import java.beans.PropertyChangeListener;
 import javax.swing.Icon;
 import javax.swing.JPopupMenu;
 import javax.swing.UIManager;
+import javax.swing.plaf.InsetsUIResource;
 import javax.swing.plaf.UIResource;
 
 import org.jdesktop.xswingx.JXSearchField.LayoutStyle;
@@ -84,10 +87,10 @@ public class JXSearchFieldTest {
 			}
 		});
 		eventReceived = false;
+		assertTrue(searchField.isInstantSearchMode());
 		assertSame(UIManager.getIcon("SearchField.icon"), searchField.getSearchButton().getIcon());
 		assertNull(searchField.getSearchButton().getRolloverIcon());
 		assertNull(searchField.getSearchButton().getPressedIcon());
-		assertTrue(searchField.isInstantSearchMode());
 		searchField.getSearchButton().doClick();
 		assertFalse(eventReceived);
 		searchField.setText("test");
@@ -95,6 +98,7 @@ public class JXSearchFieldTest {
 
 		eventReceived = false;
 		searchField.setSearchMode(SearchMode.REGULAR);
+		assertTrue(searchField.isRegularSearchMode());
 		assertSame(UIManager.getIcon("SearchField.rolloverIcon"), searchField.getSearchButton().getRolloverIcon());
 		assertSame(UIManager.getIcon("SearchField.pressedIcon"), searchField.getSearchButton().getPressedIcon());
 		searchField.getSearchButton().doClick();
@@ -156,6 +160,7 @@ public class JXSearchFieldTest {
 	@Test
 	public void testSetLayoutStyle() throws Exception {
 		assertSame(LayoutStyle.MAC, searchField.getLayoutStyle());
+		assertTrue(searchField.isMacLayoutStyle());
 		assertFalse(searchField.getClearButton().isVisible());
 		assertTrue(searchField.getSearchButton().isVisible());
 		
@@ -164,6 +169,7 @@ public class JXSearchFieldTest {
 		assertTrue(searchField.getSearchButton().isVisible());
 		
 		searchField.setLayoutStyle(LayoutStyle.VISTA);
+		assertTrue(searchField.isVistaLayoutStyle());
 		assertTrue(searchField.getClearButton().isVisible());
 		assertFalse(searchField.getSearchButton().isVisible());
 	}
@@ -333,6 +339,18 @@ public class JXSearchFieldTest {
 		searchField.setPromptFontStyle(null);
 		searchField.updateUI();
 		assertNull(searchField.getPromptFontStyle());
+	}
+	
+	@Test
+	public void testButtonMarginDefault() throws Exception {
+		UIManager.put("SearchField.buttonMargin", new InsetsUIResource(5,5,5,5));
+		searchField.updateUI();
+		assertSame(UIManager.get("SearchField.buttonMargin"), searchField.getButtonMargin());
+
+		UIManager.put("SearchField.buttonMargin", new InsetsUIResource(5,5,5,5));
+		searchField.setButtonMargin(new Insets(0,0,0,0));
+		searchField.updateUI();
+		assertNotSame(UIManager.get("SearchField.buttonMargin"), searchField.getButtonMargin());
 	}
 	
 	class TestIcon implements Icon{
