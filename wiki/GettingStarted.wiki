@@ -45,8 +45,7 @@ Note: You need the whole xswingx library to use these components.
 =Use the Search Field=
 It's easy to create a search field:
 {{{
-JXSearchField searchField = new JXSearchField();
-searchField.setPrompt("Type to Search");
+JXSearchField searchField = new JXSearchField("Search");
 }}}
 What you get is this:
 || *LnF* || *Default* || *With Search Text* ||
@@ -56,27 +55,54 @@ What you get is this:
 || Vista || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_vista.png] || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_vista_searching.png] ||
 || Mac || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_mac.png] || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_mac_searching.png] || 
 
-You can also make the search field more _Vista_ like by calling 
+Notice the position of the search button in the Windows LnF compared to the other LnF's. 
+You can make the search field more _Vista_ like in any LnF by calling 
 {{{
 searchField.setLayoutStyle(LayoutStyle.VISTA);
 }}}
-
-|| *LnF* || *Default* || *With Search Text* || *Clearing* ||
-|| Metal || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_metal_vista.png] || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_metal_vista_searching.png] || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_metal_vista_clearing.png] ||
-|| Windows XP || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_xp_vista.png] || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_xp_vista_searching.png] || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_xp_vista_clearing.png] ||
-|| Vista || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_vista_vista.png] || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_vista_vista_searching.png] || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_vista_vista_clearing.png] ||
-|| Mac || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_mac_vista.png] || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_mac_vista_searching.png] || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_mac_vista_clearing.png] ||
-
-To make the search field look even more like in _Vista_, make the prompt _italic_:
+or more _Mac_ like (even in Windows) by calling
 {{{
-searchField.setPromptFontStyle(Font.ITALIC);
+searchField.setLayoutStyle(LayoutStyle.MAC);
 }}}
-[http://xswingx.googlecode.com/svn/wiki/images/searchfield_vista_vista_italic.png]
 
-It's recommended to register an `ActionListener` to get notified when the search text changes to perform a search. If you only want to perform a search, when the _notify_ action is invoked (typically that is, when the _Enter_ key is pressed), call
+Also, notice the _Italic_ prompt in the Windows search field, compared to the Plain font in the other LnF's. You can of course change this too, like in any text component with prompt support. Read about the prompt support above to learn how.
+
+==Searching==
+The preferred way to perform a search is to register an `ActionListener`:
 {{{
-searchField.setFireActionOnTextChange(false);
+searchField.addActionListener(new ActionListener(){
+    public void actionPerformed(ActionEvent e){
+        //search now
+    }
+});
 }}}
+
+The search field supports 2 search modes:
+
+*Instant (default)
+{{{
+searchField.setSearchMode(SearchMode.INSTANT);
+}}}
+An action event is fired when the text changes.
+In _Instant_ search mode you can set a search delay:
+{{{
+searchField.setInstantSearchDelay(100); //milliseconds
+}}}
+
+*Regular
+{{{
+searchField.setSearchMode(SearchMode.REGULAR);
+}}}
+An action event is fired when the _notify_ action is invoked (typically that is, when the _Enter_ key is pressed) and when the search button is pressed.
+
+
+
+
+
+
+
+
+
 
 
 
