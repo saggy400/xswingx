@@ -1,4 +1,8 @@
 #labels Featured
+*What is a 'prompt' and how should it be used?*
+
+See http://designinginterfaces.com/Input_Prompt for a description of the *Input Prompt* pattern or http://msdn2.microsoft.com/en-us/library/aa511494.aspx#prompts for guidelines of how to use prompts in Windows Vista.
+
 *Why should I use the prompt support provided by xswingx? I could easily write my own "prompt support" with a `FocusListener`, `getText`, `setText` and `setForeground`.*
 
 Well, that sounds pretty complicated. But it could be so easy: Just download [http://xswingx.googlecode.com/files/prompt.jar prompt.jar] (<10kB), add it to your classpath and call:
