@@ -106,8 +106,7 @@ The search field will automatically change it's icon (the Windows LnF even uses 
 ||*Motif*||[http://xswingx.googlecode.com/svn/wiki/images/searchfield_motif_popup.png]||[http://xswingx.googlecode.com/svn/wiki/images/searchfield_motif_popup_clicked.png]||
 ||*Windows XP*||[http://xswingx.googlecode.com/svn/wiki/images/searchfield_xp_popup.png]||[http://xswingx.googlecode.com/svn/wiki/images/searchfield_xp_popup_clicked.png]||
 ||*Vista*||[http://xswingx.googlecode.com/svn/wiki/images/searchfield_vista_popup.png]||[http://xswingx.googlecode.com/svn/wiki/images/searchfield_vista_popup_clicked.png]||
-
-
+||*Mac*||[http://xswingx.googlecode.com/svn/wiki/images/searchfield_mac_popup.png]||[http://xswingx.googlecode.com/svn/wiki/images/searchfield_mac_popup_clicked.png]||
 
 
 
