@@ -1,9 +1,9 @@
 #labels Featured
-*What is a 'prompt' and how should it be used?*
+===What is a 'prompt' and how should it be used?===
 
 See http://designinginterfaces.com/Input_Prompt for a description of the *Input Prompt* pattern or http://msdn2.microsoft.com/en-us/library/aa511494.aspx#prompts for guidelines of how to use prompts in Windows Vista.
 
-*Why should I use the prompt support provided by xswingx? I could easily write my own "prompt support" with a `FocusListener`, `getText`, `setText` and `setForeground`.*
+===Why should I use the prompt support provided by xswingx? I could easily write my own prompt support with a `FocusListener`, `getText`, `setText` and `setForeground`.===
 
 Well, that sounds pretty complicated. But it could be so easy: Just download [http://xswingx.googlecode.com/files/prompt.jar prompt.jar] (<10kB), add it to your classpath and call:
 {{{
@@ -15,7 +15,7 @@ The prompt support is also very flexible. You can change the *focus behavior* (h
 
 Most importantly, the prompt support doesn't modify your text component's `Document`. Therefore no unwanted `DocumentEvent`s are fired and: `getText` always returns the real text - not the prompt!
 
-*So prompt support doesn't modify the text component's `Document`. How does it work, then?*
+===So prompt support doesn't modify the text component's Document. How does it work, then?===
 
 `PromptSupport` uses `JComponent`s [http://java.sun.com/j2se/1.4.2/docs/api/javax/swing/JComponent.html#putClientProperty(java.lang.Object,%20java.lang.Object) client properties] to get and set it's properties.
 Furthermore, the text component's UI delegate is wrapped by a custom delegate that reads these properties and renders the prompt accordingly.
