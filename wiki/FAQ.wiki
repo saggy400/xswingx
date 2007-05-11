@@ -18,5 +18,4 @@ Most importantly, the prompt support doesn't modify your text component's `Docum
 ===So prompt support doesn't modify the text component's Document. How does it work, then?===
 
 `PromptSupport` uses `JComponent`s [http://java.sun.com/j2se/1.4.2/docs/api/javax/swing/JComponent.html#putClientProperty(java.lang.Object,%20java.lang.Object) client properties] to get and set it's properties.
-Furthermore, the text component's UI delegate is wrapped by a custom delegate that reads these properties and renders the prompt accordingly.
-
+Furthermore, the text component's UI delegate is wrapped by a custom delegate that reads these properties and renders the prompt accordingly. Read the code to learn more - it's even well documented!
