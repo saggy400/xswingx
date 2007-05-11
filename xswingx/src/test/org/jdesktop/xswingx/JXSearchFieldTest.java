@@ -1,10 +1,10 @@
 package org.jdesktop.xswingx;
 
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.fail;
 
 import java.awt.Component;
@@ -17,9 +17,11 @@ import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.JPopupMenu;
 import javax.swing.UIManager;
+import javax.swing.border.Border;
 import javax.swing.plaf.InsetsUIResource;
 import javax.swing.plaf.UIResource;
 
@@ -351,6 +353,13 @@ public class JXSearchFieldTest {
 		searchField.setButtonMargin(new Insets(0,0,0,0));
 		searchField.updateUI();
 		assertNotSame(UIManager.get("SearchField.buttonMargin"), searchField.getButtonMargin());
+	}
+	
+	@Test
+	public void testBorder() throws Exception {
+		Border newBorder = BorderFactory.createEmptyBorder();
+		searchField.setBorder(newBorder);
+		assertNotSame("Border should have been wrapped.", newBorder, searchField.getBorder());
 	}
 	
 	class TestIcon implements Icon{
