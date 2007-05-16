@@ -50,7 +50,11 @@ public class SearchHistory {
 		}
 	}
 
-	public void add(String searchString) {
+	public void put(String searchString) {
+		if(recentSearches.contains(searchString)){
+			return;
+		}
+		
 		recentSearches.add(0, searchString);
 		if (getLength() > getMaxRecents()) {
 			recentSearches.remove(recentSearches.size() - 1);
