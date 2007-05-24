@@ -1,5 +1,7 @@
 package org.jdesktop.xswingx;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -8,13 +10,17 @@ import java.util.prefs.Preferences;
 
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
-public class SearchHistory {
+public class SearchHistory implements ActionListener {
 	private Preferences prefs;
 
 	private int maxRecents = 5;
 
 	private List<String> recentSearches = new ArrayList<String>();
+
+	private List<ChangeListener> listeners = new ArrayList<ChangeListener>();
 
 	public SearchHistory(String saveName) {
 		this(Preferences.userRoot(), saveName);
@@ -33,7 +39,7 @@ public class SearchHistory {
 			}
 			recentSearches.addAll(Arrays.asList(recent));
 		} catch (Exception ex) {
-			//ignore
+			// ignore
 		}
 	}
 
@@ -48,13 +54,16 @@ public class SearchHistory {
 		for (String search : recentSearches) {
 			prefs.putInt(search, i++);
 		}
+
+		fireChangeEvent();
 	}
 
 	public void put(String searchString) {
-		if(recentSearches.contains(searchString)){
+		if (searchString == null || searchString.trim().length() == 0
+				|| recentSearches.contains(searchString)) {
 			return;
 		}
-		
+
 		recentSearches.add(0, searchString);
 		if (getLength() > getMaxRecents()) {
 			recentSearches.remove(recentSearches.size() - 1);
@@ -75,10 +84,6 @@ public class SearchHistory {
 		save();
 	}
 
-	public JPopupMenu createPopupMenu(JXSearchField searchField) {
-		return new HistoryPopup();
-	}
-
 	public int getMaxRecents() {
 		return maxRecents;
 	}
@@ -87,23 +92,81 @@ public class SearchHistory {
 		this.maxRecents = maxRecents;
 	}
 
-	public void install(JXSearchField searchField) {
-		
+	public void addChangeListener(ChangeListener l) {
+		listeners.add(l);
 	}
-	
-	class HistoryPopup extends JPopupMenu{
-		public HistoryPopup() {
+
+	public void removeChangeListener(ChangeListener l) {
+		listeners.remove(l);
+	}
+
+	private void fireChangeEvent() {
+		ChangeEvent e = new ChangeEvent(this);
+
+		for (ChangeListener l : listeners) {
+			l.stateChanged(e);
+		}
+	}
+
+	public JPopupMenu createPopupMenu(JXSearchField searchField) {
+		return new HistoryPopup(this, searchField);
+	}
+
+	public void install(JXSearchField searchField) {
+		searchField.addActionListener(this);
+		searchField.setSearchPopupMenu(createPopupMenu(searchField));
+	}
+
+	public void actionPerformed(ActionEvent e) {
+		put(e.getActionCommand());
+	}
+
+	static class HistoryPopup extends JPopupMenu implements ActionListener,
+			ChangeListener {
+		private SearchHistory searchHistory;
+
+		private JXSearchField searchField;
+
+		private JMenuItem clear;
+
+		public HistoryPopup(SearchHistory searchHistory,
+				JXSearchField searchField) {
+			this.searchField = searchField;
+			this.searchHistory = searchHistory;
+
+			searchHistory.addChangeListener(this);
+			buildMenu();
+		}
+
+		private void buildMenu() {
+			removeAll();
+
 			JMenuItem recent = new JMenuItem("Recent Searches");
 			recent.setEnabled(false);
 			add(recent);
-			
-			for (String searchString : getRecentSearches()) {
-				add(new JMenuItem(searchString));
+
+			for (String searchString : searchHistory.getRecentSearches()) {
+				JMenuItem mi = new JMenuItem(searchString);
+				mi.addActionListener(this);
+				add(mi);
 			}
-			
+
 			addSeparator();
-			JMenuItem clear = new JMenuItem("Clear Recent Searches");
+			clear = new JMenuItem("Clear Recent Searches");
+			clear.addActionListener(this);
 			add(clear);
+		}
+
+		public void actionPerformed(ActionEvent e) {
+			if (e.getSource() == clear) {
+				searchHistory.removeAll();
+			} else {
+				searchField.setText(e.getActionCommand());
+			}
+		}
+
+		public void stateChanged(ChangeEvent e) {
+			buildMenu();
 		}
 	}
 }

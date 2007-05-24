@@ -54,6 +54,14 @@ public class SearchHistoryTest {
 	}
 	
 	@Test
+	public void testEmptyAdd() throws Exception {
+		searchHistory.put(null);
+		searchHistory.put("");
+		searchHistory.put(" ");
+		assertSame(0, searchHistory.getLength());
+	}
+	
+	@Test
 	public void testMaxRecents() throws Exception {
 		assertSame(5, searchHistory.getMaxRecents());
 		searchHistory.setMaxRecents(1);
