@@ -6,7 +6,6 @@
 
 package org.jdesktop.xswingx.demo;
 
-import java.awt.Color;
 import java.awt.FlowLayout;
 
 import javax.swing.JFrame;
@@ -142,13 +141,13 @@ public class TestPanel extends javax.swing.JPanel {
 		f.add(new JTextField());
 		JTextField tf = new JTextField();
 		f.add(tf);
-		PromptSupport.install("Enter Text", tf);
+		PromptSupport.setPrompt("Enter Text", tf);
 		
 		JTextArea ta = new JTextArea();
 		ta.setColumns(10);
 		ta.setRows(5);
 		f.add(new JScrollPane(ta));
-		PromptSupport.install("Enter Text", ta);
+		PromptSupport.setPrompt("Enter Text", ta);
 		
 		f.pack();
 		f.setVisible(true);

@@ -37,19 +37,6 @@ public class PromptSupportTest {
     	txt.setUI(PromptSupport.wrapUI(txt));
     	assertSame(txt.getUI(), PromptSupport.wrapUI(txt));
 	}
-    
-    @Test
-    public void testInstall() {
-    	PromptSupport.install("test", Color.LIGHT_GRAY, txt);
-    	
-    	assertEquals("test", PromptSupport.getPrompt(txt));
-        assertEquals("test", txt.getClientProperty(PromptSupport.PROMPT));
-        assertEquals(Color.LIGHT_GRAY, PromptSupport.getPromptColor(txt));
-    	
-    	assertEquals(PromptTextFieldUI.class, txt.getUI().getClass());
-    	txt.setUI(new BasicTextFieldUI());
-    	assertEquals(PromptTextFieldUI.class, txt.getUI().getClass());
-    }
 
     @Test
     public void testInit() {
@@ -60,6 +47,16 @@ public class PromptSupportTest {
 
         assertEquals(Color.LIGHT_GRAY, PromptSupport.getPromptColor(txt));
         assertEquals(Color.LIGHT_GRAY, txt.getClientProperty(PromptSupport.PROMPT_COLOR));
+    }
+    
+    @Test
+    public void testUninstall() {
+    	Class defaultUiClass = txt.getUI().getClass();
+    	PromptSupport.uninstall(txt);
+    	assertEquals(defaultUiClass, txt.getUI().getClass());
+        PromptSupport.setPrompt("test", txt);
+        PromptSupport.uninstall(txt);
+        assertEquals(defaultUiClass, txt.getUI().getClass());
     }
 
     @Test
@@ -76,12 +73,16 @@ public class PromptSupportTest {
     }
 
     @Test
-    public void testLabelText() throws Exception {
+    public void testSetPrompt() throws Exception {
         PromptSupport.setPrompt("test", txt);
         
         assertEquals("test", PromptSupport.getPrompt(txt));
         assertEquals("test", txt.getClientProperty(PromptSupport.PROMPT));
         assertEquals("test", txt.getToolTipText());
+        
+        assertEquals(PromptTextFieldUI.class, txt.getUI().getClass());
+    	txt.setUI(new BasicTextFieldUI());
+    	assertEquals(PromptTextFieldUI.class, txt.getUI().getClass());
         
         PromptSupport.setPrompt("test2", txt);
         assertEquals("test2", txt.getToolTipText());
@@ -92,12 +93,12 @@ public class PromptSupportTest {
     }
     
     @Test
-    public void testGetLabelTextColor() throws Exception {
+    public void testGetPromptColor() throws Exception {
         assertEquals(txt.getDisabledTextColor(), PromptSupport.getPromptColor(txt));
     }
     
     @Test
-    public void testSetLabelTextColor() throws Exception {
+    public void testSetPromptColor() throws Exception {
         PromptSupport.setPromptColor(Color.RED, txt);
         
         assertEquals(Color.RED, PromptSupport.getPromptColor(txt));
@@ -105,7 +106,7 @@ public class PromptSupportTest {
     }
     
     @Test
-    public void testLabelFontStyle() throws Exception {
+    public void testPromptFontStyle() throws Exception {
     	assertNull(PromptSupport.getPromptFontStyle(txt));
     	PromptSupport.setPromptFontStyle(Font.BOLD, txt);
     	assertEquals(Font.BOLD, PromptSupport.getPromptFontStyle(txt));
