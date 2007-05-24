@@ -18,13 +18,13 @@ import java.text.ParseException;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JFormattedTextField;
-import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.LineBorder;
 import javax.swing.text.DefaultFormatterFactory;
 
 import org.jdesktop.xswingx.JXSearchField;
+import org.jdesktop.xswingx.SearchHistory;
 
 /**
  *
@@ -528,13 +528,7 @@ public class SearchPanel extends javax.swing.JPanel {
     
     private void cbPopupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbPopupActionPerformed
         if(cbPopup.isSelected()){
-            JPopupMenu pop = new JPopupMenu();
-            pop.add("Add");
-            pop.add("Any");
-            pop.add("Popup");
-            pop.add("Easily");
-            
-            searchField.setSearchPopupMenu(pop);
+            new SearchHistory("search.demo").install(searchField);
         }else{
             searchField.setSearchPopupMenu(null);
         }
