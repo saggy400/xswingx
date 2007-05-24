@@ -25,7 +25,7 @@ public class JXPromptArea extends JTextArea {
 	}
 
 	public JXPromptArea(String labelText, Color labelTextColor) {
-		PromptSupport.install(labelText, labelTextColor, this);
+		PromptSupport.init(labelText, labelTextColor, this);
 	}
 
 	/**

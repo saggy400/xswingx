@@ -5,6 +5,8 @@ import java.awt.Font;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import javax.swing.JComponent;
+import javax.swing.UIDefaults;
 import javax.swing.plaf.TextUI;
 import javax.swing.plaf.basic.BasicTextAreaUI;
 import javax.swing.plaf.basic.BasicTextFieldUI;
@@ -78,19 +80,6 @@ public class PromptSupport {
 	};
 
 	/**
-	 * Installs a prompt on <code>textComponent</code> by calling
-	 * {@link #install(String, Color, JTextComponent)} with <code>null</code>
-	 * color.
-	 * 
-	 * @param promptText
-	 * @param textComponent
-	 */
-	public static void install(String promptText,
-			final JTextComponent textComponent) {
-		install(promptText, null, textComponent);
-	}
-
-	/**
 	 * <p>
 	 * Wraps the current UI of the given <code>textComponent</code>, by
 	 * calling {@link #wrapUI(JTextComponent)} and calls
@@ -101,15 +90,26 @@ public class PromptSupport {
 	 * listens for UI changes and wraps the new UI object.
 	 * </p>
 	 * 
-	 * @param promptText
-	 * @param promptTextColor
 	 * @param textComponent
 	 */
-	public static void install(String promptText, Color promptTextColor,
-			final JTextComponent textComponent) {
+	private static void install(final JTextComponent textComponent) {
 		textComponent.setUI(wrapUI(textComponent));
 		textComponent.addPropertyChangeListener("UI", uiChangeHandler);
-		init(promptText, promptTextColor, textComponent);
+	}
+
+	/**
+	 * <p>
+	 * Removes the {@link PropertyChangeListener}, which listens for "UI"
+	 * property changes and then calls {@link JComponent#updateUI()} on the
+	 * <code>textComponent</code> to set the UI object provided by the current
+	 * {@link UIDefaults}.
+	 * </p>
+	 * 
+	 * @param textComponent
+	 */
+	public static void uninstall(final JTextComponent textComponent) {
+		textComponent.removePropertyChangeListener("UI", uiChangeHandler);
+		textComponent.updateUI();
 	}
 
 	/**
@@ -209,15 +209,24 @@ public class PromptSupport {
 	}
 
 	/**
+	 * <p>
 	 * Sets the prompt text on <code>textComponent</code>. Also sets the
 	 * tooltip text to the prompt text if <code>textComponent</code> has no
 	 * tooltip text or the current tooltip text is the same as the current label
 	 * text.
+	 * </p>
+	 * <p>
+	 * Calls {@link #install(JTextComponent)} to ensure that the
+	 * <code>textComponent</code>s UI is wrapped by the appropriate
+	 * {@link PromptTextUI}.
+	 * </p>
 	 * 
 	 * @param promptText
 	 * @param textComponent
 	 */
 	public static void setPrompt(String promptText, JTextComponent textComponent) {
+		install(textComponent);
+
 		// display labelText as tooltip by default
 		if (textComponent.getToolTipText() == null
 				|| textComponent.getToolTipText().equals(

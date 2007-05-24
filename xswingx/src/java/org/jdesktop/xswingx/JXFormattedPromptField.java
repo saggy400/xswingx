@@ -26,7 +26,7 @@ public class JXFormattedPromptField extends JFormattedTextField {
 	}
 
 	public JXFormattedPromptField(String labelText, Color labelTextColor) {
-		PromptSupport.install(labelText, labelTextColor, this);
+		PromptSupport.init(labelText, labelTextColor, this);
 	}
 
 	/**

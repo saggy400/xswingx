@@ -37,7 +37,7 @@ public class JXPromptField extends JTextField {
 	 * @param labelTextColor
 	 */
 	protected void installPromptSupport(String labelText, Color labelTextColor) {
-		PromptSupport.install(labelText, labelTextColor, this);
+		PromptSupport.init(labelText, labelTextColor, this);
 	}
 
 	/**
