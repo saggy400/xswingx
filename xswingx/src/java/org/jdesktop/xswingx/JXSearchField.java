@@ -16,6 +16,7 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JPopupMenu;
 import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.UIDefaults;
 import javax.swing.border.Border;
@@ -338,7 +339,7 @@ public class JXSearchField extends JXPromptField {
 	public void updateUI() {
 		super.updateUI();
 		if (getSearchPopupMenu() != null) {
-			getSearchPopupMenu().updateUI();
+			SwingUtilities.updateComponentTreeUI(getSearchPopupMenu());
 		}
 	}
 
