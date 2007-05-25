@@ -59,11 +59,14 @@ public class SearchHistory implements ActionListener {
 	}
 
 	public void put(String searchString) {
-		if (searchString == null || searchString.trim().length() == 0
-				|| recentSearches.contains(searchString)) {
+		if (searchString == null || searchString.trim().length() == 0) {
 			return;
 		}
 
+		int lastIndex = recentSearches.indexOf(searchString);
+		if (lastIndex != -1) {
+			recentSearches.remove(lastIndex);
+		}
 		recentSearches.add(0, searchString);
 		if (getLength() > getMaxRecents()) {
 			recentSearches.remove(recentSearches.size() - 1);

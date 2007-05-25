@@ -44,6 +44,9 @@ public class SearchHistoryTest {
 		assertSame(2, searchHistory.getLength());
 		assertEquals("search3", searchHistory.getRecentSearches()[0]);
 		assertEquals("search2", searchHistory.getRecentSearches()[1]);
+		
+		searchHistory.put("search2");
+		assertEquals("search2", searchHistory.getRecentSearches()[0]);
 	}
 	
 	@Test
