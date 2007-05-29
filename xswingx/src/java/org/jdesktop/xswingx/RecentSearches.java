@@ -10,10 +10,11 @@ import java.util.prefs.Preferences;
 
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
+import javax.swing.UIManager;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-public class SearchHistory implements ActionListener {
+public class RecentSearches implements ActionListener {
 	private Preferences prefs;
 
 	private int maxRecents = 5;
@@ -22,11 +23,11 @@ public class SearchHistory implements ActionListener {
 
 	private List<ChangeListener> listeners = new ArrayList<ChangeListener>();
 
-	public SearchHistory(String saveName) {
+	public RecentSearches(String saveName) {
 		this(Preferences.userRoot(), saveName);
 	}
 
-	public SearchHistory(Preferences prefs, String saveName) {
+	public RecentSearches(Preferences prefs, String saveName) {
 		this.prefs = prefs.node(saveName);
 		load();
 	}
@@ -126,13 +127,13 @@ public class SearchHistory implements ActionListener {
 
 	static class HistoryPopup extends JPopupMenu implements ActionListener,
 			ChangeListener {
-		private SearchHistory searchHistory;
+		private RecentSearches searchHistory;
 
 		private JXSearchField searchField;
 
 		private JMenuItem clear;
 
-		public HistoryPopup(SearchHistory searchHistory,
+		public HistoryPopup(RecentSearches searchHistory,
 				JXSearchField searchField) {
 			this.searchField = searchField;
 			this.searchHistory = searchHistory;
@@ -144,7 +145,7 @@ public class SearchHistory implements ActionListener {
 		private void buildMenu() {
 			removeAll();
 
-			JMenuItem recent = new JMenuItem("Recent Searches");
+			JMenuItem recent = new JMenuItem(UIManager.getString("SearchField.recentsMenuTitle"));
 			recent.setEnabled(false);
 			add(recent);
 
@@ -155,7 +156,7 @@ public class SearchHistory implements ActionListener {
 			}
 
 			addSeparator();
-			clear = new JMenuItem("Clear Recent Searches");
+			clear = new JMenuItem(UIManager.getString("SearchField.clearRecentsText"));
 			clear.addActionListener(this);
 			add(clear);
 		}

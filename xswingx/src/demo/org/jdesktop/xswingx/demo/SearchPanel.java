@@ -24,7 +24,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.text.DefaultFormatterFactory;
 
 import org.jdesktop.xswingx.JXSearchField;
-import org.jdesktop.xswingx.SearchHistory;
+import org.jdesktop.xswingx.RecentSearches;
 
 /**
  *
@@ -528,7 +528,7 @@ public class SearchPanel extends javax.swing.JPanel {
     
     private void cbPopupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbPopupActionPerformed
         if(cbPopup.isSelected()){
-            new SearchHistory("search.demo").install(searchField);
+            new RecentSearches("search.demo").install(searchField);
         }else{
             searchField.setSearchPopupMenu(null);
         }

@@ -42,6 +42,8 @@ public class JXSearchFieldAddon extends AbstractComponentAddon {
 						getIcon("basic/resources/clear_pressed.gif"),
 						"SearchField.buttonMargin",
 						new InsetsUIResource(1, 1, 1, 1) }));
+		
+		addResource(defaults, "org.jdesktop.xswingx.plaf.basic.resources.SearchField");
 	}
 
 	@Override
