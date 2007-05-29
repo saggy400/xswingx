@@ -9,18 +9,18 @@ import org.junit.Before;
 import org.junit.Test;
 
 
-public class SearchHistoryTest {
-	private SearchHistory searchHistory;
+public class RecentSearchesTest {
+	private RecentSearches searchHistory;
 
 	@Before
 	public void setUp() {
-		searchHistory = new SearchHistory("search.test");
+		searchHistory = new RecentSearches("search.test");
 		searchHistory.removeAll();
 	}
 	
 	@Test
 	public void testCreateRemoveAdd() throws Exception {
-		SearchHistory sh = new SearchHistory(Preferences.userRoot(), "search.test");
+		RecentSearches sh = new RecentSearches(Preferences.userRoot(), "search.test");
 		sh.removeAll();
 		
 		assertSame(0, sh.getLength());
@@ -28,7 +28,7 @@ public class SearchHistoryTest {
 		assertSame(1, sh.getLength());
 		sh.put("search2");
 		
-		sh = new SearchHistory("search.test");
+		sh = new RecentSearches("search.test");
 		assertSame(2, sh.getLength());
 	}
 	

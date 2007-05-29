@@ -19,6 +19,7 @@ import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.UIDefaults;
+import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -131,7 +132,7 @@ public class JXSearchField extends JXPromptField {
 	private boolean promptFontStyleSet;
 
 	public JXSearchField() {
-		this(null);
+		this(UIManager.getString("SearchField.prompt"));
 	}
 
 	public JXSearchField(String prompt) {
