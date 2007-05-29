@@ -143,6 +143,7 @@ public class RecentSearches implements ActionListener {
 		}
 
 		private void buildMenu() {
+			setVisible(false);
 			removeAll();
 
 			if (searchHistory.getLength() == 0) {
