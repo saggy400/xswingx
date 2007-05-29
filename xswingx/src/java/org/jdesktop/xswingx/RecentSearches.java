@@ -145,20 +145,29 @@ public class RecentSearches implements ActionListener {
 		private void buildMenu() {
 			removeAll();
 
-			JMenuItem recent = new JMenuItem(UIManager.getString("SearchField.recentsMenuTitle"));
-			recent.setEnabled(false);
-			add(recent);
+			if (searchHistory.getLength() == 0) {
+				JMenuItem noRecent = new JMenuItem(UIManager
+						.getString("SearchField.noRecentsText"));
+				noRecent.setEnabled(false);
+				add(noRecent);
+			} else {
+				JMenuItem recent = new JMenuItem(UIManager
+						.getString("SearchField.recentsMenuTitle"));
+				recent.setEnabled(false);
+				add(recent);
 
-			for (String searchString : searchHistory.getRecentSearches()) {
-				JMenuItem mi = new JMenuItem(searchString);
-				mi.addActionListener(this);
-				add(mi);
+				for (String searchString : searchHistory.getRecentSearches()) {
+					JMenuItem mi = new JMenuItem(searchString);
+					mi.addActionListener(this);
+					add(mi);
+				}
+
+				addSeparator();
+				clear = new JMenuItem(UIManager
+						.getString("SearchField.clearRecentsText"));
+				clear.addActionListener(this);
+				add(clear);
 			}
-
-			addSeparator();
-			clear = new JMenuItem(UIManager.getString("SearchField.clearRecentsText"));
-			clear.addActionListener(this);
-			add(clear);
 		}
 
 		public void actionPerformed(ActionEvent e) {
