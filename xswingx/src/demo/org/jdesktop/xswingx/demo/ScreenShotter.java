@@ -7,6 +7,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JPopupMenu;
 import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 
 import org.jdesktop.xswingx.JXSearchField;
@@ -15,7 +16,6 @@ import org.jdesktop.xswingx.JXSearchField.SearchMode;
 
 import com.jgoodies.looks.plastic.PlasticLookAndFeel;
 import com.jgoodies.looks.plastic.PlasticXPLookAndFeel;
-import com.jgoodies.looks.windows.WindowsLookAndFeel;
 import com.sun.java.swing.plaf.motif.MotifLookAndFeel;
 
 public class ScreenShotter {
@@ -32,32 +32,34 @@ public class ScreenShotter {
 	public ScreenShotter(JXSearchField sf) throws Exception {
 		c = sf;
 
-		UIManager.setLookAndFeel(new WindowsLookAndFeel());
+		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		c.updateUI();
-		lnf = "vista";
+		lnf = "system";
 		lnfSession();
 		vistaSession();
-		
+
 		UIManager.setLookAndFeel(new MetalLookAndFeel());
 		c.updateUI();
 		lnf = "metal";
 		lnfSession();
-		
+
 		UIManager.setLookAndFeel(new MotifLookAndFeel());
 		c.updateUI();
 		lnf = "motif";
 		lnfSession();
-		
+
 		UIManager.setLookAndFeel(new PlasticLookAndFeel());
 		c.updateUI();
 		lnf = "plastic";
 		lnfSession();
-		
-		UIManager.setLookAndFeel(new PlasticXPLookAndFeel());
-		c.updateUI();
-		lnf = "plasticxp";
-		lnfSession();
-		vistaSession();
+		try {
+			UIManager.setLookAndFeel(new PlasticXPLookAndFeel());
+			c.updateUI();
+			lnf = "plasticxp";
+			lnfSession();
+			vistaSession();
+		} catch (UnsupportedLookAndFeelException e) {
+		}
 	}
 
 	private void vistaSession() {
@@ -75,7 +77,7 @@ public class ScreenShotter {
 		c.getPopupButton().setIcon(c.getPopupButton().getPressedIcon());
 		shoot("popup_pressed");
 		c.updateUI();
-		
+
 		c.setText("rollover");
 		c.setSearchMode(SearchMode.REGULAR);
 		c.getSearchButton().setIcon(c.getSearchButton().getRolloverIcon());
@@ -85,7 +87,7 @@ public class ScreenShotter {
 		c.setSearchMode(SearchMode.REGULAR);
 		c.getSearchButton().setIcon(c.getSearchButton().getPressedIcon());
 		shoot("search_pressed");
-		
+
 		c.setSearchMode(SearchMode.INSTANT);
 	}
 
@@ -93,7 +95,7 @@ public class ScreenShotter {
 		c.setLayoutStyle(LayoutStyle.MAC);
 		layout = "mac";
 		layoutSession();
-		
+
 		c.setLayoutStyle(LayoutStyle.VISTA);
 		layout = "vista";
 		layoutSession();
@@ -118,13 +120,11 @@ public class ScreenShotter {
 		c.setSize(c.getPreferredSize());
 		c.doLayout();
 
-		BufferedImage bi = new BufferedImage(c.getSize().width,
-				c.getSize().height, BufferedImage.TYPE_INT_RGB);
+		BufferedImage bi = new BufferedImage(c.getSize().width, c.getSize().height, BufferedImage.TYPE_INT_RGB);
 		c.paint(bi.getGraphics());
 
 		try {
-			File file = new File(directory + name + "_" + lnf + "_" + layout
-					+ "_" + postfix + ".png");
+			File file = new File(directory + name + "_" + lnf + "_" + layout + "_" + postfix + ".png");
 			ImageIO.write(bi, "png", file);
 			System.out.println("saved file: " + file.getAbsolutePath());
 		} catch (IOException e) {
@@ -135,7 +135,7 @@ public class ScreenShotter {
 	public static void main(String[] args) {
 		JXSearchField sf = new JXSearchField("Search");
 		sf.setColumns(10);
-		
+
 		try {
 			new ScreenShotter(sf);
 		} catch (Exception e) {

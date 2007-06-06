@@ -102,7 +102,6 @@ public class SearchPanel extends javax.swing.JPanel {
         modeGroup.add(rbRegular);
 
         searchField.setColumns(15);
-        searchField.setPrompt("Type to Search");
         searchField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 searchFieldActionPerformed(evt);
@@ -258,7 +257,6 @@ public class SearchPanel extends javax.swing.JPanel {
 
         jXTitledSeparator7.setTitle("Search Mode");
 
-        jLabel6.setFont(jLabel6.getFont().deriveFont(jLabel6.getFont().getStyle() | java.awt.Font.BOLD));
         jLabel6.setText("Searching for:");
 
         lblSearchText.setText("nothing yet");
@@ -272,7 +270,7 @@ public class SearchPanel extends javax.swing.JPanel {
             }
         });
 
-        cbPopup.setText("With Popup Menu");
+        cbPopup.setText("With Popup Menu (Recent Searches)");
         cbPopup.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
         cbPopup.setMargin(new java.awt.Insets(0, 0, 0, 0));
         cbPopup.addActionListener(new java.awt.event.ActionListener() {
@@ -333,12 +331,12 @@ public class SearchPanel extends javax.swing.JPanel {
             .add(layout.createSequentialGroup()
                 .addContainerGap()
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(jXTitledSeparator7, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 461, Short.MAX_VALUE)
+                    .add(jXTitledSeparator7, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 549, Short.MAX_VALUE)
                     .add(layout.createSequentialGroup()
                         .add(searchField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(jLabel3, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 306, Short.MAX_VALUE))
-                    .add(jXTitledSeparator1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 461, Short.MAX_VALUE)
+                        .add(jLabel3, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 325, Short.MAX_VALUE))
+                    .add(jXTitledSeparator1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 549, Short.MAX_VALUE)
                     .add(layout.createSequentialGroup()
                         .add(10, 10, 10)
                         .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -348,24 +346,24 @@ public class SearchPanel extends javax.swing.JPanel {
                                         .add(17, 17, 17)
                                         .add(cbPopupButton))
                                     .add(cbPopup))
-                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 176, Short.MAX_VALUE)
+                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 166, Short.MAX_VALUE)
                                 .add(btnResetStyle))
                             .add(layout.createSequentialGroup()
                                 .add(rbMac)
                                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                                 .add(rbVista))))
-                    .add(jXTitledSeparator3, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 461, Short.MAX_VALUE)
+                    .add(jXTitledSeparator3, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 549, Short.MAX_VALUE)
                     .add(layout.createSequentialGroup()
                         .add(10, 10, 10)
-                        .add(txtPromptField, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 451, Short.MAX_VALUE))
-                    .add(jXTitledSeparator2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 461, Short.MAX_VALUE)
+                        .add(txtPromptField, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 539, Short.MAX_VALUE))
+                    .add(jXTitledSeparator2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 549, Short.MAX_VALUE)
                     .add(layout.createSequentialGroup()
                         .add(10, 10, 10)
                         .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                             .add(layout.createSequentialGroup()
                                 .add(rbLineBorder)
                                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                                .add(slBorderThickness, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 408, Short.MAX_VALUE))
+                                .add(slBorderThickness, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 488, Short.MAX_VALUE))
                             .add(rbDefaultBorder)))
                     .add(layout.createSequentialGroup()
                         .add(12, 12, 12)
@@ -374,27 +372,27 @@ public class SearchPanel extends javax.swing.JPanel {
                             .add(org.jdesktop.layout.GroupLayout.TRAILING, jLabel1))
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(txtBtnMargin, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 374, Short.MAX_VALUE)
-                            .add(txtMargin, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 374, Short.MAX_VALUE)))
+                            .add(txtBtnMargin, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 435, Short.MAX_VALUE)
+                            .add(txtMargin, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 435, Short.MAX_VALUE)))
                     .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
-                        .add(jXTitledSeparator4, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 348, Short.MAX_VALUE)
+                        .add(jXTitledSeparator4, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 399, Short.MAX_VALUE)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(jLabel4))
                     .add(org.jdesktop.layout.GroupLayout.TRAILING, btnResetMargins)
-                    .add(jXTitledSeparator5, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 461, Short.MAX_VALUE)
+                    .add(jXTitledSeparator5, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 549, Short.MAX_VALUE)
                     .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
                         .add(10, 10, 10)
                         .add(btnSearchIcon)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 199, Short.MAX_VALUE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 247, Short.MAX_VALUE)
                         .add(btnResetIcons))
-                    .add(jXTitledSeparator6, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 461, Short.MAX_VALUE)
+                    .add(jXTitledSeparator6, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 549, Short.MAX_VALUE)
                     .add(layout.createSequentialGroup()
                         .add(10, 10, 10)
                         .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                             .add(layout.createSequentialGroup()
                                 .add(jLabel6)
                                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                                .add(lblSearchText, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 367, Short.MAX_VALUE))
+                                .add(lblSearchText, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 444, Short.MAX_VALUE))
                             .add(rbRegular)
                             .add(layout.createSequentialGroup()
                                 .add(rbInstant)
@@ -489,9 +487,9 @@ public class SearchPanel extends javax.swing.JPanel {
                 .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        layout.linkSize(new java.awt.Component[] {rbLineBorder, slBorderThickness}, org.jdesktop.layout.GroupLayout.VERTICAL);
-
         layout.linkSize(new java.awt.Component[] {jLabel3, searchField}, org.jdesktop.layout.GroupLayout.VERTICAL);
+
+        layout.linkSize(new java.awt.Component[] {rbLineBorder, slBorderThickness}, org.jdesktop.layout.GroupLayout.VERTICAL);
 
     }// </editor-fold>//GEN-END:initComponents
 

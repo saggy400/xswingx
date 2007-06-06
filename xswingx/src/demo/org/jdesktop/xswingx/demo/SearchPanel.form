@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<Form version="1.4" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
+<Form version="1.3" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
   <NonVisualComponents>
     <Component class="javax.swing.ButtonGroup" name="styleGroup">
       <AuxValues>
@@ -33,13 +33,13 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jXTitledSeparator7" alignment="0" pref="461" max="32767" attributes="0"/>
+                  <Component id="jXTitledSeparator7" alignment="0" pref="549" max="32767" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="searchField" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jLabel3" pref="306" max="32767" attributes="0"/>
+                      <Component id="jLabel3" pref="325" max="32767" attributes="0"/>
                   </Group>
-                  <Component id="jXTitledSeparator1" alignment="0" pref="461" max="32767" attributes="0"/>
+                  <Component id="jXTitledSeparator1" alignment="0" pref="549" max="32767" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
@@ -51,7 +51,7 @@
                                   </Group>
                                   <Component id="cbPopup" alignment="0" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace pref="176" max="32767" attributes="0"/>
+                              <EmptySpace pref="166" max="32767" attributes="0"/>
                               <Component id="btnResetStyle" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
@@ -61,19 +61,19 @@
                           </Group>
                       </Group>
                   </Group>
-                  <Component id="jXTitledSeparator3" alignment="0" pref="461" max="32767" attributes="0"/>
+                  <Component id="jXTitledSeparator3" alignment="0" pref="549" max="32767" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
-                      <Component id="txtPromptField" pref="451" max="32767" attributes="0"/>
+                      <Component id="txtPromptField" pref="539" max="32767" attributes="0"/>
                   </Group>
-                  <Component id="jXTitledSeparator2" alignment="0" pref="461" max="32767" attributes="0"/>
+                  <Component id="jXTitledSeparator2" alignment="0" pref="549" max="32767" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="10" pref="10" max="10" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="rbLineBorder" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="slBorderThickness" pref="408" max="32767" attributes="0"/>
+                              <Component id="slBorderThickness" pref="488" max="32767" attributes="0"/>
                           </Group>
                           <Component id="rbDefaultBorder" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
@@ -86,31 +86,31 @@
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="txtBtnMargin" alignment="0" pref="374" max="32767" attributes="0"/>
-                          <Component id="txtMargin" alignment="0" pref="374" max="32767" attributes="0"/>
+                          <Component id="txtBtnMargin" alignment="0" pref="435" max="32767" attributes="0"/>
+                          <Component id="txtMargin" alignment="0" pref="435" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
-                      <Component id="jXTitledSeparator4" pref="348" max="32767" attributes="0"/>
+                      <Component id="jXTitledSeparator4" pref="399" max="32767" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Component id="btnResetMargins" alignment="1" min="-2" max="-2" attributes="0"/>
-                  <Component id="jXTitledSeparator5" alignment="0" pref="461" max="32767" attributes="0"/>
+                  <Component id="jXTitledSeparator5" alignment="0" pref="549" max="32767" attributes="0"/>
                   <Group type="102" alignment="1" attributes="0">
                       <EmptySpace min="10" pref="10" max="10" attributes="0"/>
                       <Component id="btnSearchIcon" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="199" max="32767" attributes="0"/>
+                      <EmptySpace pref="247" max="32767" attributes="0"/>
                       <Component id="btnResetIcons" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <Component id="jXTitledSeparator6" alignment="0" pref="461" max="32767" attributes="0"/>
+                  <Component id="jXTitledSeparator6" alignment="0" pref="549" max="32767" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="10" pref="10" max="10" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="lblSearchText" pref="367" max="32767" attributes="0"/>
+                              <Component id="lblSearchText" pref="444" max="32767" attributes="0"/>
                           </Group>
                           <Component id="rbRegular" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
@@ -231,7 +231,6 @@
     <Component class="org.jdesktop.xswingx.JXSearchField" name="searchField">
       <Properties>
         <Property name="columns" type="int" value="15"/>
-        <Property name="prompt" type="java.lang.String" value="Type to Search"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="searchFieldActionPerformed"/>
@@ -475,11 +474,6 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel6">
       <Properties>
-        <Property name="font" type="java.awt.Font" editor="org.netbeans.modules.form.editors2.FontEditor">
-          <FontInfo relative="true">
-            <Font bold="true" component="jLabel6" property="font" relativeSize="true" size="0"/>
-          </FontInfo>
-        </Property>
         <Property name="text" type="java.lang.String" value="Searching for:"/>
       </Properties>
     </Component>
@@ -506,7 +500,7 @@
     </Component>
     <Component class="javax.swing.JCheckBox" name="cbPopup">
       <Properties>
-        <Property name="text" type="java.lang.String" value="With Popup Menu"/>
+        <Property name="text" type="java.lang.String" value="With Popup Menu (Recent Searches)"/>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
           <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
             <EmptyBorder bottom="0" left="0" right="0" top="0"/>
