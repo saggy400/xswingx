@@ -147,7 +147,7 @@ public class JXSearchFieldAddon extends AbstractComponentAddon {
 	// PlasticXP.
 	protected boolean isWindows(LookAndFeelAddons addon) {
 		return super.isWindows(addon)
-				&& (UIManager.getLookAndFeel().getClass().getName().indexOf(
+				|| (UIManager.getLookAndFeel().getClass().getName().indexOf(
 						"Windows") != -1 || UIManager.getLookAndFeel()
 						.getClass().getName().indexOf("PlasticXP") != -1);
 	}
