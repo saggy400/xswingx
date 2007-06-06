@@ -46,7 +46,12 @@ public class PromptSupport {
 	/**
 	 * The color of the prompt text poroperty.
 	 */
-	public static final String PROMPT_COLOR = "promptColor";
+	public static final String FOREGROUND = "promptForeground";
+
+	/**
+	 * The prompt background property.
+	 */
+	public static final String BACKGROUND = "promptBackground";
 
 	/**
 	 * The focus behavior property.
@@ -56,7 +61,7 @@ public class PromptSupport {
 	/**
 	 * The font style property, if different from the components font.
 	 */
-	public static final String PROMPT_FONT_STYLE = "promptFontStyle";
+	public static final String FONT_STYLE = "promptFontStyle";
 
 	/**
 	 * <p>
@@ -158,13 +163,14 @@ public class PromptSupport {
 	 * </p>
 	 * 
 	 * @param promptText
-	 * @param promptTextColor
+	 * @param promptForeground
+	 * @param promptBackground 
 	 * @param textComponent
 	 */
-	public static void init(String promptText, Color promptTextColor,
-			final JTextComponent textComponent) {
+	public static void init(String promptText, Color promptForeground, Color promptBackground, final JTextComponent textComponent) {
 		setPrompt(promptText, textComponent);
-		setPromptColor(promptTextColor, textComponent);
+		setForeground(promptForeground, textComponent);
+		setBackground(promptBackground, textComponent);
 	}
 
 	/**
@@ -175,8 +181,7 @@ public class PromptSupport {
 	 *         none is set
 	 */
 	public static FocusBehavior getFocusBehavior(JTextComponent textComponent) {
-		FocusBehavior fb = (FocusBehavior) textComponent
-				.getClientProperty(FOCUS_BEHAVIOR);
+		FocusBehavior fb = (FocusBehavior) textComponent.getClientProperty(FOCUS_BEHAVIOR);
 		if (fb == null) {
 			fb = FocusBehavior.HIDE_PROMPT;
 		}
@@ -190,8 +195,7 @@ public class PromptSupport {
 	 * @param focusBehavior
 	 * @param textComponent
 	 */
-	public static void setFocusBehavior(FocusBehavior focusBehavior,
-			JTextComponent textComponent) {
+	public static void setFocusBehavior(FocusBehavior focusBehavior, JTextComponent textComponent) {
 		textComponent.putClientProperty(FOCUS_BEHAVIOR, focusBehavior);
 		if (textComponent.isFocusOwner()) {
 			textComponent.repaint();
@@ -228,9 +232,7 @@ public class PromptSupport {
 		install(textComponent);
 
 		// display labelText as tooltip by default
-		if (textComponent.getToolTipText() == null
-				|| textComponent.getToolTipText().equals(
-						getPrompt(textComponent))) {
+		if (textComponent.getToolTipText() == null || textComponent.getToolTipText().equals(getPrompt(textComponent))) {
 			textComponent.setToolTipText(promptText);
 		}
 
@@ -245,23 +247,59 @@ public class PromptSupport {
 	 * @return the color of the prompt text or
 	 *         {@link JTextComponent#getDisabledTextColor()} if none is set
 	 */
-	public static Color getPromptColor(JTextComponent textComponent) {
-		if (textComponent.getClientProperty(PROMPT_COLOR) == null) {
+	public static Color getForeground(JTextComponent textComponent) {
+		if (textComponent.getClientProperty(FOREGROUND) == null) {
 			return textComponent.getDisabledTextColor();
 		}
-		return (Color) textComponent.getClientProperty(PROMPT_COLOR);
+		return (Color) textComponent.getClientProperty(FOREGROUND);
 	}
 
 	/**
-	 * Sets the color of the prompt text on <code>textComponent</code> and
-	 * repaints the component to reflect the changes.
+	 * Sets the background color of the <code>textComponent</code>, when no
+	 * text is present and repaints the component to reflect the changes.
 	 * 
 	 * @param promptTextColor
 	 * @param textComponent
 	 */
-	public static void setPromptColor(Color promptTextColor,
-			JTextComponent textComponent) {
-		textComponent.putClientProperty(PROMPT_COLOR, promptTextColor);
+	public static void setForeground(Color promptTextColor, JTextComponent textComponent) {
+		textComponent.putClientProperty(FOREGROUND, promptTextColor);
+		textComponent.repaint();
+	}
+
+	/**
+	 * Get the background color of the <code>textComponent</code>, when no
+	 * text is present. If no color has been set, the <code>textComponent</code>s
+	 * background color color will be returned.
+	 * 
+	 * @param textComponent
+	 * @return the the background color of the text component, when no text is
+	 *         present
+	 */
+	public static Color getBackground(JTextComponent textComponent) {
+		if (textComponent.getClientProperty(BACKGROUND) == null) {
+			return textComponent.getBackground();
+		}
+		return (Color) textComponent.getClientProperty(BACKGROUND);
+	}
+
+	/**
+	 * <p>
+	 * Sets the color of the prompt text on <code>textComponent</code> and
+	 * repaints the component to reflect the changes.
+	 * </p>
+	 * <p>
+	 * Calls {@link #install(JTextComponent)} to ensure that the
+	 * <code>textComponent</code>s UI is wrapped by the appropriate
+	 * {@link PromptTextUI}.
+	 * </p>
+	 * 
+	 * @param background
+	 * @param textComponent
+	 */
+	public static void setBackground(Color background, JTextComponent textComponent) {
+		install(textComponent);
+		
+		textComponent.putClientProperty(BACKGROUND, background);
 		textComponent.repaint();
 	}
 
@@ -280,9 +318,8 @@ public class PromptSupport {
 	 * @param fontStyle
 	 * @param textComponent
 	 */
-	public static void setPromptFontStyle(Integer fontStyle,
-			JTextComponent textComponent) {
-		textComponent.putClientProperty(PROMPT_FONT_STYLE, fontStyle);
+	public static void setFontStyle(Integer fontStyle, JTextComponent textComponent) {
+		textComponent.putClientProperty(FONT_STYLE, fontStyle);
 		textComponent.revalidate();
 		textComponent.repaint();
 	}
@@ -295,14 +332,13 @@ public class PromptSupport {
 	 * @param textComponent
 	 * @return font style of the prompt text
 	 */
-	public static Integer getPromptFontStyle(JTextComponent textComponent) {
-		return (Integer) textComponent.getClientProperty(PROMPT_FONT_STYLE);
+	public static Integer getFontStyle(JTextComponent textComponent) {
+		return (Integer) textComponent.getClientProperty(FONT_STYLE);
 	}
 
 	public final static UIChangeHandler uiChangeHandler = new UIChangeHandler();
 
-	private final static class UIChangeHandler implements
-			PropertyChangeListener {
+	private final static class UIChangeHandler implements PropertyChangeListener {
 		public void propertyChange(PropertyChangeEvent evt) {
 			JTextComponent txt = (JTextComponent) evt.getSource();
 			TextUI ui = (TextUI) evt.getNewValue();

@@ -165,7 +165,7 @@ public class LabelDemo extends javax.swing.JFrame {
 		if (root instanceof JTextComponent) {
 			JTextComponent txt = (JTextComponent) root;
 			PromptSupport.setFocusBehavior(focusBehavior, txt);
-			PromptSupport.setPromptFontStyle(fontStyle, txt);
+			PromptSupport.setFontStyle(fontStyle, txt);
 			txt.setEditable(editable);
 			txt.setEnabled(enabled);
 		} else {
