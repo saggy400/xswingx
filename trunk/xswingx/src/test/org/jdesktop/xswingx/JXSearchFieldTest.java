@@ -1,11 +1,6 @@
 package org.jdesktop.xswingx;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 import java.awt.Component;
 import java.awt.Font;
@@ -40,9 +35,25 @@ public class JXSearchFieldTest {
 	public void setUp() throws Exception {
 		searchField = new JXSearchField();
 	}
+	
+	@Test
+	public void testDefaultPrompt() throws Exception {
+		JXSearchField sf = new JXSearchField();
+		assertSame(UIManager.get("SearchField.prompt"), sf.getPrompt());
+		
+		sf = new JXSearchField("prompt");
+		assertEquals("prompt", sf.getPrompt());
+	}
+	
+	@Test
+	public void testDefaultSearchMode() throws Exception {
+		JXSearchField sf = new JXSearchField();
+		assertTrue(sf.isInstantSearchMode());
+		assertSame(SearchMode.INSTANT, sf.getSearchMode());
+	}
 
 	@Test
-	public void testFireActionOnTextChange() throws Exception {
+	public void testFireAction() throws Exception {
 		searchField.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.err.println(e);
@@ -50,7 +61,7 @@ public class JXSearchFieldTest {
 			}
 		});
 		eventReceived = false;
-		Assert.assertTrue(searchField.isInstantSearchMode());
+		searchField.setSearchMode(SearchMode.INSTANT);
 		searchField.setText("search");
 		Assert.assertTrue(eventReceived);
 		
@@ -59,7 +70,27 @@ public class JXSearchFieldTest {
 		searchField.setText("search2");
 		assertFalse(eventReceived);
 	}
-
+	
+	@Test
+	public void testInstantSearchDelay() throws Exception {
+		searchField.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.err.println(e);
+				eventReceived = true;
+			}
+		});
+		eventReceived = false;
+		searchField.setSearchMode(SearchMode.INSTANT);
+		searchField.setInstantSearchDelay(0);
+		searchField.setText("search");
+		Assert.assertTrue(eventReceived);
+		
+		eventReceived = false;
+		searchField.setInstantSearchDelay(100);
+		searchField.setText("search2");
+		assertFalse(eventReceived);
+	}
+	
 	@Test
 	public void testButtonVisibility() throws Exception {
 		assertTrue(searchField.getSearchButton().isVisible());
@@ -114,14 +145,6 @@ public class JXSearchFieldTest {
 		} catch (IllegalComponentStateException ex) {
 		}
 		assertFalse(eventReceived);
-	}
-
-	@Test
-	public void testSetPopupAfterRegular() throws Exception {
-		searchField.setSearchMode(SearchMode.REGULAR);
-		searchField.setSearchPopupMenu(new JPopupMenu());
-		assertNull(searchField.getSearchButton().getRolloverIcon());
-		assertNull(searchField.getSearchButton().getPressedIcon());
 	}
 
 	@Test

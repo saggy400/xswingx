@@ -75,16 +75,22 @@ public class RecentSearchesTest {
 	}
 	
 	@Test
-	public void testPopupMenu() throws Exception {
-//		assertFalse(searchHistory.createPopupMenu().getComponent(0).isEnabled());
-//		assertSame(3, searchHistory.createPopupMenu().getComponentCount());
-//		searchHistory.add("search1");
-//		assertSame(4, searchHistory.createPopupMenu().getComponentCount());
+	public void testPersistency() throws Exception {
+		searchHistory.put("test");
+		assertSame(1, new RecentSearches("search.test").getLength());
 	}
 	
 	@Test
-	public void testInstall() throws Exception {
+	public void testUnInstall() throws Exception {
 		JXSearchField searchField = new JXSearchField("Search");
 		searchHistory.install(searchField);
+		
+		assertSame(1, searchField.getActionListeners().length);
+		assertSame(1, searchHistory.getChangeListeners().length);
+		
+		searchHistory.uninstall(searchField);
+		
+		assertSame(0, searchField.getActionListeners().length);
+		assertSame(0, searchHistory.getChangeListeners().length);
 	}
 }

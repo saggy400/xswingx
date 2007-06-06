@@ -103,6 +103,10 @@ public class RecentSearches implements ActionListener {
 	public void removeChangeListener(ChangeListener l) {
 		listeners.remove(l);
 	}
+	
+	public ChangeListener[] getChangeListeners(){
+		return listeners.toArray(new ChangeListener[]{});
+	}
 
 	private void fireChangeEvent() {
 		ChangeEvent e = new ChangeEvent(this);
@@ -112,20 +116,27 @@ public class RecentSearches implements ActionListener {
 		}
 	}
 
-	public JPopupMenu createPopupMenu(JXSearchField searchField) {
-		return new HistoryPopup(this, searchField);
+	protected JPopupMenu createPopupMenu(JXSearchField searchField) {
+		return new RecentSearchesPopup(this, searchField);
 	}
 
 	public void install(JXSearchField searchField) {
 		searchField.addActionListener(this);
 		searchField.setSearchPopupMenu(createPopupMenu(searchField));
 	}
+	
+	public void uninstall(JXSearchField searchField) {
+		searchField.removeActionListener(this);
+		if(searchField.getSearchPopupMenu() instanceof ChangeListener){
+			removeChangeListener((ChangeListener) searchField.getSearchPopupMenu());	
+		}
+	}
 
 	public void actionPerformed(ActionEvent e) {
 		put(e.getActionCommand());
 	}
 
-	static class HistoryPopup extends JPopupMenu implements ActionListener,
+	public static class RecentSearchesPopup extends JPopupMenu implements ActionListener,
 			ChangeListener {
 		private RecentSearches searchHistory;
 
@@ -133,7 +144,7 @@ public class RecentSearches implements ActionListener {
 
 		private JMenuItem clear;
 
-		public HistoryPopup(RecentSearches searchHistory,
+		public RecentSearchesPopup(RecentSearches searchHistory,
 				JXSearchField searchField) {
 			this.searchField = searchField;
 			this.searchHistory = searchHistory;
