@@ -20,12 +20,28 @@ public class JXPromptArea extends JTextArea {
 		this(null);
 	}
 
-	public JXPromptArea(String labelText) {
-		this(labelText, null);
+	public JXPromptArea(String promptText) {
+		this(promptText, null);
 	}
 
-	public JXPromptArea(String labelText, Color labelTextColor) {
-		PromptSupport.init(labelText, labelTextColor, this);
+	public JXPromptArea(String promptText, Color promptForeground) {
+		this(promptText, promptForeground, null);
+	}
+	
+	public JXPromptArea(String promptText, Color promptForeground, Color promptBackground) {
+		installPromptSupport(promptText, promptForeground, promptBackground);
+	}
+
+	/**
+	 * Calls
+	 * {@link PromptSupport#install(String, javax.swing.text.JTextComponent)}.
+	 * Override this method to customize or disable prompt support.
+	 * 
+	 * @param promptText
+	 * @param promptForeground
+	 */
+	protected void installPromptSupport(String promptText, Color promptForeground, Color promptBackground) {
+		PromptSupport.init(promptText, promptForeground, promptBackground, this);
 	}
 
 	/**
@@ -43,17 +59,24 @@ public class JXPromptArea extends JTextArea {
 	}
 
 	/**
-	 * @see PromptSupport#getPromptColor(javax.swing.text.JTextComponent)
+	 * @see PromptSupport#getForeground(javax.swing.text.JTextComponent)
 	 */
-	public Color getPromptColor() {
-		return PromptSupport.getPromptColor(this);
+	public Color getPromptForeground() {
+		return PromptSupport.getForeground(this);
+	}
+	
+	/**
+	 * @see PromptSupport#getForeground(javax.swing.text.JTextComponent)
+	 */
+	public Color getPromptBackground() {
+		return PromptSupport.getBackground(this);
 	}
 
 	/**
-	 * @see PromptSupport#getPromptFontStyle(javax.swing.text.JTextComponent)
+	 * @see PromptSupport#getFontStyle(javax.swing.text.JTextComponent)
 	 */
 	public Integer getPromptFontStyle() {
-		return PromptSupport.getPromptFontStyle(this);
+		return PromptSupport.getFontStyle(this);
 	}
 
 	/**
@@ -71,17 +94,24 @@ public class JXPromptArea extends JTextArea {
 	}
 
 	/**
-	 * @see PromptSupport#setPromptColor(Color, javax.swing.text.JTextComponent)
+	 * @see PromptSupport#setForeground(Color, javax.swing.text.JTextComponent)
 	 */
-	public void setPromptColor(Color labelTextColor) {
-		PromptSupport.setPromptColor(labelTextColor, this);
+	public void setPromptForeground(Color promptTextColor) {
+		PromptSupport.setForeground(promptTextColor, this);
+	}
+	
+	/**
+	 * @see PromptSupport#setBackground(Color, javax.swing.text.JTextComponent)
+	 */
+	public void setPromptBackround(Color promptTextColor) {
+		PromptSupport.setBackground(promptTextColor, this);
 	}
 
 	/**
-	 * @see PromptSupport#setPromptFontStyle(Integer,
+	 * @see PromptSupport#setFontStyle(Integer,
 	 *      javax.swing.text.JTextComponent)
 	 */
 	public void setPromptFontStyle(Integer fontStyle) {
-		PromptSupport.setPromptFontStyle(fontStyle, this);
+		PromptSupport.setFontStyle(fontStyle, this);
 	}
 }

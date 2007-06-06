@@ -124,20 +124,21 @@ public abstract class PromptTextUI extends TextUI {
 				e.printStackTrace();
 			}
 		} else {
-			promptComponent.setForeground(PromptSupport.getPromptColor(txt));
+			promptComponent.setForeground(PromptSupport.getForeground(txt));
 		}
 
-		if (PromptSupport.getPromptFontStyle(txt) == null) {
+		if (PromptSupport.getFontStyle(txt) == null) {
 			promptComponent.setFont(txt.getFont());
 		} else {
 			promptComponent.setFont(txt.getFont().deriveFont(
-					PromptSupport.getPromptFontStyle(txt)));
+					PromptSupport.getFontStyle(txt)));
 		}
+		
+		promptComponent.setBackground(PromptSupport.getBackground(txt));
 		promptComponent.setEnabled(txt.isEnabled());
 		promptComponent.setOpaque(txt.isOpaque());
 		promptComponent.setBounds(txt.getBounds());
 		promptComponent.setBorder(txt.getBorder());
-		promptComponent.setBackground(txt.getBackground());
 		promptComponent.setSelectedTextColor(txt.getSelectedTextColor());
 		promptComponent.setSelectionColor(txt.getSelectionColor());
 		promptComponent.setEditable(txt.isEditable());

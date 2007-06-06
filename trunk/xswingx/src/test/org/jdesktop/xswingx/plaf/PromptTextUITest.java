@@ -67,7 +67,8 @@ public abstract class PromptTextUITest {
     @Test
     public void testGetLabelComponent() {
         PromptSupport.setPrompt("test", textComponent);
-        PromptSupport.setPromptColor(Color.BLACK, textComponent);
+        PromptSupport.setForeground(Color.BLACK, textComponent);
+        PromptSupport.setBackground(Color.RED, textComponent);
         textComponent.setBorder(BorderFactory.createBevelBorder(1));
         textComponent.setEnabled(false);
         textComponent.setEditable(false);
@@ -81,20 +82,20 @@ public abstract class PromptTextUITest {
         JTextComponent lbl = ui.getPromptComponent(textComponent);
         
         assertEquals(PromptSupport.getPrompt(textComponent), lbl.getText());
-        assertEquals(PromptSupport.getPromptColor(textComponent), lbl.getForeground());
+        assertEquals(PromptSupport.getForeground(textComponent), lbl.getForeground());
+        assertEquals(PromptSupport.getBackground(textComponent), lbl.getBackground());
         
         assertEquals(textComponent.getBorder(), lbl.getBorder());
         assertEquals(textComponent.isEnabled(), lbl.isEnabled());
         assertEquals(textComponent.isEditable(), lbl.isEditable());
         assertEquals(textComponent.isOpaque(), lbl.isOpaque());
         assertEquals(textComponent.getBounds(), lbl.getBounds());
-        assertEquals(textComponent.getBackground(), lbl.getBackground());
         assertEquals(textComponent.getFont(), lbl.getFont());
         assertEquals(textComponent.getSelectedTextColor(), lbl.getSelectedTextColor());
         assertEquals(textComponent.getSelectionColor(), lbl.getSelectionColor());
         assertEquals(textComponent.getMargin(), lbl.getMargin());
         
-        PromptSupport.setPromptFontStyle(Font.BOLD, textComponent);
+        PromptSupport.setFontStyle(Font.BOLD, textComponent);
         lbl = ui.getPromptComponent(textComponent);
         assertEquals(textComponent.getFont().deriveFont(Font.BOLD), lbl.getFont());
     }

@@ -105,7 +105,7 @@ public class ContactPanel extends javax.swing.JPanel {
         jLabelTextField1.setToolTipText("You must enter a First Name");
         jLabelTextField1.setFont(jLabelTextField1.getFont().deriveFont(Font.BOLD, 14f));
         jLabelTextField1.setPrompt("First Name");
-        jLabelTextField1.setPromptColor(java.awt.Color.red);
+        jLabelTextField1.setPromptForeground(java.awt.Color.red);
 
         jLabelTextField2.setBorder(null);
         jLabelTextField2.setFont(jLabelTextField2.getFont().deriveFont(Font.BOLD, 14f));

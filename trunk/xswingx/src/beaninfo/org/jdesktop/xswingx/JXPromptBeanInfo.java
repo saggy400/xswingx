@@ -12,7 +12,7 @@ public abstract class JXPromptBeanInfo extends BeanInfoSupport {
 	}
 
 	protected void initialize() {
-		setPreferred(true, "prompt", "promptColor", "focusBehavior",
+		setPreferred(true, "prompt", "promptForeground", "promptBackground", "focusBehavior",
 				"promptFontStyle");
 		
 		setEnumerationValues(new EnumerationValue[] {

@@ -40,13 +40,16 @@ public class PromptSupportTest {
 
     @Test
     public void testInit() {
-        PromptSupport.init("test", Color.LIGHT_GRAY, txt);
+        PromptSupport.init("test", Color.LIGHT_GRAY, Color.YELLOW, txt);
 
         assertEquals("test", PromptSupport.getPrompt(txt));
         assertEquals("test", txt.getClientProperty(PromptSupport.PROMPT));
 
-        assertEquals(Color.LIGHT_GRAY, PromptSupport.getPromptColor(txt));
-        assertEquals(Color.LIGHT_GRAY, txt.getClientProperty(PromptSupport.PROMPT_COLOR));
+        assertEquals(Color.LIGHT_GRAY, PromptSupport.getForeground(txt));
+        assertEquals(Color.LIGHT_GRAY, txt.getClientProperty(PromptSupport.FOREGROUND));
+        
+        assertEquals(Color.YELLOW, PromptSupport.getBackground(txt));
+        assertEquals(Color.YELLOW, txt.getClientProperty(PromptSupport.BACKGROUND));
     }
     
     @Test
@@ -80,9 +83,7 @@ public class PromptSupportTest {
         assertEquals("test", txt.getClientProperty(PromptSupport.PROMPT));
         assertEquals("test", txt.getToolTipText());
         
-        assertEquals(PromptTextFieldUI.class, txt.getUI().getClass());
-    	txt.setUI(new BasicTextFieldUI());
-    	assertEquals(PromptTextFieldUI.class, txt.getUI().getClass());
+        promptSupportMustBeInstalled();
         
         PromptSupport.setPrompt("test2", txt);
         assertEquals("test2", txt.getToolTipText());
@@ -93,23 +94,44 @@ public class PromptSupportTest {
     }
     
     @Test
-    public void testGetPromptColor() throws Exception {
-        assertEquals(txt.getDisabledTextColor(), PromptSupport.getPromptColor(txt));
+    public void testGetForeground() throws Exception {
+        assertEquals(txt.getDisabledTextColor(), PromptSupport.getForeground(txt));
     }
     
     @Test
-    public void testSetPromptColor() throws Exception {
-        PromptSupport.setPromptColor(Color.RED, txt);
+    public void testSetForeground() throws Exception {
+        PromptSupport.setForeground(Color.RED, txt);
         
-        assertEquals(Color.RED, PromptSupport.getPromptColor(txt));
-        assertEquals(Color.RED, txt.getClientProperty(PromptSupport.PROMPT_COLOR));
+        assertEquals(Color.RED, PromptSupport.getForeground(txt));
+        assertEquals(Color.RED, txt.getClientProperty(PromptSupport.FOREGROUND));
     }
+    
+    @Test
+    public void testGetBackround() throws Exception {
+        assertEquals(txt.getBackground(), PromptSupport.getBackground(txt));
+    }
+    
+    @Test
+    public void testSetBackround() throws Exception {
+        PromptSupport.setBackground(Color.RED, txt);
+        
+        assertEquals(Color.RED, PromptSupport.getBackground(txt));
+        assertEquals(Color.RED, txt.getClientProperty(PromptSupport.BACKGROUND));
+        
+        promptSupportMustBeInstalled();
+    }
+
+	private void promptSupportMustBeInstalled() {
+		assertEquals(PromptTextFieldUI.class, txt.getUI().getClass());
+    	txt.setUI(new BasicTextFieldUI());
+    	assertEquals(PromptTextFieldUI.class, txt.getUI().getClass());
+	}
     
     @Test
     public void testPromptFontStyle() throws Exception {
-    	assertNull(PromptSupport.getPromptFontStyle(txt));
-    	PromptSupport.setPromptFontStyle(Font.BOLD, txt);
-    	assertEquals(Font.BOLD, PromptSupport.getPromptFontStyle(txt));
-    	assertEquals(Font.BOLD, txt.getClientProperty(PromptSupport.PROMPT_FONT_STYLE));
+    	assertNull(PromptSupport.getFontStyle(txt));
+    	PromptSupport.setFontStyle(Font.BOLD, txt);
+    	assertEquals(Font.BOLD, PromptSupport.getFontStyle(txt));
+    	assertEquals(Font.BOLD, txt.getClientProperty(PromptSupport.FONT_STYLE));
 	}
 }

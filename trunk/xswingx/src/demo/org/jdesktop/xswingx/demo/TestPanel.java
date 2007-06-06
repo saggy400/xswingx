@@ -48,8 +48,9 @@ public class TestPanel extends javax.swing.JPanel {
         jLabelTextField2.setColumns(20);
         jLabelTextField2.setPrompt("20 Columns");
 
-        jLabelTextField3.setPrompt("Red");
-        jLabelTextField3.setPromptColor(java.awt.Color.red);
+        jLabelTextField3.setPrompt("Red & Yellow Prompt");
+        jLabelTextField3.setPromptForeground(java.awt.Color.red);
+        jLabelTextField3.setPromptBackround(java.awt.Color.yellow);
 
         jLabelTextField4.setPrompt("Not Opaque");
         jLabelTextField4.setOpaque(false);
@@ -64,7 +65,7 @@ public class TestPanel extends javax.swing.JPanel {
         jLabelTextField6.setCaretColor(java.awt.Color.red);
         jLabelTextField6.setFont(new java.awt.Font("Times New Roman", 1, 18));
         jLabelTextField6.setPrompt("Different");
-        jLabelTextField6.setPromptColor(java.awt.Color.magenta);
+        jLabelTextField6.setPromptForeground(java.awt.Color.magenta);
         jLabelTextField6.setSelectedTextColor(java.awt.Color.orange);
         jLabelTextField6.setSelectionColor(java.awt.Color.black);
 
