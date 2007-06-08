@@ -1,6 +1,12 @@
 package org.jdesktop.xswingx;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.awt.Component;
 import java.awt.Font;
@@ -27,13 +33,19 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class JXSearchFieldTest {
+	boolean focused;
 	boolean eventReceived;
 
 	JXSearchField searchField;
 
 	@Before
 	public void setUp() throws Exception {
-		searchField = new JXSearchField();
+		searchField = new JXSearchField(){
+			public boolean isFocusOwner() {
+				return focused;
+			}
+		};
+		searchField.setInstantSearchDelay(0);
 	}
 	
 	@Test
@@ -61,6 +73,7 @@ public class JXSearchFieldTest {
 			}
 		});
 		eventReceived = false;
+		searchField.setInstantSearchDelay(0);
 		searchField.setSearchMode(SearchMode.INSTANT);
 		searchField.setText("search");
 		Assert.assertTrue(eventReceived);
@@ -81,7 +94,6 @@ public class JXSearchFieldTest {
 		});
 		eventReceived = false;
 		searchField.setSearchMode(SearchMode.INSTANT);
-		searchField.setInstantSearchDelay(0);
 		searchField.setText("search");
 		Assert.assertTrue(eventReceived);
 		
@@ -119,11 +131,11 @@ public class JXSearchFieldTest {
 				eventReceived = true;
 			}
 		});
-		eventReceived = false;
 		assertTrue(searchField.isInstantSearchMode());
 		assertSame(UIManager.getIcon("SearchField.icon"), searchField.getSearchButton().getIcon());
 		assertNull(searchField.getSearchButton().getRolloverIcon());
 		assertNull(searchField.getSearchButton().getPressedIcon());
+		eventReceived = false;
 		searchField.getSearchButton().doClick();
 		assertFalse(eventReceived);
 		searchField.setText("test");
@@ -134,6 +146,8 @@ public class JXSearchFieldTest {
 		assertTrue(searchField.isRegularSearchMode());
 		assertSame(UIManager.getIcon("SearchField.rolloverIcon"), searchField.getSearchButton().getRolloverIcon());
 		assertSame(UIManager.getIcon("SearchField.pressedIcon"), searchField.getSearchButton().getPressedIcon());
+		
+		focused = true;
 		searchField.getSearchButton().doClick();
 		assertTrue(eventReceived);
 
@@ -304,6 +318,10 @@ public class JXSearchFieldTest {
 		assertFalse(eventReceived);
 		
 		searchField.setSearchMode(SearchMode.REGULAR);
+		focused = false;
+		searchField.getSearchAction().actionPerformed(null);
+		assertFalse(eventReceived);
+		focused = true;
 		searchField.getSearchAction().actionPerformed(null);
 		assertTrue(eventReceived);
 		
