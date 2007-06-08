@@ -28,17 +28,40 @@ import javax.swing.text.Document;
 
 import org.jdesktop.swingx.plaf.LookAndFeelAddons;
 import org.jdesktop.xswingx.plaf.JXSearchFieldAddon;
+import org.jdesktop.xswingx.plaf.PromptTextFieldUI;
 import org.jdesktop.xswingx.plaf.basic.BasicSearchFieldUI;
 
 /**
+ * A text field with a search icon in which the user enters text that identifies
+ * items to search for.
  * 
+ * JXSearchField almost looks and behaves like a native Windows Vista search
+ * box, a Mac OS X search field, or a search field like the one used in Mozilla
+ * Thunderbird 2.0 - depending on the current look and feel.
  * 
+ * JXSearchField is a text field that contains a search button and a clear
+ * button. The search button normally displays a lens icon appropriate for the
+ * current look and feel. The clear button is used to clear the text and
+ * therefore only visible when text is present. It normally displays a 'x' like
+ * icon. Text can also be cleared, using the 'Esc' key.
+ * 
+ * The position of the search and clear buttons can be customized by either
+ * changing the search fields (text) margin or button margin, or by changing the
+ * {@link LayoutStyle}.
+ * 
+ * JXSearchField supports two different search modes: {@link SearchMode#INSTANT}
+ * and {@link SearchMode#REGULAR}.
+ * 
+ * A search can be performed by registering an {@link ActionListener}. The
+ * {@link ActionEvent}s command property contains the text to search for. The
+ * search should be cancelled, when the command text is empty or null.
+ * 
+ * @see RecentSearches
  * @author Peter Weishapl <petw@gmx.net>
  * 
  */
 public class JXSearchField extends JXPromptField {
-	private static final KeyStroke CLEAR_KEY = KeyStroke.getKeyStroke(
-			KeyEvent.VK_ESCAPE, 0);
+	private static final KeyStroke CLEAR_KEY = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0);
 
 	/**
 	 * Defines, how the search and clear button are layouted.
@@ -51,8 +74,8 @@ public class JXSearchField extends JXPromptField {
 		 * replaced by the clear button when the actual search mode is
 		 * {@link SearchMode#INSTANT}. When the search mode is
 		 * {@link SearchMode#REGULAR} the search button will always stay visible
-		 * and the clear button will never be shown. However, 'escape' can still
-		 * be pressed to invoke the clear action.
+		 * and the clear button will never be shown. However, 'Escape' can still
+		 * be pressed to clear the text.
 		 * </p>
 		 */
 		VISTA,
@@ -90,8 +113,12 @@ public class JXSearchField extends JXPromptField {
 		REGULAR,
 		/**
 		 * In INSTANT search mode, an action event is fired, when the user
-		 * presses enter or changes the search text. No rollover and pressed
-		 * icon is used for the search button.
+		 * presses enter or changes the search text.
+		 * 
+		 * The action event is delayed about the number of milliseconds
+		 * specified by {@link JXSearchField#getInstantSearchDelay()}.
+		 * 
+		 * No rollover and pressed icon is used for the search button.
 		 */
 		INSTANT
 	}
@@ -127,14 +154,25 @@ public class JXSearchField extends JXPromptField {
 
 	private boolean layoutStyleSet;
 
-	private int instantSearchDelay;
+	private int instantSearchDelay = 50;
 
 	private boolean promptFontStyleSet;
 
+	private Timer instantSearch;
+
+	/**
+	 * Creates a new search field with a default prompt.
+	 */
 	public JXSearchField() {
 		this(UIManager.getString("SearchField.prompt"));
 	}
 
+	/**
+	 * Creates a new search field with the given prompt and
+	 * {@link SearchMode#INSTANT}.
+	 * 
+	 * @param prompt
+	 */
 	public JXSearchField(String prompt) {
 		setPrompt(prompt);
 
@@ -144,8 +182,7 @@ public class JXSearchField extends JXPromptField {
 		// then the ClearTextAction will never be called.
 		addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent e) {
-				if (CLEAR_KEY.equals(KeyStroke.getKeyStroke(e.getKeyCode(), e
-						.getModifiers()))) {
+				if (CLEAR_KEY.equals(KeyStroke.getKeyStroke(e.getKeyCode(), e.getModifiers()))) {
 					getClearAction().clear();
 				}
 			}
@@ -153,64 +190,163 @@ public class JXSearchField extends JXPromptField {
 		propertyChangeHandler.install();
 	}
 
+	/**
+	 * Overriden to prevent installation of {@link PromptSupport}. This is
+	 * handled by our UI class {@link BasicSearchFieldUI}, which is a
+	 * {@link PromptTextFieldUI}.
+	 * 
+	 * @see #setUI(TextUI)
+	 * @param labelText
+	 * @param labelTextColor
+	 */
 	protected void installPromptSupport(String labelText, Color labelTextColor) {
 		// don't! Handled by setUI
 	}
 
+	/**
+	 * Returns the current {@link SearchMode}.
+	 * 
+	 * @return the current {@link SearchMode}.
+	 */
 	public SearchMode getSearchMode() {
 		return searchMode;
 	}
 
+	/**
+	 * Returns <code>true</code> if the current {@link SearchMode} is
+	 * {@link SearchMode#INSTANT}.
+	 * 
+	 * @return
+	 */
 	public boolean isInstantSearchMode() {
 		return SearchMode.INSTANT.equals(getSearchMode());
 	}
 
+	/**
+	 * Returns <code>true</code> if the current {@link SearchMode} is
+	 * {@link SearchMode#REGULAR}.
+	 * 
+	 * @return
+	 */
 	public boolean isRegularSearchMode() {
 		return SearchMode.REGULAR.equals(getSearchMode());
 	}
 
+	/**
+	 * Sets the current search mode. See {@link SearchMode} for a description of
+	 * the different search modes.
+	 * 
+	 * @param searchMode
+	 *            {@link SearchMode#INSTANT} or {@link SearchMode#REGULAR}
+	 */
 	public void setSearchMode(SearchMode searchMode) {
-		firePropertyChange("searchMode", this.searchMode,
-				this.searchMode = searchMode);
+		firePropertyChange("searchMode", this.searchMode, this.searchMode = searchMode);
 	}
 
+	/**
+	 * Get the instant search delay in milliseconds. The default delay is 50
+	 * Milliseconds.
+	 * 
+	 * @see {@link #setInstantSearchDelay(int)}
+	 * @return the instant search delay in milliseconds
+	 */
 	public int getInstantSearchDelay() {
 		return instantSearchDelay;
 	}
 
+	/**
+	 * Set the instant search delay in milliseconds. In
+	 * {@link SearchMode#INSTANT}, when the user changes the text, an action
+	 * event will be fired after the specified instant search delay.
+	 * 
+	 * It is recommended to use a instant search delay to avoid the firing of
+	 * unnecessary events. For example when the user replaces the whole text
+	 * with a different text the search fields underlying {@link Document}
+	 * typically fires 2 document events. The first one, because the old text is
+	 * removed and the second one because the new text is inserted. If the
+	 * instant search delay is 0, this would result in 2 action events being
+	 * fired. When a instant search delay is used, the first document event
+	 * typically is ignored, because the second one is fired before the delay is
+	 * over, which results in a correct behavior because only the last and only
+	 * relevant event will be delivered.
+	 * 
+	 * @param instantSearchDelay
+	 */
 	public void setInstantSearchDelay(int instantSearchDelay) {
-		firePropertyChange("instantSearchDelay", this.instantSearchDelay,
-				this.instantSearchDelay = instantSearchDelay);
+		firePropertyChange("instantSearchDelay", this.instantSearchDelay, this.instantSearchDelay = instantSearchDelay);
 	}
 
+	/**
+	 * Get the current {@link LayoutStyle}.
+	 * 
+	 * @return
+	 */
 	public LayoutStyle getLayoutStyle() {
 		return layoutStyle;
 	}
 
+	/**
+	 * Returns <code>true</code> if the current {@link LayoutStyle} is
+	 * {@link LayoutStyle#VISTA}.
+	 * 
+	 * @return
+	 */
 	public boolean isVistaLayoutStyle() {
 		return LayoutStyle.VISTA.equals(getLayoutStyle());
 	}
 
+	/**
+	 * Returns <code>true</code> if the current {@link LayoutStyle} is
+	 * {@link LayoutStyle#MAC}.
+	 * 
+	 * @return
+	 */
 	public boolean isMacLayoutStyle() {
 		return LayoutStyle.MAC.equals(getLayoutStyle());
 	}
 
+	/**
+	 * Set the current {@link LayoutStyle}. See {@link LayoutStyle} for a
+	 * description of how this affects layout and behavior of the search field.
+	 * 
+	 * @param layoutStyle
+	 *            {@link LayoutStyle#MAC} or {@link LayoutStyle#VISTA}
+	 */
 	public void setLayoutStyle(LayoutStyle layoutStyle) {
 		layoutStyleSet = true;
-		firePropertyChange("layoutStyle", this.layoutStyle,
-				this.layoutStyle = layoutStyle);
+		firePropertyChange("layoutStyle", this.layoutStyle, this.layoutStyle = layoutStyle);
 	}
 
+	/**
+	 * Returns the margin between the search fields border and the search and
+	 * clear buttons.
+	 * 
+	 * @return
+	 */
 	public Insets getButtonMargin() {
 		return buttonMargin;
 	}
 
+	/**
+	 * Set the margin between the search fields border and the search and clear
+	 * buttons.
+	 * 
+	 * @param buttonMargin
+	 */
 	public void setButtonMargin(Insets buttonMargin) {
-		firePropertyChange("buttonMargin", this.buttonMargin,
-				this.buttonMargin = buttonMargin);
+		firePropertyChange("buttonMargin", this.buttonMargin, this.buttonMargin = buttonMargin);
 	}
 
-	public ClearAction getClearAction() {
+	/**
+	 * Set the margin space around the search field's text.
+	 * 
+	 * @see javax.swing.text.JTextComponent#setMargin(java.awt.Insets)
+	 */
+	public void setMargin(Insets m) {
+		super.setMargin(m);
+	}
+
+	public final ClearAction getClearAction() {
 		if (clearAction == null) {
 			clearAction = createClearAction();
 		}
@@ -221,7 +357,7 @@ public class JXSearchField extends JXPromptField {
 		return new ClearAction();
 	}
 
-	public JButton getClearButton() {
+	public final JButton getClearButton() {
 		if (clearButton == null) {
 			clearButton = createClearButton();
 		}
@@ -235,7 +371,7 @@ public class JXSearchField extends JXPromptField {
 		return btn;
 	}
 
-	public SearchAction getSearchAction() {
+	public final SearchAction getSearchAction() {
 		if (searchAction == null) {
 			searchAction = createSearchAction();
 		}
@@ -246,7 +382,7 @@ public class JXSearchField extends JXPromptField {
 		return new SearchAction();
 	}
 
-	public JButton getSearchButton() {
+	public final JButton getSearchButton() {
 		if (searchButton == null) {
 			searchButton = createSearchButton();
 		}
@@ -265,7 +401,7 @@ public class JXSearchField extends JXPromptField {
 	 * 
 	 * @return
 	 */
-	public JButton getPopupButton() {
+	public final JButton getPopupButton() {
 		if (popupButton == null) {
 			popupButton = createPopupButton();
 		}
@@ -282,8 +418,7 @@ public class JXSearchField extends JXPromptField {
 
 	public void setUseSeperatePopupButton(boolean useSeperatePopupButton) {
 		useSeperatePopupButtonSet = true;
-		firePropertyChange("useSeperatePopupButton",
-				this.useSeperatePopupButton,
+		firePropertyChange("useSeperatePopupButton", this.useSeperatePopupButton,
 				this.useSeperatePopupButton = useSeperatePopupButton);
 	}
 
@@ -321,8 +456,7 @@ public class JXSearchField extends JXPromptField {
 	 * @param searchPopupMenu
 	 */
 	public void setSearchPopupMenu(JPopupMenu searchPopupMenu) {
-		firePropertyChange("searchPopupMenu", this.searchPopupMenu,
-				this.searchPopupMenu = searchPopupMenu);
+		firePropertyChange("searchPopupMenu", this.searchPopupMenu, this.searchPopupMenu = searchPopupMenu);
 	}
 
 	public JPopupMenu getSearchPopupMenu() {
@@ -353,8 +487,7 @@ public class JXSearchField extends JXPromptField {
 		customSetUIProperty(propertyName, value, false);
 	}
 
-	public void customSetUIProperty(String propertyName, Object value,
-			boolean reset) {
+	public void customSetUIProperty(String propertyName, Object value, boolean reset) {
 		if (propertyName == "useSeperatePopupButton") {
 			if (!useSeperatePopupButtonSet || reset) {
 				setUseSeperatePopupButton(((Boolean) value).booleanValue());
@@ -373,6 +506,22 @@ public class JXSearchField extends JXPromptField {
 		} else {
 			throw new IllegalArgumentException();
 		}
+	}
+
+	/**
+	 * Overriden to prevent any delayed {@link ActionEvent}s from being sent
+	 * after posting this action.
+	 * 
+	 * For example, if the current {@link SearchMode} is
+	 * {@link SearchMode#INSTANT} and the instant search delay is greater 0. The
+	 * user enters some text and presses enter. This method will be invoked
+	 * immediately because the users presses enter. However, this method would
+	 * be invoked after the instant search delay, if we would not prevent it
+	 * here.
+	 */
+	public void postActionEvent() {
+		instantSearch.stop();
+		super.postActionEvent();
 	}
 
 	public static class IconButton extends JButton {
@@ -427,7 +576,7 @@ public class JXSearchField extends JXPromptField {
 		}
 
 		/**
-		 * Sets the search field's text to <code>null </code> and requests the
+		 * Sets the search field's text to <code>null</code> and requests the
 		 * focus for the search field.
 		 */
 		public void clear() {
@@ -441,24 +590,27 @@ public class JXSearchField extends JXPromptField {
 		}
 
 		/**
-		 * In regular search mode posts an action event. The action event is not
-		 * posted if a search popup menu is set and no seperate popup button is
-		 * used (thus, the search button is used as the popup button). Always
-		 * requests the focus for the search field.
+		 * In regular search mode posts an action event if the search field is
+		 * the focus owner. The action event is not posted if a search popup
+		 * menu is set and no seperate popup button is used (thus, the search
+		 * button is used as the popup button).
+		 * 
+		 * Requests the focus for the search field, if no popup menu will is set
+		 * and no seperate popup button is used. Always selects the whole text.
 		 */
 		public void actionPerformed(ActionEvent e) {
-			if (isRegularSearchMode()
-					&& (isUseSeperatePopupButton() || getSearchPopupMenu() == null)) {
-				postActionEvent();
+			if (isUseSeperatePopupButton() || getSearchPopupMenu() == null) {
+				if (isFocusOwner() && isRegularSearchMode()) {
+					postActionEvent();
+				}
+				requestFocusInWindow();
 			}
-			requestFocusInWindow();
+
+			selectAll();
 		}
 	}
 
-	class ChangeHandler implements PropertyChangeListener, DocumentListener,
-			ActionListener {
-		private Timer instantSearch;
-
+	class ChangeHandler implements PropertyChangeListener, DocumentListener, ActionListener {
 		public ChangeHandler() {
 			instantSearch = new Timer(0, this);
 			instantSearch.setRepeats(false);
@@ -524,9 +676,8 @@ public class JXSearchField extends JXPromptField {
 
 		private void updateButtonVisibility() {
 			if (clearButton != null) {
-				clearButton
-						.setVisible((!isRegularSearchMode() || isMacLayoutStyle())
-								&& getText() != null && getText().length() > 0);
+				clearButton.setVisible((!isRegularSearchMode() || isMacLayoutStyle()) && getText() != null
+						&& getText().length() > 0);
 			}
 			if (searchButton != null) {
 				if (isVistaLayoutStyle()) {
