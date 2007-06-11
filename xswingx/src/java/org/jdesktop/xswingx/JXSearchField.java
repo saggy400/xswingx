@@ -18,7 +18,6 @@ import javax.swing.JPopupMenu;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
-import javax.swing.UIDefaults;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.event.DocumentEvent;
@@ -89,6 +88,9 @@ public class JXSearchField extends JXPromptField {
 		MAC
 	};
 
+	/**
+	 * Defines when action events are posted.
+	 */
 	public enum SearchMode {
 		/**
 		 * <p>
@@ -196,10 +198,8 @@ public class JXSearchField extends JXPromptField {
 	 * {@link PromptTextFieldUI}.
 	 * 
 	 * @see #setUI(TextUI)
-	 * @param labelText
-	 * @param labelTextColor
 	 */
-	protected void installPromptSupport(String labelText, Color labelTextColor) {
+	protected void installPromptSupport(String promptText, Color promptForeground, Color promptBackground) {
 		// don't! Handled by setUI
 	}
 
@@ -216,7 +216,8 @@ public class JXSearchField extends JXPromptField {
 	 * Returns <code>true</code> if the current {@link SearchMode} is
 	 * {@link SearchMode#INSTANT}.
 	 * 
-	 * @return
+	 * @return <code>true</code> if the current {@link SearchMode} is
+	 *         {@link SearchMode#INSTANT}
 	 */
 	public boolean isInstantSearchMode() {
 		return SearchMode.INSTANT.equals(getSearchMode());
@@ -226,7 +227,8 @@ public class JXSearchField extends JXPromptField {
 	 * Returns <code>true</code> if the current {@link SearchMode} is
 	 * {@link SearchMode#REGULAR}.
 	 * 
-	 * @return
+	 * @return <code>true</code> if the current {@link SearchMode} is
+	 *         {@link SearchMode#REGULAR}
 	 */
 	public boolean isRegularSearchMode() {
 		return SearchMode.REGULAR.equals(getSearchMode());
@@ -346,6 +348,14 @@ public class JXSearchField extends JXPromptField {
 		super.setMargin(m);
 	}
 
+	/**
+	 * Returns the action that is invoked when the escape key is pressed or the
+	 * clear button is clicked.
+	 * 
+	 * Calls {@link #createClearAction()} to create the clear action, if needed.
+	 * 
+	 * @return the clear action
+	 */
 	public final ClearAction getClearAction() {
 		if (clearAction == null) {
 			clearAction = createClearAction();
@@ -353,10 +363,24 @@ public class JXSearchField extends JXPromptField {
 		return clearAction;
 	}
 
+	/**
+	 * Creates and returns the clear action. Override to use a custom clear
+	 * action
+	 * 
+	 * @see #getClearAction()
+	 * @return the clear action
+	 */
 	protected ClearAction createClearAction() {
 		return new ClearAction();
 	}
 
+	/**
+	 * Returns the clear button.
+	 * 
+	 * Calls {@link #createClearButton()} to create the clear button, if needed.
+	 * 
+	 * @return the clear button
+	 */
 	public final JButton getClearButton() {
 		if (clearButton == null) {
 			clearButton = createClearButton();
@@ -364,6 +388,15 @@ public class JXSearchField extends JXPromptField {
 		return clearButton;
 	}
 
+	/**
+	 * Creates and returns the clear button. The buttons action is set to the
+	 * action returned by {@link #getClearAction()}.
+	 * 
+	 * Override to use a custom clear button.
+	 * 
+	 * @see #getClearButton()
+	 * @return the clear button
+	 */
 	protected JButton createClearButton() {
 		IconButton btn = new IconButton();
 		btn.setAction(getClearAction());
@@ -371,6 +404,15 @@ public class JXSearchField extends JXPromptField {
 		return btn;
 	}
 
+	/**
+	 * Returns the action that is invoked when the enter key is pressed or the
+	 * search button is clicked.
+	 * 
+	 * Calls {@link #createSearchAction()} to create the search action, if
+	 * needed.
+	 * 
+	 * @return the search action
+	 */
 	public final SearchAction getSearchAction() {
 		if (searchAction == null) {
 			searchAction = createSearchAction();
@@ -378,10 +420,25 @@ public class JXSearchField extends JXPromptField {
 		return searchAction;
 	}
 
+	/**
+	 * Creates and returns the search action. Override to use a custom search
+	 * action.
+	 * 
+	 * @see #getSearchAction()
+	 * @return the search action
+	 */
 	protected SearchAction createSearchAction() {
 		return new SearchAction();
 	}
 
+	/**
+	 * Returns the search button.
+	 * 
+	 * Calls {@link #createSearchButton()} to create the search button, if
+	 * needed.
+	 * 
+	 * @return the search button
+	 */
 	public final JButton getSearchButton() {
 		if (searchButton == null) {
 			searchButton = createSearchButton();
@@ -389,17 +446,31 @@ public class JXSearchField extends JXPromptField {
 		return searchButton;
 	}
 
+	/**
+	 * Creates and returns the search button. The buttons action is set to the
+	 * action returned by {@link #getSearchAction()}.
+	 * 
+	 * Override to use a custom search button.
+	 * 
+	 * @see #getSearchButton()
+	 * @return the search button
+	 */
 	protected JButton createSearchButton() {
-		final IconButton searchButton = new IconButton();
-		searchButton.setAction(getSearchAction());
+		final IconButton btn = new IconButton();
+		btn.setAction(getSearchAction());
 
-		return searchButton;
+		return btn;
 	}
 
 	/**
-	 * Returns the popup button.
+	 * Returns the popup button. If a search popup menu is set, it will be
+	 * displayed when this button is clicked.
 	 * 
-	 * @return
+	 * This button will only be visible, if {@link #isUseSeperatePopupButton()}
+	 * returns <code>true</code>. Otherwise the popup menu will be displayed
+	 * when the search button is clicked.
+	 * 
+	 * @return the popup button
 	 */
 	public final JButton getPopupButton() {
 		if (popupButton == null) {
@@ -408,31 +479,70 @@ public class JXSearchField extends JXPromptField {
 		return popupButton;
 	}
 
+	/**
+	 * Creates and returns the popup button. Override to use a custom popup
+	 * button.
+	 * 
+	 * @see #getPopupButton()
+	 * @return the popup button
+	 */
 	protected JButton createPopupButton() {
 		return new IconButton();
 	}
 
+	/**
+	 * Returns <code>true</code> if the popup button should be visible and
+	 * used for displaying the search popup menu. Otherwise, the search popup
+	 * menu will be displayed when the search button is clicked.
+	 * 
+	 * @return <code>true</code> if the popup button should be used
+	 */
 	public boolean isUseSeperatePopupButton() {
 		return useSeperatePopupButton;
 	}
 
+	/**
+	 * Set if the popup button should be used for displaying the search popup
+	 * menu.
+	 * 
+	 * @param useSeperatePopupButton
+	 */
 	public void setUseSeperatePopupButton(boolean useSeperatePopupButton) {
 		useSeperatePopupButtonSet = true;
 		firePropertyChange("useSeperatePopupButton", this.useSeperatePopupButton,
 				this.useSeperatePopupButton = useSeperatePopupButton);
 	}
 
+	/**
+	 * Updates the clear, search and popup buttons enabled state in addition to
+	 * setting the search fields editable state.
+	 * 
+	 * @see #updateButtonState()
+	 * @see javax.swing.text.JTextComponent#setEditable(boolean)
+	 */
 	public void setEditable(boolean b) {
 		super.setEditable(b);
 		updateButtonState();
 	}
 
+	/**
+	 * Updates the clear, search and popup buttons enabled state in addition to
+	 * setting the search fields enabled state.
+	 * 
+	 * @see #updateButtonState()
+	 * @see javax.swing.text.JTextComponent#setEnabled(boolean)
+	 */
 	public void setEnabled(boolean enabled) {
 		super.setEnabled(enabled);
 		updateButtonState();
 	}
 
-	private void updateButtonState() {
+	/**
+	 * Enables the clear action if this search field is editable and enabled,
+	 * otherwise it will be disabled. Enabled the search action and popup button
+	 * if this search field is enabled, otherwise it will be disabled.
+	 */
+	protected void updateButtonState() {
 		getClearAction().setEnabled(isEditable() & isEnabled());
 		getSearchAction().setEnabled(isEnabled());
 		getPopupButton().setEnabled(isEnabled());
@@ -440,20 +550,19 @@ public class JXSearchField extends JXPromptField {
 
 	/**
 	 * <p>
-	 * Sets the menu, which will be displayed when the user presses the search
-	 * button. The icon of the search button will be changed to the
-	 * {@link UIDefaults} value "SearchField.icon", if
-	 * <code>searchPopupMenu</code> is <code>null</code>, or
-	 * "SearchField.popupIcon" otherwise.
+	 * Sets the menu, which will be displayed when the user presses the popup
+	 * button.
 	 * </p>
 	 * <p>
-	 * We could use the <code>searchButton</code>s
+	 * We could use the <code>popupButton</code>s
 	 * <code>componentPopupMenu</code> property instead of introducing another
 	 * property, if {@link JComponent#setComponentPopupMenu(JPopupMenu)} would
 	 * just fire a {@link PropertyChangeEvent}...
 	 * </p>
 	 * 
 	 * @param searchPopupMenu
+	 *            the popup menu, which will be displayed when the popup button
+	 *            is pressed
 	 */
 	public void setSearchPopupMenu(JPopupMenu searchPopupMenu) {
 		firePropertyChange("searchPopupMenu", this.searchPopupMenu, this.searchPopupMenu = searchPopupMenu);
@@ -688,7 +797,7 @@ public class JXSearchField extends JXPromptField {
 			}
 		}
 
-		public void actionPerformed(ActionEvent e) {
+		public void actionPerformed(final ActionEvent e) {
 			postActionEvent();
 		}
 	}
