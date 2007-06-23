@@ -86,20 +86,25 @@ public class PromptSupport {
 
 	/**
 	 * <p>
-	 * Wraps the current UI of the given <code>textComponent</code>, by
-	 * calling {@link #wrapUI(JTextComponent)} and calls
-	 * {@link #init(String, Color, JTextComponent)} with the given parameters.
+	 * Wraps and replaces the current UI of the given <code>textComponent</code>,
+	 * by calling {@link #wrapUI(JTextComponent)} if necessary.
 	 * </p>
 	 * <p>
 	 * Additionally a {@link PropertyChangeListener} is registered, which
-	 * listens for UI changes and wraps the new UI object.
+	 * listens for UI changes and wraps any new UI object.
 	 * </p>
 	 * 
 	 * @param textComponent
 	 */
 	private static void install(final JTextComponent textComponent) {
-		textComponent.setUI(wrapUI(textComponent));
+		replaceUIIfNeeded(textComponent);
 		textComponent.addPropertyChangeListener("UI", uiChangeHandler);
+	}
+
+	private static void replaceUIIfNeeded(JTextComponent txt) {
+		if (!(txt.getUI() instanceof PromptTextUI)) {
+			txt.setUI(wrapUI(txt.getUI()));
+		}
 	}
 
 	/**
@@ -164,10 +169,11 @@ public class PromptSupport {
 	 * 
 	 * @param promptText
 	 * @param promptForeground
-	 * @param promptBackground 
+	 * @param promptBackground
 	 * @param textComponent
 	 */
-	public static void init(String promptText, Color promptForeground, Color promptBackground, final JTextComponent textComponent) {
+	public static void init(String promptText, Color promptForeground, Color promptBackground,
+			final JTextComponent textComponent) {
 		setPrompt(promptText, textComponent);
 		setForeground(promptForeground, textComponent);
 		setBackground(promptBackground, textComponent);
@@ -216,8 +222,8 @@ public class PromptSupport {
 	 * <p>
 	 * Sets the prompt text on <code>textComponent</code>. Also sets the
 	 * tooltip text to the prompt text if <code>textComponent</code> has no
-	 * tooltip text or the current tooltip text is the same as the current label
-	 * text.
+	 * tooltip text or the current tooltip text is the same as the current
+	 * prompt text.
 	 * </p>
 	 * <p>
 	 * Calls {@link #install(JTextComponent)} to ensure that the
@@ -231,7 +237,7 @@ public class PromptSupport {
 	public static void setPrompt(String promptText, JTextComponent textComponent) {
 		install(textComponent);
 
-		// display labelText as tooltip by default
+		// display prompt as tooltip by default
 		if (textComponent.getToolTipText() == null || textComponent.getToolTipText().equals(getPrompt(textComponent))) {
 			textComponent.setToolTipText(promptText);
 		}
@@ -240,8 +246,8 @@ public class PromptSupport {
 	}
 
 	/**
-	 * Get the color of the prompt text. If no color has been set, the
-	 * <code>textComponent</code>s disabled text color will be returned.
+	 * Get the foreground color of the prompt text. If no color has been set,
+	 * the <code>textComponent</code>s disabled text color will be returned.
 	 * 
 	 * @param textComponent
 	 * @return the color of the prompt text or
@@ -255,8 +261,9 @@ public class PromptSupport {
 	}
 
 	/**
-	 * Sets the background color of the <code>textComponent</code>, when no
-	 * text is present and repaints the component to reflect the changes.
+	 * Sets the foreground color of the prompt on <code>textComponent</code>
+	 * and repaints the component to reflect the changes. This color will be
+	 * used when no text is present.
 	 * 
 	 * @param promptTextColor
 	 * @param textComponent
@@ -284,8 +291,9 @@ public class PromptSupport {
 
 	/**
 	 * <p>
-	 * Sets the color of the prompt text on <code>textComponent</code> and
-	 * repaints the component to reflect the changes.
+	 * Sets the prompts background color on <code>textComponent</code> and
+	 * repaints the component to reflect the changes. This background color will
+	 * only be used when no text is present.
 	 * </p>
 	 * <p>
 	 * Calls {@link #install(JTextComponent)} to ensure that the
@@ -298,7 +306,7 @@ public class PromptSupport {
 	 */
 	public static void setBackground(Color background, JTextComponent textComponent) {
 		install(textComponent);
-		
+
 		textComponent.putClientProperty(BACKGROUND, background);
 		textComponent.repaint();
 	}
@@ -341,11 +349,8 @@ public class PromptSupport {
 	private final static class UIChangeHandler implements PropertyChangeListener {
 		public void propertyChange(PropertyChangeEvent evt) {
 			JTextComponent txt = (JTextComponent) evt.getSource();
-			TextUI ui = (TextUI) evt.getNewValue();
 
-			if (!(ui instanceof PromptTextUI)) {
-				txt.setUI(wrapUI(ui));
-			}
+			replaceUIIfNeeded(txt);
 		}
 	}
 }
