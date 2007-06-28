@@ -11,7 +11,7 @@ PromptSupport.setPrompt("My Prompt", myTextComponent);
 }}}
 Writing your own "prompt support" certainly requires both, more code and effort.
 
-The prompt support is also very flexible. You can change the *focus behavior* (hide prompt, show prompt or highlight prompt), the prompt's foreground *color* and even the *font style* (Italic, like it the Windows Vista search box, if you like). Of course you can change the prompt text too.
+The prompt support is also very flexible. You can change the *focus behavior* (hide prompt, show prompt or highlight prompt), the prompt's *color* and even the *font style* (Italic, like it the Windows Vista search box, if you like). Of course you can change the prompt text too.
 
 Most importantly, the prompt support doesn't modify your text component's `Document`. Therefore no unwanted `DocumentEvent`s are fired and: `getText` always returns the real text - not the prompt!
 
