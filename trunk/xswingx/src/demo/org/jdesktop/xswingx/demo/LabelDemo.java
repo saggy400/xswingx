@@ -244,7 +244,8 @@ public class LabelDemo extends javax.swing.JFrame {
 		java.awt.EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				LabelDemo ld = new LabelDemo();
-				ld.getTabbedPane().addTab("Search Field", new SearchPanel());
+				ld.getTabbedPane().insertTab("Search Field", null, new SearchPanel(), null, 0);
+				ld.getTabbedPane().setSelectedIndex(0);
 				ld.pack();
 				ld.setVisible(true);
 			}

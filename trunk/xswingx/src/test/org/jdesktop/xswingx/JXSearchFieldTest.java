@@ -99,6 +99,8 @@ public class JXSearchFieldTest {
 		
 		eventReceived = false;
 		searchField.setInstantSearchDelay(100);
+		assertSame(100, searchField.getInstantSearchDelay());
+		
 		searchField.setText("search2");
 		assertFalse(eventReceived);
 	}
@@ -121,6 +123,15 @@ public class JXSearchFieldTest {
 		searchField.setSearchMode(SearchMode.REGULAR);
 		assertTrue(searchField.getSearchButton().isVisible());
 		assertFalse(searchField.getClearButton().isVisible());
+		
+		searchField.setSearchPopupMenu(new JPopupMenu());
+		searchField.setUseSeperatePopupButton(false);
+		assertFalse(searchField.getSearchButton().isVisible());
+		assertTrue(searchField.getPopupButton().isVisible());
+		
+		searchField.setUseSeperatePopupButton(true);
+		assertTrue(searchField.getSearchButton().isVisible());
+		assertTrue(searchField.getPopupButton().isVisible());
 	}
 
 	@Test
@@ -150,15 +161,6 @@ public class JXSearchFieldTest {
 		focused = true;
 		searchField.getSearchButton().doClick();
 		assertTrue(eventReceived);
-
-		eventReceived = false;
-		searchField.setSearchPopupMenu(new JPopupMenu());
-		try {
-			searchField.getSearchButton().doClick();
-			fail("must try to show search popup");
-		} catch (IllegalComponentStateException ex) {
-		}
-		assertFalse(eventReceived);
 	}
 
 	@Test
@@ -259,13 +261,13 @@ public class JXSearchFieldTest {
 		UIManager.put("SearchField.popupIcon", new TestIconUI("SearchField.popupIcon"));
 		UIManager.put("SearchField.popupRolloverIcon", new TestIconUI("SearchField.popupRolloverIcon"));
 		UIManager.put("SearchField.popupPressedIcon", new TestIconUI("SearchField.popupPressedIcon"));
-		searchField.setSearchPopupMenu(new JPopupMenu());
+		searchField.updateUI();
 		
-		assertSame(UIManager.getIcon("SearchField.popupIcon"),
+		assertNotSame(UIManager.getIcon("SearchField.popupIcon"),
 				searchField.getSearchButton().getIcon());
-		assertSame(UIManager.getIcon("SearchField.popupRolloverIcon"),
+		assertNotSame(UIManager.getIcon("SearchField.popupRolloverIcon"),
 				searchField.getSearchButton().getRolloverIcon());
-		assertSame(UIManager.getIcon("SearchField.popupPressedIcon"),
+		assertNotSame(UIManager.getIcon("SearchField.popupPressedIcon"),
 				searchField.getSearchButton().getPressedIcon());
 		
 		searchField.setUseSeperatePopupButton(true);
@@ -290,7 +292,8 @@ public class JXSearchFieldTest {
 	@Test
 	public void testPopupButton() throws Exception {
 		searchField.setSearchPopupMenu(new JPopupMenu());
-		assertFalse(searchField.getPopupButton().isVisible());
+		assertFalse(searchField.getSearchButton().isVisible());
+		assertTrue(searchField.getPopupButton().isVisible());
 		
 		assertFalse(searchField.isUseSeperatePopupButton());
 		searchField.addPropertyChangeListener("useSeperatePopupButton", new PropertyChangeListener(){
@@ -300,10 +303,12 @@ public class JXSearchFieldTest {
 		});
 		searchField.setUseSeperatePopupButton(true);
 		assertTrue(eventReceived);
+		assertTrue(searchField.getSearchButton().isVisible());
 		assertTrue(searchField.getPopupButton().isVisible());
 		
 		searchField.setSearchPopupMenu(null);
 		assertFalse(searchField.getPopupButton().isVisible());
+		assertTrue(searchField.getSearchButton().isVisible());
 	}
 	
 	@Test
@@ -326,11 +331,6 @@ public class JXSearchFieldTest {
 		assertTrue(eventReceived);
 		
 		eventReceived = false;
-		assertFalse(searchField.isUseSeperatePopupButton());
-		searchField.setSearchPopupMenu(new JPopupMenu());
-		searchField.getSearchAction().actionPerformed(null);
-		assertFalse(eventReceived);
-		
 		searchField.setUseSeperatePopupButton(true);
 		searchField.getSearchAction().actionPerformed(null);
 		assertTrue(eventReceived);

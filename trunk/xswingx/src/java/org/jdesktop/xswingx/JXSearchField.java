@@ -8,7 +8,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
@@ -20,8 +19,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import javax.swing.plaf.TextUI;
 import javax.swing.text.Document;
 
@@ -60,6 +57,13 @@ import org.jdesktop.xswingx.plaf.basic.BasicSearchFieldUI;
  * 
  */
 public class JXSearchField extends JXPromptField {
+	/**
+	 * The default instant search delay.
+	 */
+	private static final int DEFAULT_INSTANT_SEARCH_DELAY = 50;
+	/**
+	 * The key used to invoke the clear action.
+	 */
 	private static final KeyStroke CLEAR_KEY = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0);
 
 	/**
@@ -130,8 +134,6 @@ public class JXSearchField extends JXPromptField {
 		LookAndFeelAddons.contribute(new JXSearchFieldAddon());
 	}
 
-	private ChangeHandler propertyChangeHandler = new ChangeHandler();
-
 	private ClearAction clearAction;
 
 	private SearchAction searchAction;
@@ -156,11 +158,11 @@ public class JXSearchField extends JXPromptField {
 
 	private boolean layoutStyleSet;
 
-	private int instantSearchDelay = 50;
+	private int instantSearchDelay = DEFAULT_INSTANT_SEARCH_DELAY;
 
 	private boolean promptFontStyleSet;
 
-	private Timer instantSearch;
+	private Timer instantSearchTimer;
 
 	/**
 	 * Creates a new search field with a default prompt.
@@ -178,10 +180,10 @@ public class JXSearchField extends JXPromptField {
 	public JXSearchField(String prompt) {
 		setPrompt(prompt);
 
-		// We cannot register the ClearTextAction through the Input- and
+		// We cannot register the ClearAction through the Input- and
 		// ActionMap because ToolTipManager registers the escape key with an
 		// action that hides the tooltip every time the tooltip is changed and
-		// then the ClearTextAction will never be called.
+		// then the ClearAction will never be called.
 		addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent e) {
 				if (CLEAR_KEY.equals(KeyStroke.getKeyStroke(e.getKeyCode(), e.getModifiers()))) {
@@ -189,7 +191,6 @@ public class JXSearchField extends JXPromptField {
 				}
 			}
 		});
-		propertyChangeHandler.install();
 	}
 
 	/**
@@ -356,7 +357,7 @@ public class JXSearchField extends JXPromptField {
 	 * 
 	 * @return the clear action
 	 */
-	public final ClearAction getClearAction() {
+	protected final ClearAction getClearAction() {
 		if (clearAction == null) {
 			clearAction = createClearAction();
 		}
@@ -364,8 +365,8 @@ public class JXSearchField extends JXPromptField {
 	}
 
 	/**
-	 * Creates and returns the clear action. Override to use a custom clear
-	 * action
+	 * Creates and returns the {@link ClearAction}. Override to use a custom
+	 * clear action
 	 * 
 	 * @see #getClearAction()
 	 * @return the clear action
@@ -413,7 +414,7 @@ public class JXSearchField extends JXPromptField {
 	 * 
 	 * @return the search action
 	 */
-	public final SearchAction getSearchAction() {
+	protected final SearchAction getSearchAction() {
 		if (searchAction == null) {
 			searchAction = createSearchAction();
 		}
@@ -421,8 +422,8 @@ public class JXSearchField extends JXPromptField {
 	}
 
 	/**
-	 * Creates and returns the search action. Override to use a custom search
-	 * action.
+	 * Creates and returns {@link SearchAction}. Override to use a custom
+	 * search action.
 	 * 
 	 * @see #getSearchAction()
 	 * @return the search action
@@ -549,27 +550,71 @@ public class JXSearchField extends JXPromptField {
 	}
 
 	/**
-	 * <p>
-	 * Sets the menu, which will be displayed when the user presses the popup
-	 * button.
-	 * </p>
-	 * <p>
+	 * Sets the popup menu that will be displayed when the popup button is
+	 * clicked. If a search popup menu is set and
+	 * {@link #isUseSeperatePopupButton()} returns <code>false</code>, the
+	 * popup button will be displayed instead of the search button. Otherwise
+	 * the popup button will be displayed in addition to the search button.
+	 * 
 	 * We could use the <code>popupButton</code>s
 	 * <code>componentPopupMenu</code> property instead of introducing another
 	 * property, if {@link JComponent#setComponentPopupMenu(JPopupMenu)} would
 	 * just fire a {@link PropertyChangeEvent}...
-	 * </p>
+	 * 
 	 * 
 	 * @param searchPopupMenu
 	 *            the popup menu, which will be displayed when the popup button
-	 *            is pressed
+	 *            is clicked
 	 */
 	public void setSearchPopupMenu(JPopupMenu searchPopupMenu) {
 		firePropertyChange("searchPopupMenu", this.searchPopupMenu, this.searchPopupMenu = searchPopupMenu);
 	}
 
+	/**
+	 * Returns the search popup menu.
+	 * 
+	 * @see #setSearchPopupMenu(JPopupMenu)
+	 * @return the search popup menu
+	 */
 	public JPopupMenu getSearchPopupMenu() {
 		return searchPopupMenu;
+	}
+
+	/**
+	 * Returns the {@link Timer} used to delay the firing of action events in
+	 * instant search mode when the user enters text.
+	 * 
+	 * This timer calls {@link #postActionEvent()}.
+	 * 
+	 * @return the {@link Timer} used to delay the firing of action events
+	 */
+	public Timer getInstantSearchTimer() {
+		if (instantSearchTimer == null) {
+			instantSearchTimer = new Timer(0, new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					postActionEvent();
+				}
+			});
+			instantSearchTimer.setRepeats(false);
+		}
+		return instantSearchTimer;
+	}
+
+	/**
+	 * Returns <code>true</code> if this search field is the focus owner or
+	 * the search popup menu is visible.
+	 * 
+	 * This is a hack to make the search field paint the focus indicator in Mac
+	 * OS X Aqua when the search popup menu is visible.
+	 * 
+	 * @return <code>true</code> if this search field is the focus owner or
+	 *         the search popup menu is visible
+	 */
+	public boolean hasFocus() {
+		if (getSearchPopupMenu() != null && getSearchPopupMenu().isVisible()) {
+			return true;
+		}
+		return super.hasFocus();
 	}
 
 	public void setUI(TextUI ui) {
@@ -580,6 +625,9 @@ public class JXSearchField extends JXPromptField {
 		}
 	}
 
+	/**
+	 * Overriden to also update the search popup menu if set.
+	 */
 	public void updateUI() {
 		super.updateUI();
 		if (getSearchPopupMenu() != null) {
@@ -587,28 +635,52 @@ public class JXSearchField extends JXPromptField {
 		}
 	}
 
+	/**
+	 * Hack to enable the UI delegate to set default values depending on the
+	 * current Look and Feel, without overriding custom values.
+	 */
 	public void setPromptFontStyle(Integer fontStyle) {
 		super.setPromptFontStyle(fontStyle);
 		promptFontStyleSet = true;
 	}
 
+	/**
+	 * Hack to enable the UI delegate to set default values depending on the
+	 * current Look and Feel, without overriding custom values.
+	 * 
+	 * @param propertyName
+	 *            the name of the property to change
+	 * @param value
+	 *            the new value of the property
+	 */
 	public void customSetUIProperty(String propertyName, Object value) {
 		customSetUIProperty(propertyName, value, false);
 	}
 
-	public void customSetUIProperty(String propertyName, Object value, boolean reset) {
+	/**
+	 * Hack to enable the UI delegate to set default values depending on the
+	 * current Look and Feel, without overriding custom values.
+	 * 
+	 * @param propertyName
+	 *            the name of the property to change
+	 * @param value
+	 *            the new value of the property
+	 * @param override
+	 *            override custom values
+	 */
+	public void customSetUIProperty(String propertyName, Object value, boolean override) {
 		if (propertyName == "useSeperatePopupButton") {
-			if (!useSeperatePopupButtonSet || reset) {
+			if (!useSeperatePopupButtonSet || override) {
 				setUseSeperatePopupButton(((Boolean) value).booleanValue());
 				useSeperatePopupButtonSet = false;
 			}
 		} else if (propertyName == "layoutStyle") {
-			if (!layoutStyleSet || reset) {
+			if (!layoutStyleSet || override) {
 				setLayoutStyle((LayoutStyle) value);
 				layoutStyleSet = false;
 			}
 		} else if (propertyName == "promptFontStyle") {
-			if (!promptFontStyleSet || reset) {
+			if (!promptFontStyleSet || override) {
 				setPromptFontStyle((Integer) value);
 				promptFontStyleSet = false;
 			}
@@ -629,10 +701,14 @@ public class JXSearchField extends JXPromptField {
 	 * here.
 	 */
 	public void postActionEvent() {
-		instantSearch.stop();
+		getInstantSearchTimer().stop();
 		super.postActionEvent();
 	}
 
+	/**
+	 * Non focusable, no border, no margin and insets button with no content
+	 * area filled. Used for search, clear and popup buttons.
+	 */
 	public static class IconButton extends JButton {
 		public IconButton() {
 			setFocusable(false);
@@ -672,6 +748,11 @@ public class JXSearchField extends JXPromptField {
 		}
 	}
 
+	/**
+	 * Invoked when the the clear button or the 'Esc' key is pressed. Sets the
+	 * text in the search field to <code>null</code>.
+	 * 
+	 */
 	class ClearAction extends AbstractAction {
 		public ClearAction() {
 			putValue(SHORT_DESCRIPTION, "Clear Search Text");
@@ -694,111 +775,26 @@ public class JXSearchField extends JXPromptField {
 		}
 	}
 
+	/**
+	 * Invoked when the search button is pressed.
+	 */
 	public class SearchAction extends AbstractAction {
 		public SearchAction() {
 		}
 
 		/**
 		 * In regular search mode posts an action event if the search field is
-		 * the focus owner. The action event is not posted if a search popup
-		 * menu is set and no seperate popup button is used (thus, the search
-		 * button is used as the popup button).
+		 * the focus owner.
 		 * 
-		 * Requests the focus for the search field, if no popup menu will is set
-		 * and no seperate popup button is used. Always selects the whole text.
+		 * Also requests the focus for the search field and selects the whole
+		 * text.
 		 */
 		public void actionPerformed(ActionEvent e) {
-			if (isUseSeperatePopupButton() || getSearchPopupMenu() == null) {
-				if (isFocusOwner() && isRegularSearchMode()) {
-					postActionEvent();
-				}
-				requestFocusInWindow();
+			if (isFocusOwner() && isRegularSearchMode()) {
+				postActionEvent();
 			}
-
+			requestFocusInWindow();
 			selectAll();
-		}
-	}
-
-	class ChangeHandler implements PropertyChangeListener, DocumentListener, ActionListener {
-		public ChangeHandler() {
-			instantSearch = new Timer(0, this);
-			instantSearch.setRepeats(false);
-		}
-
-		public void install() {
-			install(getDocument());
-			addPropertyChangeListener(this);
-		}
-
-		public void propertyChange(PropertyChangeEvent evt) {
-			String prop = evt.getPropertyName();
-
-			if ("document".equals(prop)) {
-				Document doc = (Document) evt.getOldValue();
-				if (doc != null) {
-					uninstall(doc);
-				}
-				doc = (Document) evt.getNewValue();
-				if (doc != null) {
-					install(doc);
-				}
-			} else if ("searchMode".equals(prop) || "layoutStyle".equals(prop)) {
-				updateButtonVisibility();
-			}
-		}
-
-		public void install(Document doc) {
-			doc.addDocumentListener(this);
-			update();
-		}
-
-		private void uninstall(Document doc) {
-			doc.removeDocumentListener(this);
-		}
-
-		public void changedUpdate(DocumentEvent e) {
-			update();
-		}
-
-		public void insertUpdate(DocumentEvent e) {
-			update();
-		}
-
-		public void removeUpdate(DocumentEvent e) {
-			update();
-		}
-
-		private void update() {
-			if (isInstantSearchMode()) {
-				instantSearch.stop();
-				// only use timer when delay greater 0.
-				if (getInstantSearchDelay() > 0) {
-					instantSearch.setInitialDelay(getInstantSearchDelay());
-					instantSearch.start();
-				} else {
-					postActionEvent();
-				}
-			}
-
-			updateButtonVisibility();
-		}
-
-		private void updateButtonVisibility() {
-			if (clearButton != null) {
-				clearButton.setVisible((!isRegularSearchMode() || isMacLayoutStyle()) && getText() != null
-						&& getText().length() > 0);
-			}
-			if (searchButton != null) {
-				if (isVistaLayoutStyle()) {
-					searchButton.setVisible(!clearButton.isVisible());
-				} else {
-					searchButton.setVisible(true);
-				}
-			}
-		}
-
-		public void actionPerformed(final ActionEvent e) {
-			postActionEvent();
 		}
 	}
 }

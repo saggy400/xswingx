@@ -69,6 +69,7 @@ public abstract class PromptTextUITest {
         PromptSupport.setPrompt("test", textComponent);
         PromptSupport.setForeground(Color.BLACK, textComponent);
         PromptSupport.setBackground(Color.RED, textComponent);
+        
         textComponent.setBorder(BorderFactory.createBevelBorder(1));
         textComponent.setEnabled(false);
         textComponent.setEditable(false);
