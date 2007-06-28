@@ -40,7 +40,7 @@ By default, the color used for the prompt text is the text component's disabled 
 You can also set a background color for the promp by calling `PromptSupport.setBackground()`.
 
 =Use the Prompt Text Components=
-If you are creating a new form for your application, you probably want to use a graphical editor like _JFormDesigner_ or _Matisse_ to change you text components properties. In this case it is handy to use one of the prebuilt text components, which support prompt customization via JavaBean properties: [http://xswingx.googlecode.com/svn/trunk/xswingx/doc/api/org/jdesktop/xswingx/JXPromptField.html JXPromptField], [http://xswingx.googlecode.com/svn/trunk/xswingx/doc/api/org/jdesktop/xswingx/JXPromptArea.html JXPromptArea], or [http://xswingx.googlecode.com/svn/trunk/xswingx/doc/api/org/jdesktop/xswingx/JXFormattedPromptField.html JXFormattedPromptField]. These classes simply extend JTextField, JTextArea, or JFormattedTextField respectively, and add properties supported by [http://xswingx.googlecode.com/svn/trunk/xswingx/doc/api/org/jdesktop/xswingx/PromptSupport.html PromptSupport].
+If you are creating a new form for your application, you probably want to use a graphical editor like _JFormDesigner_ or _Matisse_ to change you text components properties. In this case it is handy to use one of the prebuilt text components, which support prompt customization via JavaBean properties: [http://xswingx.googlecode.com/svn/trunk/xswingx/src/java/org/jdesktop/xswingx/JXPromptField.java JXPromptField], [http://xswingx.googlecode.com/svn/trunk/xswingx/src/java/org/jdesktop/xswingx/JXPromptArea.java JXPromptArea], or [http://xswingx.googlecode.com/svn/trunk/xswingx/src/java/org/jdesktop/xswingx/JXFormattedPromptField.java JXFormattedPromptField]. These classes simply extend JTextField, JTextArea, or JFormattedTextField respectively, and add properties supported by [http://xswingx.googlecode.com/svn/trunk/xswingx/src/java/org/jdesktop/xswingx/PromptSupport.java PromptSupport].
 
 Note: You need the whole xswingx library to use these components.
 
@@ -116,6 +116,8 @@ The search field will automatically change it's icon (the Windows LnF even uses 
 ||*Windows XP*||[http://xswingx.googlecode.com/svn/wiki/images/searchfield_xp_popup.png]||[http://xswingx.googlecode.com/svn/wiki/images/searchfield_xp_popup_clicked.png]||
 ||*Vista*||[http://xswingx.googlecode.com/svn/wiki/images/searchfield_vista_popup.png]||[http://xswingx.googlecode.com/svn/wiki/images/searchfield_vista_popup_clicked.png]||
 ||*Mac*||[http://xswingx.googlecode.com/svn/wiki/images/searchfield_mac_popup.png]||[http://xswingx.googlecode.com/svn/wiki/images/searchfield_mac_popup_clicked.png]||
+
+
 
 
 
