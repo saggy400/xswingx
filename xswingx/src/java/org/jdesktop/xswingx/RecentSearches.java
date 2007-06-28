@@ -2,9 +2,11 @@ package org.jdesktop.xswingx;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.security.AccessControlException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Logger;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 
@@ -13,8 +15,6 @@ import javax.swing.JPopupMenu;
 import javax.swing.UIManager;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-
-import org.jdesktop.xswingx.JXSearchField.SearchMode;
 
 /**
  * Maintains a list of recent searches and persists this list automatically
@@ -25,7 +25,7 @@ import org.jdesktop.xswingx.JXSearchField.SearchMode;
  * 
  */
 public class RecentSearches implements ActionListener {
-	private Preferences prefs;
+	private Preferences prefsNode;
 
 	private int maxRecents = 5;
 
@@ -42,7 +42,7 @@ public class RecentSearches implements ActionListener {
 	 *            a unique name for saving this list of recent searches
 	 */
 	public RecentSearches(String saveName) {
-		this(Preferences.userRoot(), saveName);
+		this(null, saveName);
 	}
 
 	/**
@@ -50,21 +50,38 @@ public class RecentSearches implements ActionListener {
 	 * persist this list under the <code>prefs</code> node. Existing entries
 	 * will be loaded automatically.
 	 * 
-	 * @param prefs
-	 *            the preferences node under which this list will be persisted
+	 * @param prefsNode
+	 *            the preferences node under which this list will be persisted.
+	 *            If prefsNode is <code>null</code> the preferences node will be
+	 *            set to the user root node
 	 * @param saveName
-	 *            a unique name for saving this list of recent searches
+	 *            a unique name for saving this list of recent searches. If
+	 *            saveName is <code>null</code>, the list will not be
+	 *            persisted
 	 */
 	public RecentSearches(Preferences prefs, String saveName) {
-		this.prefs = prefs.node(saveName);
-		load();
+		if (prefs == null) {
+			try {
+				prefs = Preferences.userRoot();
+			} catch (AccessControlException ace) {
+				// disable persistency, if we aren't allowed to access
+				// preferences.
+				Logger.getLogger(getClass().getName()).warning("cannot acces preferences. persistency disabled.");
+			}
+		}
+
+		if (prefs != null && saveName != null) {
+			this.prefsNode = prefs.node(saveName);
+			load();
+		}
 	}
 
 	private void load() {
+		// load persisted entries
 		try {
-			String[] recent = new String[prefs.keys().length];
-			for (String key : prefs.keys()) {
-				recent[prefs.getInt(key, -1)] = key;
+			String[] recent = new String[prefsNode.keys().length];
+			for (String key : prefsNode.keys()) {
+				recent[prefsNode.getInt(key, -1)] = key;
 			}
 			recentSearches.addAll(Arrays.asList(recent));
 		} catch (Exception ex) {
@@ -73,18 +90,20 @@ public class RecentSearches implements ActionListener {
 	}
 
 	private void save() {
+		if (prefsNode == null) {
+			return;
+		}
+
 		try {
-			prefs.clear();
+			prefsNode.clear();
 		} catch (BackingStoreException e) {
 			// ignore
 		}
 
 		int i = 0;
 		for (String search : recentSearches) {
-			prefs.putInt(search, i++);
+			prefsNode.putInt(search, i++);
 		}
-
-		fireChangeEvent();
 	}
 
 	/**
@@ -114,6 +133,7 @@ public class RecentSearches implements ActionListener {
 			recentSearches.remove(recentSearches.size() - 1);
 		}
 		save();
+		fireChangeEvent();
 	}
 
 	/**
@@ -140,6 +160,7 @@ public class RecentSearches implements ActionListener {
 	public void removeAll() {
 		recentSearches.clear();
 		save();
+		fireChangeEvent();
 	}
 
 	/**
