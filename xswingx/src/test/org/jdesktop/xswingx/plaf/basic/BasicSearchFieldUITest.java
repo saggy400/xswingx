@@ -3,6 +3,7 @@ package org.jdesktop.xswingx.plaf.basic;
 import static org.junit.Assert.assertSame;
 
 import javax.swing.UIManager;
+import javax.swing.text.AbstractDocument;
 
 import org.jdesktop.xswingx.JXSearchField;
 import org.junit.Before;
@@ -26,9 +27,18 @@ public class BasicSearchFieldUITest {
 		ui.uninstallUI(sf);
 		assertSame(0, sf.getComponentCount());
 	}
+
+	@Test
+	public void testDocumentListener() throws Exception {
+		assertSame(3, ((AbstractDocument)sf.getDocument()).getDocumentListeners().length);
+		ui.uninstallUI(sf);
+		assertSame(0, ((AbstractDocument)sf.getDocument()).getDocumentListeners().length);
+	}
 	
 	@Test
-	public void testPopupButton() throws Exception {
-		
+	public void testPopupListener() throws Exception {
+		assertSame(1, sf.getPopupButton().getActionListeners().length);
+		ui.uninstallUI(sf);
+		assertSame(0, sf.getPopupButton().getActionListeners().length);
 	}
 }

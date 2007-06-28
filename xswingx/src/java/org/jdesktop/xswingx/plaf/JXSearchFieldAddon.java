@@ -15,6 +15,9 @@ import org.jdesktop.swingx.plaf.LookAndFeelAddons;
 import org.jdesktop.xswingx.JXSearchField.LayoutStyle;
 
 public class JXSearchFieldAddon extends AbstractComponentAddon {
+	public static final String SEARCH_FIELD_SOURCE = "searchField";
+	public static final String BUTTON_SOURCE = "button";
+
 	public JXSearchFieldAddon() {
 		super("JXSearchField");
 	}
@@ -41,7 +44,8 @@ public class JXSearchFieldAddon extends AbstractComponentAddon {
 						"SearchField.clearPressedIcon",
 						getIcon("basic/resources/clear_pressed.gif"),
 						"SearchField.buttonMargin",
-						new InsetsUIResource(1, 1, 1, 1) }));
+						new InsetsUIResource(1, 1, 1, 1),
+						"SearchField.popupSource", BUTTON_SOURCE}));
 		
 		addResource(defaults, "org.jdesktop.xswingx.plaf.basic.resources.SearchField");
 	}
@@ -139,7 +143,8 @@ public class JXSearchFieldAddon extends AbstractComponentAddon {
 						"SearchField.clearPressedIcon",
 						getIcon("macosx/resources/clear_pressed.png"),
 						"SearchField.buttonMargin",
-						new InsetsUIResource(0, 0, 0, 0) }));
+						new InsetsUIResource(0, 0, 0, 0),
+						"SearchField.popupSource", SEARCH_FIELD_SOURCE}));
 
 	}
 

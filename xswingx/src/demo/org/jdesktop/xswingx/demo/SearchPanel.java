@@ -44,6 +44,7 @@ public class SearchPanel extends javax.swing.JPanel {
         change = true;
         rbMac.setSelected(searchField.isMacLayoutStyle());
         rbVista.setSelected(searchField.isVistaLayoutStyle());
+        spnDelay.setValue(searchField.getInstantSearchDelay());
         change = false;
     }
     

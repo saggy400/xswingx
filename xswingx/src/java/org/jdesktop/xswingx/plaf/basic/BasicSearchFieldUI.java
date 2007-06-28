@@ -18,16 +18,35 @@ import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.plaf.TextUI;
 import javax.swing.plaf.UIResource;
+import javax.swing.plaf.basic.BasicBorders.MarginBorder;
+import javax.swing.text.Document;
 
 import org.jdesktop.xswingx.JXSearchField;
+import org.jdesktop.xswingx.plaf.JXSearchFieldAddon;
 import org.jdesktop.xswingx.plaf.PromptTextFieldUI;
 
+/**
+ * The default {@link JXSearchField} UI delegate.
+ * 
+ * @author Peter Weishapl <petw@gmx.net>
+ * 
+ */
 public class BasicSearchFieldUI extends PromptTextFieldUI {
-	private JXSearchField searchField;
+	/**
+	 * The search field that we're a UI delegate for. Initialized by the
+	 * <code>installUI</code> method, and reset to null by
+	 * <code>uninstallUI</code>.
+	 * 
+	 * @see #installUI
+	 * @see #uninstallUI
+	 */
+	protected JXSearchField searchField;
 
-	private Handler handler = new Handler();
+	private Handler handler;
 
 	public static final Insets NO_INSETS = new Insets(0, 0, 0, 0);
 
@@ -35,6 +54,35 @@ public class BasicSearchFieldUI extends PromptTextFieldUI {
 		super(delegate);
 	}
 
+	private Handler getHandler() {
+		if (handler == null) {
+			handler = new Handler();
+		}
+		return handler;
+	}
+
+	/**
+	 * Create a {@link LayoutManager} that manages the <code>searchButton</code>,
+	 * <code>clearButton</code>, and <code>popupButton</code> children of
+	 * the {@link JXSearchField}. Override to implement a custom
+	 * {@link LayoutManager}.
+	 * 
+	 * @return a LayoutManager for the search button, clear button, and popup
+	 *         button.
+	 * @see JXSearchField#getSearchButton()
+	 * @see JXSearchField#getSearchButton()
+	 * @see JXSearchField#getSearchButton()
+	 */
+	protected LayoutManager createLayout() {
+		return getHandler();
+	}
+
+	/**
+	 * Calls {@link #installDefaults()}, adds the search, clear and popup
+	 * button to the search field and registers a {@link PropertyChangeListener}
+	 * ad {@link DocumentListener} and an {@link ActionListener} on the popup
+	 * button.
+	 */
 	public void installUI(JComponent c) {
 		super.installUI(c);
 		searchField = (JXSearchField) c;
@@ -45,9 +93,23 @@ public class BasicSearchFieldUI extends PromptTextFieldUI {
 		searchField.add(clearButton());
 		searchField.add(popupButton());
 
-		searchField.addPropertyChangeListener(handler);
+		popupButton().addActionListener(getHandler());
+		searchField.getDocument().addDocumentListener(getHandler());
+		searchField.addPropertyChangeListener(getHandler());
 	}
 
+	/**
+	 * Initialize the search fields various properties based on the
+	 * corresponding "SearchField.*" properties from defaults table. The
+	 * {@link JXSearchField}s layout is set to the value returned by
+	 * <code>createLayout</code>. Also calls
+	 * {@link #replaceBorderIfNecessary()} and {@link #updateButtons()}. This
+	 * method is called by {@link #installUI(JComponent)}.
+	 * 
+	 * @see #installUI
+	 * @see #createLayout
+	 * @see JXSearchField#customSetUIProperty(String, Object)
+	 */
 	protected void installDefaults() {
 		if (UIManager.getBoolean("SearchField.useSeperatePopupButton")) {
 			searchField.customSetUIProperty("useSeperatePopupButton", Boolean.TRUE);
@@ -62,101 +124,199 @@ public class BasicSearchFieldUI extends PromptTextFieldUI {
 			searchField.setButtonMargin(UIManager.getInsets("SearchField.buttonMargin"));
 		}
 
-		updateSearchButton();
+		updateButtons();
 
-		if (clearButton() != null) {
-			if (shouldReplaceResource(clearButton().getIcon())) {
-				clearButton().setIcon(UIManager.getIcon("SearchField.clearIcon"));
-			}
-			if (shouldReplaceResource(clearButton().getPressedIcon())) {
-				clearButton().setPressedIcon(UIManager.getIcon("SearchField.clearPressedIcon"));
-			}
-			if (shouldReplaceResource(clearButton().getRolloverIcon())) {
-				clearButton().setRolloverIcon(UIManager.getIcon("SearchField.clearRolloverIcon"));
-			}
+		if (shouldReplaceResource(clearButton().getIcon())) {
+			clearButton().setIcon(UIManager.getIcon("SearchField.clearIcon"));
 		}
+		if (shouldReplaceResource(clearButton().getPressedIcon())) {
+			clearButton().setPressedIcon(UIManager.getIcon("SearchField.clearPressedIcon"));
+		}
+		if (shouldReplaceResource(clearButton().getRolloverIcon())) {
+			clearButton().setRolloverIcon(UIManager.getIcon("SearchField.clearRolloverIcon"));
+		}
+
+		searchButton().setIcon(getNewIcon(searchButton().getIcon(), "SearchField.icon"));
+
+		popupButton().setIcon(getNewIcon(popupButton().getIcon(), "SearchField.popupIcon"));
+		popupButton().setRolloverIcon(getNewIcon(popupButton().getRolloverIcon(), "SearchField.popupRolloverIcon"));
+		popupButton().setPressedIcon(getNewIcon(popupButton().getPressedIcon(), "SearchField.popupPressedIcon"));
 
 		replaceBorderIfNecessary();
-		replaceLayoutIfNecessary();
+		searchField.setLayout(createLayout());
 	}
 
-	protected void updateSearchButton() {
-		searchButton().removeActionListener(handler);
-		if (searchButton() != null) {
-			if (searchField.getSearchPopupMenu() == null || usingSeperatePopupButton()) {
-				searchButton().setIcon(getNewIcon(searchButton().getIcon(), "SearchField.icon"));
-				if (searchField.isRegularSearchMode()) {
-					searchButton().setRolloverIcon(
-							getNewIcon(searchButton().getRolloverIcon(), "SearchField.rolloverIcon"));
-					searchButton().setPressedIcon(
-							getNewIcon(searchButton().getPressedIcon(), "SearchField.pressedIcon"));
-				} else {
-					// no action, therefore no rollover icon.
-					if (shouldReplaceResource(searchButton().getRolloverIcon())) {
-						searchButton().setRolloverIcon(null);
-					}
-					if (shouldReplaceResource(searchButton().getPressedIcon())) {
-						searchButton().setPressedIcon(null);
-					}
-				}
-			} else if (!usingSeperatePopupButton()) {
-				installPopupIcons(searchButton());
-				searchButton().addActionListener(handler);
-			}
-		}
-		if (popupButton() != null) {
-			if (usingSeperatePopupButton()) {
-				installPopupIcons(popupButton());
-				popupButton().addActionListener(handler);
-			}
-			popupButton().setVisible(usingSeperatePopupButton());
-		}
-	}
-
-	private void installPopupIcons(JButton btn) {
-		btn.setIcon(getNewIcon(btn.getIcon(), "SearchField.popupIcon"));
-		btn.setRolloverIcon(getNewIcon(btn.getRolloverIcon(), "SearchField.popupRolloverIcon"));
-		btn.setPressedIcon(getNewIcon(btn.getPressedIcon(), "SearchField.popupPressedIcon"));
-	}
-
+	/**
+	 * Removes all installed listeners, the layout and resets the search field
+	 * original border and removes all children.
+	 */
 	public void uninstallUI(JComponent c) {
 		super.uninstallUI(c);
-		searchField.removePropertyChangeListener(handler);
+		searchField.removePropertyChangeListener(getHandler());
+		searchField.getDocument().removeDocumentListener(getHandler());
+		popupButton().removeActionListener(getHandler());
 
-		searchField.setLayout(handler.layoutDelegate);
-		searchField.setBorder(handler.borderDelegate);
+		searchField.setLayout(null);
+		searchField.setBorder(getHandler().borderDelegate);
+		searchField.removeAll();
 		searchField = null;
 	}
 
-	protected void replaceLayoutIfNecessary() {
-		LayoutManager original = searchField.getLayout();
-
-		if (!(original instanceof Handler)) {
-			handler.layoutDelegate = original;
-			searchField.setLayout(handler);
-		}
-	}
-
+	/**
+	 * Wraps and replaces the search fields defaut border with
+	 * {@link #getHandler()} if necessary, to honor the button margins and sizes
+	 * of the search, clear and popup buttons and the layout style.
+	 */
 	protected void replaceBorderIfNecessary() {
 		Border original = searchField.getBorder();
 
 		if (!(original instanceof Handler)) {
-			handler.borderDelegate = original;
-			searchField.setBorder(handler);
+			getHandler().borderDelegate = original;
+			searchField.setBorder(getHandler());
 		}
 	}
 
+	/**
+	 * Returns true if <code>o</code> is <code>null</code> or of instance
+	 * {@link UIResource}.
+	 * 
+	 * @param o
+	 *            an object
+	 * @return true if <code>o</code> is <code>null</code> or of instance
+	 *         {@link UIResource}
+	 */
+	protected boolean shouldReplaceResource(Object o) {
+		return o == null || o instanceof UIResource;
+	}
+
+	/**
+	 * Convience method for only replacing icons if they have not been
+	 * customized by the user. Returns the icon from the defaults table
+	 * belonging to <code>resKey</code>, if
+	 * {@link #shouldReplaceResource(Object)} with the <code>icon</code> as a
+	 * parameter returns <code>true</code>. Otherwise returns
+	 * <code>icon</code>.
+	 * 
+	 * @param icon
+	 *            the current icon
+	 * @param resKey
+	 *            the resource key identifying the default icon
+	 * @return the new icon
+	 */
+	protected Icon getNewIcon(Icon icon, String resKey) {
+		Icon uiIcon = UIManager.getIcon(resKey);
+		if (shouldReplaceResource(icon)) {
+			return uiIcon;
+		}
+		return icon;
+	}
+
+	/**
+	 * Convienence method.
+	 * 
+	 * @see JXSearchField#getClearButton()
+	 * @return the clear button
+	 */
+	protected final JButton clearButton() {
+		return searchField.getClearButton();
+	}
+
+	/**
+	 * Convienence method.
+	 * 
+	 * @see JXSearchField#getSearchButton()
+	 * @return the search button
+	 */
+	protected final JButton searchButton() {
+		return searchField.getSearchButton();
+	}
+
+	/**
+	 * Convienence method.
+	 * 
+	 * @see JXSearchField#getPopupButton()
+	 * @return the popup button
+	 */
+	protected final JButton popupButton() {
+		return searchField.getPopupButton();
+	}
+
+	/**
+	 * Returns <code>true</code> if
+	 * {@link JXSearchField#isUseSeperatePopupButton()} is <code>true</code>
+	 * and a search popup menu has been set.
+	 * 
+	 * @return the popup button is used in addition to the search button
+	 */
+	public boolean usingSeperatePopupButton() {
+		return searchField.isUseSeperatePopupButton() && searchField.getSearchPopupMenu() != null;
+	}
+
+	/**
+	 * Returns the number of pixels between the popup button and the clear (or
+	 * search) button as specified in the default table by
+	 * 'SearchField.popupOffset'. Returns 0 if
+	 * {@link #usingSeperatePopupButton()} returns <code>false</code>
+	 * 
+	 * @return number of pixels between the popup button and the clear (or
+	 *         search) button
+	 */
+	protected int getPopupOffset() {
+		if (usingSeperatePopupButton()) {
+			return UIManager.getInt("SearchField.popupOffset");
+		}
+		return 0;
+	}
+
+	/**
+	 * Sets the visibility of the search, clear and popup buttons depending on
+	 * the search mode, layout stye, search text, search popup menu and the use
+	 * of a seperate popup button. Also resets the search buttons pressed and
+	 * rollover icons if the search field is in regular search mode or clears
+	 * the icons when the search field is in instant search mode.
+	 */
+	protected void updateButtons() {
+		clearButton().setVisible(
+				(!searchField.isRegularSearchMode() || searchField.isMacLayoutStyle()) && searchField.getText() != null
+						&& searchField.getText().length() > 0);
+
+		boolean clearNotHere = (searchField.isMacLayoutStyle() || !clearButton().isVisible());
+
+		searchButton().setVisible(
+				(searchField.getSearchPopupMenu() == null || usingSeperatePopupButton()) && clearNotHere);
+		popupButton().setVisible(
+				searchField.getSearchPopupMenu() != null && (clearNotHere || usingSeperatePopupButton()));
+
+		if (searchField.isRegularSearchMode()) {
+			searchButton().setRolloverIcon(getNewIcon(searchButton().getRolloverIcon(), "SearchField.rolloverIcon"));
+			searchButton().setPressedIcon(getNewIcon(searchButton().getPressedIcon(), "SearchField.pressedIcon"));
+		} else {
+			// no action, therefore no rollover icon.
+			if (shouldReplaceResource(searchButton().getRolloverIcon())) {
+				searchButton().setRolloverIcon(null);
+			}
+			if (shouldReplaceResource(searchButton().getPressedIcon())) {
+				searchButton().setPressedIcon(null);
+			}
+		}
+	}
+
+	/**
+	 * Overriden to increase the preferred height if necessary to fit the
+	 * search, clear or popup button into the search field.
+	 */
 	public Dimension getPreferredSize(JComponent c) {
 		Dimension d = (Dimension) super.getPreferredSize(c);
 		if (searchField == null) {
 			return d;
 		}
 
-		Insets insets = handler.getRealBorderInsets();
+		Insets insets = getHandler().getRealBorderInsets();
 		Insets margin = searchField.getButtonMargin();
 
-		int buttonHeight = Math.max(searchButton() != null ? searchButton().getPreferredSize().height : 0,
-				clearButton() != null ? clearButton().getPreferredSize().height : 0);
+		int buttonHeight = Math.max(popupButton().isVisible() ? popupButton().getPreferredSize().height : 0, Math.max(
+				searchButton().isVisible() ? searchButton().getPreferredSize().height : 0, clearButton()
+						.getPreferredSize().height));
 
 		if (insets != null) {
 			buttonHeight += insets.top + insets.bottom;
@@ -169,58 +329,30 @@ public class BasicSearchFieldUI extends PromptTextFieldUI {
 		return d;
 	}
 
-	protected boolean shouldReplaceResource(Object o) {
-		return o == null || o instanceof UIResource;
-	}
-
-	protected Icon getNewIcon(Icon icon, String resKey) {
-		Icon uiIcon = UIManager.getIcon(resKey);
-		if (shouldReplaceResource(icon)) {
-			return uiIcon;
-		}
-		return icon;
-	}
-
-	protected JButton clearButton() {
-		return searchField != null ? searchField.getClearButton() : null;
-	}
-
-	protected JButton searchButton() {
-		return searchField != null ? searchField.getSearchButton() : null;
-	}
-
-	protected JButton popupButton() {
-		return searchField != null ? searchField.getPopupButton() : null;
-	}
-
-	protected int getPopupOffset() {
-		if (usingSeperatePopupButton()) {
-			return UIManager.getInt("SearchField.popupOffset");
-		}
-		return 0;
-	}
-
-	public boolean usingSeperatePopupButton() {
-		return searchField != null ? searchField.isUseSeperatePopupButton() && searchField.getSearchPopupMenu() != null
-				: false;
-	}
-
-	class Handler implements Border, LayoutManager, PropertyChangeListener, ActionListener {
+	class Handler implements Border, LayoutManager, PropertyChangeListener, ActionListener, DocumentListener {
 		private Border borderDelegate;
 
-		private LayoutManager layoutDelegate;
-
+		/**
+		 * Returns the {@link Insets} of the original {@link Border} plus the
+		 * space required by the search, clear, and popup buttons and also the
+		 * button margin and the popup offset.
+		 * 
+		 * @see javax.swing.border.Border#getBorderInsets(java.awt.Component)
+		 */
 		public Insets getBorderInsets(Component c) {
 			if (searchField == null) {
 				return NO_INSETS;
 			}
 
-			// include margin here
+			// Original insets are cloned to make it work in Mac OS X Aqua LnF.
+			// Seems that this LnF uses a shared insets instance which should
+			// not be modified.
+			// Include margin here
 			Insets insets = borderDelegate != null ? (Insets) borderDelegate.getBorderInsets(c).clone() : NO_INSETS;
 			if (searchField.isVistaLayoutStyle()) {
-				insets.right += Math.max(searchButtonWidth(), clearButtonWidth());
+				insets.right += Math.max(searchOrPopupButtonWidth(), clearButtonWidth());
 			} else {
-				insets.left += searchButtonWidth();
+				insets.left += searchOrPopupButtonWidth();
 				insets.right += clearButtonWidth();
 			}
 
@@ -238,25 +370,38 @@ public class BasicSearchFieldUI extends PromptTextFieldUI {
 			return insets;
 		}
 
-		private int searchButtonWidth() {
-			return searchButton() != null ? searchButton().getPreferredSize().width : 0;
+		private int searchOrPopupButtonWidth() {
+			if (searchField.isUseSeperatePopupButton() || searchField.getSearchPopupMenu() == null) {
+				return searchButton().getPreferredSize().width;
+			}
+			return popupButton().getPreferredSize().width;
 		}
 
 		private int clearButtonWidth() {
 			return clearButton() != null ? clearButton().getPreferredSize().width : 0;
 		}
 
+		/**
+		 * Returns the insets of the original border (without the margin! Beware
+		 * of {@link MarginBorder}!).
+		 * 
+		 * @return the insets of the border delegate
+		 */
 		public Insets getRealBorderInsets() {
 			if (borderDelegate == null) {
 				return NO_INSETS;
 			}
-			// don't include margin
-			Insets insets = (Insets) borderDelegate.getBorderInsets(null)
-					.clone();
+			// don't include margin, thus: null.
+			Insets insets = (Insets) borderDelegate.getBorderInsets(null);
 
 			return insets;
 		}
 
+		/**
+		 * Returns the rectangle allocated by the search fields text.
+		 * 
+		 * @return the rectangle allocated by the search fields text
+		 */
 		protected Rectangle getVisibleRect() {
 			Rectangle alloc = (Rectangle) SwingUtilities.getLocalBounds(searchField);
 			Insets insets = getRealBorderInsets();
@@ -280,38 +425,36 @@ public class BasicSearchFieldUI extends PromptTextFieldUI {
 		}
 
 		public void layoutContainer(Container parent) {
-			layoutDelegate.layoutContainer(parent);
-
 			Rectangle visibleRect = getVisibleRect();
 
-			if (clearButton() != null && clearButton().getIcon() != null) {
-				layoutRightButton(visibleRect, clearButton());
-			}
-			if (searchButton() != null && searchButton().getIcon() != null) {
-				if (searchField.isVistaLayoutStyle()) {
-					layoutRightButton(visibleRect, searchButton());
-				} else {
-					layoutLeftButton(visibleRect, searchButton());
-				}
-			}
-		}
-
-		protected void layoutLeftButton(Rectangle visibleRect, JButton rightButton) {
-			Dimension size = rightButton.getPreferredSize();
-			rightButton.setBounds(visibleRect.x, centerY(visibleRect, size), size.width, size.height);
-		}
-
-		protected void layoutRightButton(Rectangle visibleRect, JButton rightButton) {
-			Dimension size = rightButton.getPreferredSize();
-			Dimension popupSize = new Dimension();
 			if (usingSeperatePopupButton() && searchField.getSearchPopupMenu() != null) {
-				popupSize = popupButton().getPreferredSize();
-				popupButton().setBounds(visibleRect.x + visibleRect.width - popupSize.width,
-						centerY(visibleRect, size), popupSize.width, popupSize.height);
+				layoutRight(visibleRect, popupButton());
+				visibleRect.width -= popupButton().getPreferredSize().width + getPopupOffset();
+			} else {
+				layoutSearchOrPopup(visibleRect, popupButton());
 			}
-			rightButton.setBounds(visibleRect.x + visibleRect.width - size.width - popupSize.width - getPopupOffset(),
-					centerY(visibleRect, size), size.width, size.height);
 
+			layoutSearchOrPopup(visibleRect, searchButton());
+			layoutRight(visibleRect, clearButton());
+		}
+
+		private void layoutSearchOrPopup(Rectangle visibleRect, JButton btn) {
+			if (searchField.isVistaLayoutStyle()) {
+				layoutRight(visibleRect, btn);
+			} else {
+				layoutLeft(visibleRect, btn);
+			}
+		}
+
+		protected void layoutRight(Rectangle visibleRect, JButton btn) {
+			Dimension size = btn.getPreferredSize();
+			btn.setBounds(visibleRect.x + visibleRect.width - size.width, centerY(visibleRect, size), size.width,
+					size.height);
+		}
+
+		protected void layoutLeft(Rectangle visibleRect, JButton btn) {
+			Dimension size = btn.getPreferredSize();
+			btn.setBounds(visibleRect.x, centerY(visibleRect, size), size.width, size.height);
 		}
 
 		protected int centerY(Rectangle rect, Dimension size) {
@@ -326,22 +469,32 @@ public class BasicSearchFieldUI extends PromptTextFieldUI {
 				if ("border".equals(prop)) {
 					replaceBorderIfNecessary();
 				} else if ("searchPopupMenu".equals(prop) || "searchMode".equals(prop)
-						|| "useSeperatePopupButton".equals(prop)) {
-					updateSearchButton();
+						|| "useSeperatePopupButton".equals(prop) || "searchMode".equals(prop)
+						|| "layoutStyle".equals(prop)) {
+					updateButtons();
+				} else if ("document".equals(prop)) {
+					Document doc = (Document) evt.getOldValue();
+					if (doc != null) {
+						doc.removeDocumentListener(this);
+					}
+					doc = (Document) evt.getNewValue();
+					if (doc != null) {
+						doc.addDocumentListener(this);
+					}
 				}
 			}
 		}
 
 		public void addLayoutComponent(String name, Component c) {
-			layoutDelegate.addLayoutComponent(name, c);
+			// do nothing
 		}
 
 		public void removeLayoutComponent(Component c) {
-			layoutDelegate.removeLayoutComponent(c);
+			// do nothing
 		}
 
 		public Dimension minimumLayoutSize(Container parent) {
-			return layoutDelegate.minimumLayoutSize(parent);
+			return null;
 		}
 
 		public boolean isBorderOpaque() {
@@ -365,8 +518,9 @@ public class BasicSearchFieldUI extends PromptTextFieldUI {
 		 * Shows the search popup menu, if installed.
 		 */
 		public void actionPerformed(ActionEvent e) {
-			if (searchField != null && searchField.getSearchPopupMenu() != null) {
-				Component src = (Component) e.getSource();
+			if (searchField.getSearchPopupMenu() != null) {
+				Component src = JXSearchFieldAddon.SEARCH_FIELD_SOURCE.equals(UIManager
+						.getString("SearchField.popupSource")) ? searchField : (Component) e.getSource();
 
 				Rectangle r = SwingUtilities.getLocalBounds(src);
 				int popupWidth = searchField.getSearchPopupMenu().getPreferredSize().width;
@@ -374,6 +528,39 @@ public class BasicSearchFieldUI extends PromptTextFieldUI {
 						: r.x;
 				searchField.getSearchPopupMenu().show(src, x, r.y + r.height);
 			}
+		}
+
+		public void changedUpdate(DocumentEvent e) {
+			update();
+		}
+
+		public void insertUpdate(DocumentEvent e) {
+			update();
+		}
+
+		public void removeUpdate(DocumentEvent e) {
+			update();
+		}
+
+		/**
+		 * Called when the search text changes. Calls
+		 * {@link JXSearchField#postActionEvent()} In instant search mode or
+		 * starts the search field instant search timer if the instant search
+		 * delay is greater 0.
+		 */
+		private void update() {
+			if (searchField.isInstantSearchMode()) {
+				searchField.getInstantSearchTimer().stop();
+				// only use timer when delay greater 0.
+				if (searchField.getInstantSearchDelay() > 0) {
+					searchField.getInstantSearchTimer().setInitialDelay(searchField.getInstantSearchDelay());
+					searchField.getInstantSearchTimer().start();
+				} else {
+					searchField.postActionEvent();
+				}
+			}
+
+			updateButtons();
 		}
 	}
 }
