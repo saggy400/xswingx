@@ -5,7 +5,7 @@ Download [http://xswingx.googlecode.com/files/xswingx.zip xswingx.zip] from the 
 =Add a Prompt to Your Existing Text Component=
 Just invoke
 {{{
-PromptSupport.install("Prompt Text", textComponent);
+PromptSupport.setPrompt("Prompt Text", textComponent);
 }}}
 Where `textComponent` is an instance of `JTextComponent`.
 
@@ -29,13 +29,15 @@ This behavior can be customized with the `PromptSupport.setFocusBehavior()` meth
 || [http://xswingx.googlecode.com/svn/wiki/images/textfield_xp_focused_hidden.png] || [http://xswingx.googlecode.com/svn/wiki/images/textfield_xp_focused_shown.png] || [http://xswingx.googlecode.com/svn/wiki/images/textfield_xp_focused_highlighted.png] ||
 
 ==Font Style and Color==
-The font of the prompt text by default is the same as the text component's font, but sometimes you want the prompt text to be different. You can make the prompt text plain, *bold*, _italic_, or both *_bold and italic_* with the `PromptSupport.setPromptFontStyle()` method.
+The font of the prompt text by default is the same as the text component's font, but sometimes you want the prompt text to be different. You can make the prompt text plain, *bold*, _italic_, or both *_bold and italic_* with the `PromptSupport.setFontStyle()` method.
 
 || *Plain* || *Italic* || *Bold* || *Bold and Italic* ||
 || [http://xswingx.googlecode.com/svn/wiki/images/textfield_xp.png] || [http://xswingx.googlecode.com/svn/wiki/images/textfield_xp_italic.png] || [http://xswingx.googlecode.com/svn/wiki/images/textfield_xp_bold.png] || [http://xswingx.googlecode.com/svn/wiki/images/textfield_xp_bolditalic.png] ||
 
-By default, the color used for the prompt text is the text component's disabled text color, but yout can change this with the `PromptSupport.setPromptColor()` method.
-`PromptSupport.setPromptColor(Color.RED)` gives you: [http://xswingx.googlecode.com/svn/wiki/images/textfield_xp_red.png]
+By default, the color used for the prompt text is the text component's disabled text color, but yout can change this with the `PromptSupport.setForeground()` method.
+`PromptSupport.setForeground(Color.RED)` gives you: [http://xswingx.googlecode.com/svn/wiki/images/textfield_xp_red.png]
+
+You can also set a background color for the promp by calling `PromptSupport.setBackground()`.
 
 =Use the Prompt Text Components=
 If you are creating a new form for your application, you probably want to use a graphical editor like _JFormDesigner_ or _Matisse_ to change you text components properties. In this case it is handy to use one of the prebuilt text components, which support prompt customization via JavaBean properties: [http://xswingx.googlecode.com/svn/trunk/xswingx/src/java/org/jdesktop/xswingx/JXPromptField.java JXPromptField], [http://xswingx.googlecode.com/svn/trunk/xswingx/src/java/org/jdesktop/xswingx/JXPromptArea.java JXPromptArea], or [http://xswingx.googlecode.com/svn/trunk/xswingx/src/java/org/jdesktop/xswingx/JXFormattedPromptField.java JXFormattedPromptField]. These classes simply extend JTextField, JTextArea, or JFormattedTextField respectively, and add properties supported by [http://xswingx.googlecode.com/svn/trunk/xswingx/src/java/org/jdesktop/xswingx/PromptSupport.java PromptSupport].
@@ -45,7 +47,7 @@ Note: You need the whole xswingx library to use these components.
 =Use the Search Field=
 It's easy to create a search field:
 {{{
-JXSearchField searchField = new JXSearchField("Search");
+JXSearchField searchField = new JXSearchField();
 }}}
 What you get is this:
 || *LnF* || *Default* || *With Search Text* ||
@@ -55,8 +57,8 @@ What you get is this:
 || Vista || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_vista.png] || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_vista_searching.png] ||
 || Mac || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_mac.png] || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_mac_searching.png] || 
 
-Notice the position of the search button in the Windows LnF compared to the other LnF's. 
-You can make the search field more _Vista_ like in any LnF by calling 
+Notice that the search field _automatically_ takes the style of the current Look and Feel.
+Everything is still customizable, of course. You can make the search field more _Vista_ like in any LnF by calling 
 {{{
 searchField.setLayoutStyle(LayoutStyle.VISTA);
 }}}
@@ -86,7 +88,7 @@ searchField.setSearchMode(SearchMode.INSTANT);
 An action event is fired when the text changes.
 In _Instant_ search mode you can set a search delay:
 {{{
-searchField.setInstantSearchDelay(100); //milliseconds
+searchField.setInstantSearchDelay(100); //milliseconds. default: 50
 }}}
 
 *Regular
@@ -101,14 +103,19 @@ Set a search popup menu by calling:
 {{{
 searchField.setSearchPopupMenu(popupMenu);
 }}}
+
+To add a Mac style recent searches popup to your search field, use the RecentSearches class:
+{{{
+new RecentSearches("aUniqueName").install(searchField);
+}}}
+The list of recent searches will automatically be persisted using the [http://java.sun.com/j2se/1.4.2/docs/guide/lang/preferences.html Java Preferences API] under the given name.
+
 The search field will automatically change it's icon (the Windows LnF even uses a seperate popup button) and display the popup menu appropriately:
 ||*Metal*||[http://xswingx.googlecode.com/svn/wiki/images/searchfield_metal_popup.png]||[http://xswingx.googlecode.com/svn/wiki/images/searchfield_metal_popup_clicked.png]||
 ||*Motif*||[http://xswingx.googlecode.com/svn/wiki/images/searchfield_motif_popup.png]||[http://xswingx.googlecode.com/svn/wiki/images/searchfield_motif_popup_clicked.png]||
 ||*Windows XP*||[http://xswingx.googlecode.com/svn/wiki/images/searchfield_xp_popup.png]||[http://xswingx.googlecode.com/svn/wiki/images/searchfield_xp_popup_clicked.png]||
 ||*Vista*||[http://xswingx.googlecode.com/svn/wiki/images/searchfield_vista_popup.png]||[http://xswingx.googlecode.com/svn/wiki/images/searchfield_vista_popup_clicked.png]||
 ||*Mac*||[http://xswingx.googlecode.com/svn/wiki/images/searchfield_mac_popup.png]||[http://xswingx.googlecode.com/svn/wiki/images/searchfield_mac_popup_clicked.png]||
-
-
 
 
 
