@@ -18,14 +18,16 @@ import org.jdesktop.xswingx.plaf.PromptTextUI;
 
 /**
  * <p>
- * Sets label text, label text color and {@link FocusBehavior} properties on a
- * JTextComponent by calling
- * {@link JTextComponent#putClientProperty(Object, Object)}.
+ * Sets prompt text, foreground, background and {@link FocusBehavior} properties
+ * on a JTextComponent by calling
+ * {@link JTextComponent#putClientProperty(Object, Object)}. These properties
+ * are used by {@link PromptTextUI} instances to render the prompt of a text
+ * component.
  * </p>
  * 
  * <p>
  * This class is used by {@link JXPromptField}, {@link JXFormattedPromptField}
- * and {@link JXPromptArea} to get and set label properties.
+ * and {@link JXPromptArea} to get and set prompt properties.
  * {@link PromptTextUI} retrieves these properties using PromptSupport.
  * </p>
  * 
