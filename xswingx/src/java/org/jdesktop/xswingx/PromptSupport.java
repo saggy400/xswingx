@@ -2,7 +2,6 @@ package org.jdesktop.xswingx;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import javax.swing.JComponent;
@@ -15,6 +14,7 @@ import javax.swing.text.JTextComponent;
 import org.jdesktop.xswingx.plaf.PromptTextAreaUI;
 import org.jdesktop.xswingx.plaf.PromptTextFieldUI;
 import org.jdesktop.xswingx.plaf.PromptTextUI;
+import org.jdesktop.xswingx.plaf.TextUIWrapper;
 
 /**
  * <p>
@@ -92,21 +92,32 @@ public class PromptSupport {
 	 * by calling {@link #wrapUI(JTextComponent)} if necessary.
 	 * </p>
 	 * <p>
-	 * Additionally a {@link PropertyChangeListener} is registered, which
-	 * listens for UI changes and wraps any new UI object.
+	 * The support for prompts will be discontinued on any change of the text
+	 * components UI. If you want to prevent this, use
+	 * {@link #install(JTextComponent, boolean)}.
 	 * </p>
 	 * 
 	 * @param textComponent
+	 * @see #install(JTextComponent, boolean)
 	 */
-	private static void install(final JTextComponent textComponent) {
-		replaceUIIfNeeded(textComponent);
-		textComponent.addPropertyChangeListener("UI", uiChangeHandler);
+	public static void install(final JTextComponent textComponent) {
+		install(textComponent, false);
 	}
 
-	private static void replaceUIIfNeeded(JTextComponent txt) {
-		if (!(txt.getUI() instanceof PromptTextUI)) {
-			txt.setUI(wrapUI(txt.getUI()));
-		}
+	/**
+	 * <p>
+	 * Wraps and replaces the current UI of the given <code>textComponent</code>,
+	 * by calling {@link #wrapUI(JTextComponent)} if necessary.
+	 * </p>
+	 * 
+	 * @param textComponent
+	 * @param stayOnUIChange
+	 *            if <code>true</code>, a {@link PropertyChangeListener} is
+	 *            registered, which listens for UI changes and wraps any new UI
+	 *            object.
+	 */
+	public static void install(final JTextComponent textComponent, boolean stayOnUIChange) {
+		wrapper.install(textComponent, stayOnUIChange);
 	}
 
 	/**
@@ -120,8 +131,7 @@ public class PromptSupport {
 	 * @param textComponent
 	 */
 	public static void uninstall(final JTextComponent textComponent) {
-		textComponent.removePropertyChangeListener("UI", uiChangeHandler);
-		textComponent.updateUI();
+		wrapper.uninstall(textComponent);
 	}
 
 	/**
@@ -153,14 +163,7 @@ public class PromptSupport {
 	 * @return a {@link PromptTextUI} which wraps <code>textUI</code>
 	 */
 	public static PromptTextUI wrapUI(TextUI textUI) {
-		if (textUI instanceof PromptTextUI) {
-			return (PromptTextUI) textUI;
-		} else if (textUI instanceof BasicTextFieldUI) {
-			return new PromptTextFieldUI(textUI);
-		} else if (textUI instanceof BasicTextAreaUI) {
-			return new PromptTextAreaUI(textUI);
-		}
-		throw new IllegalArgumentException();
+		return wrapper.wrapUI(textUI);
 	}
 
 	/**
@@ -168,14 +171,21 @@ public class PromptSupport {
 	 * Convenience method to set the <code>promptText</code> and
 	 * <code>promptTextColor</code> on a {@link JTextComponent}.
 	 * </p>
+	 * <p>
+	 * If <code>stayOnUIChange</code> is true,  The prompt support will stay installed, even when the text components UI
+	 * changes. See {@link #install(JTextComponent, boolean)}.
+	 * </p>
 	 * 
 	 * @param promptText
 	 * @param promptForeground
 	 * @param promptBackground
 	 * @param textComponent
+	 * @param stayOnUIChange
 	 */
 	public static void init(String promptText, Color promptForeground, Color promptBackground,
-			final JTextComponent textComponent) {
+			final JTextComponent textComponent, boolean stayOnUIChange) {
+		install(textComponent, stayOnUIChange);
+		
 		setPrompt(promptText, textComponent);
 		setForeground(promptForeground, textComponent);
 		setBackground(promptBackground, textComponent);
@@ -245,6 +255,7 @@ public class PromptSupport {
 		}
 
 		textComponent.putClientProperty(PROMPT, promptText);
+		textComponent.repaint();
 	}
 
 	/**
@@ -346,13 +357,22 @@ public class PromptSupport {
 		return (Integer) textComponent.getClientProperty(FONT_STYLE);
 	}
 
-	public final static UIChangeHandler uiChangeHandler = new UIChangeHandler();
+	private static final PromptWrapper wrapper = new PromptWrapper();
+	private static final class PromptWrapper extends TextUIWrapper<PromptTextUI> {
+		private PromptWrapper() {
+			super(PromptTextUI.class);
+		}
 
-	private final static class UIChangeHandler implements PropertyChangeListener {
-		public void propertyChange(PropertyChangeEvent evt) {
-			JTextComponent txt = (JTextComponent) evt.getSource();
-
-			replaceUIIfNeeded(txt);
+		@Override
+		public PromptTextUI wrapUI(TextUI textUI) {
+			if (textUI instanceof PromptTextUI) {
+				return (PromptTextUI) textUI;
+			} else if (textUI instanceof BasicTextFieldUI) {
+				return new PromptTextFieldUI(textUI);
+			} else if (textUI instanceof BasicTextAreaUI) {
+				return new PromptTextAreaUI(textUI);
+			}
+			throw new IllegalArgumentException();
 		}
 	}
 }

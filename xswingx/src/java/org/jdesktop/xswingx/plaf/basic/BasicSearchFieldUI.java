@@ -389,14 +389,23 @@ public class BasicSearchFieldUI extends PromptTextFieldUI {
 		 */
 		public Insets getRealBorderInsets() {
 			if (borderDelegate == null) {
-				return NO_INSETS;
+				return null;
 			}
-			// don't include margin, thus: null.
-			Insets insets = (Insets) borderDelegate.getBorderInsets(null);
+			Insets insets = (Insets) borderDelegate.getBorderInsets(searchField);
+
+			if (borderDelegate instanceof MarginBorder) {
+				// don't include margin!!
+				Insets margin = searchField.getMargin();
+				if (margin != null) {
+					insets.left -= margin.left;
+					insets.right -= margin.right;
+					insets.top -= margin.top;
+					insets.bottom -= margin.bottom;
+				}
+			}
 
 			return insets;
 		}
-
 		/**
 		 * Returns the rectangle allocated by the search fields text.
 		 * 

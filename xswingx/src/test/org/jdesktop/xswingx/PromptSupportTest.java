@@ -1,8 +1,8 @@
 package org.jdesktop.xswingx;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -12,8 +12,6 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.plaf.basic.BasicTextFieldUI;
 
-
-import org.jdesktop.xswingx.PromptSupport;
 import org.jdesktop.xswingx.PromptSupport.FocusBehavior;
 import org.jdesktop.xswingx.plaf.PromptTextAreaUI;
 import org.jdesktop.xswingx.plaf.PromptTextFieldUI;
@@ -40,7 +38,7 @@ public class PromptSupportTest {
 
     @Test
     public void testInit() {
-        PromptSupport.init("test", Color.LIGHT_GRAY, Color.YELLOW, txt);
+        PromptSupport.init("test", Color.LIGHT_GRAY, Color.YELLOW, txt, false);
 
         assertEquals("test", PromptSupport.getPrompt(txt));
         assertEquals("test", txt.getClientProperty(PromptSupport.PROMPT));
@@ -120,8 +118,29 @@ public class PromptSupportTest {
         
         promptSupportMustBeInstalled();
     }
+    
+    @Test
+    public void testInstall() {
+    	PromptSupport.install(txt, false);
+    	promptSupportMustBeInstalled();
+    	
+    	PromptSupport.install(txt);
+    	promptSupportMustBeInstalled();
+	}
+    
+    @Test
+    public void testInstallAndStay() {
+    	PromptSupport.install(txt, true);
+    	promptSupportMustStayInstalled();
+	}
 
 	private void promptSupportMustBeInstalled() {
+		assertEquals(PromptTextFieldUI.class, txt.getUI().getClass());
+		txt.setUI(new BasicTextFieldUI());
+    	assertEquals(BasicTextFieldUI.class, txt.getUI().getClass());
+	}
+	
+	private void promptSupportMustStayInstalled() {
 		assertEquals(PromptTextFieldUI.class, txt.getUI().getClass());
     	txt.setUI(new BasicTextFieldUI());
     	assertEquals(PromptTextFieldUI.class, txt.getUI().getClass());

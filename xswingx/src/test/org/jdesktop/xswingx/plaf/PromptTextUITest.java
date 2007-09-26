@@ -1,6 +1,11 @@
 package org.jdesktop.xswingx.plaf;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -9,6 +14,7 @@ import java.awt.Rectangle;
 import java.util.Arrays;
 
 import javax.swing.BorderFactory;
+import javax.swing.plaf.basic.BasicTextFieldUI;
 import javax.swing.text.JTextComponent;
 
 import org.jdesktop.swingx.util.JVM;
@@ -23,6 +29,7 @@ public abstract class PromptTextUITest {
     @Before
     public void setUI() {
         setup();
+        ui = (PromptTextUI) textComponent.getUI();
     }
 
     public abstract void setup();
@@ -109,5 +116,12 @@ public abstract class PromptTextUITest {
         
         textComponent.setText("text");
         assertFalse(textComponent.getPreferredSize().equals(ui.getPromptComponent(textComponent).getPreferredSize()));
+    }
+    
+    @Test
+    public void testPromptSupportStaysInstalledOnUIChange() {
+    	assertTrue(textComponent.getUI() instanceof PromptTextUI);
+    	textComponent.setUI(new BasicTextFieldUI());
+    	assertTrue(textComponent.getUI() instanceof PromptTextUI);
     }
 }

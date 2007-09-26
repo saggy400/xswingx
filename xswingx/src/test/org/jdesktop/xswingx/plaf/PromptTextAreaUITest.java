@@ -1,17 +1,17 @@
 package org.jdesktop.xswingx.plaf;
 
+import static org.junit.Assert.assertEquals;
+
 import javax.swing.JTextArea;
 
-import org.jdesktop.xswingx.plaf.PromptTextAreaUI;
+import org.jdesktop.xswingx.JXPromptArea;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 public class PromptTextAreaUITest extends PromptTextUITest {
     JTextArea textArea;
     
     public void setup() {
-        textComponent = textArea = new JTextArea();
-        ui = new PromptTextAreaUI(textComponent.getUI());
+        textComponent = textArea = new JXPromptArea();
     }
     
     @Test
