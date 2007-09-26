@@ -42,7 +42,7 @@ public class JXFormattedPromptField extends JFormattedTextField {
 	 * @param promptForeground
 	 */
 	protected void installPromptSupport(String promptText, Color promptForeground, Color promptBackground) {
-		PromptSupport.init(promptText, promptForeground, promptBackground, this);
+		PromptSupport.init(promptText, promptForeground, promptBackground, this, true);
 	}
 
 	/**

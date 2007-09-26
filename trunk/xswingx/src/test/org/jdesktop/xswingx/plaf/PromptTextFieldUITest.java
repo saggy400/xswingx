@@ -1,17 +1,17 @@
 package org.jdesktop.xswingx.plaf;
 
+import static org.junit.Assert.assertEquals;
+
 import javax.swing.JTextField;
 
-import org.jdesktop.xswingx.plaf.PromptTextFieldUI;
+import org.jdesktop.xswingx.JXPromptField;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 public class PromptTextFieldUITest extends PromptTextUITest {
     JTextField txtField;
     
     public void setup() {
-        textComponent = txtField = new JTextField();
-        ui = new PromptTextFieldUI(textComponent.getUI());
+        textComponent = txtField = new JXPromptField();
     }
     
     @Test

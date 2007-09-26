@@ -178,6 +178,7 @@ public class JXSearchField extends JXPromptField {
 	 * @param prompt
 	 */
 	public JXSearchField(String prompt) {
+		putClientProperty("Quaqua.TextField.style", "search");
 		setPrompt(prompt);
 
 		// We cannot register the ClearAction through the Input- and
