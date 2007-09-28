@@ -2,6 +2,7 @@ package org.jdesktop.xswingx;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Insets;
 
 import javax.swing.JFrame;
 import javax.swing.UIManager;
@@ -21,6 +22,14 @@ public class JXBuddyField extends JXPromptField {
 	@Override
 	protected void installPromptSupport(String promptText, Color promptForeground, Color promptBackground) {
 		PromptSupport.init(promptText, promptForeground, promptBackground, this, false);
+	}
+	
+	public void setOuterMargin(Insets margin) {
+		BuddySupport.setOuterMargin(this, margin);
+	}
+
+	public Insets getOuterMargin() {
+		return BuddySupport.getOuterMargin(this);
 	}
 	
 	public static void main(String[] args) {

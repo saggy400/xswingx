@@ -388,12 +388,12 @@ public class JXSearchFieldTest {
 	public void testButtonMarginDefault() throws Exception {
 		UIManager.put("SearchField.buttonMargin", new InsetsUIResource(5,5,5,5));
 		searchField.updateUI();
-		assertSame(UIManager.get("SearchField.buttonMargin"), searchField.getButtonMargin());
+		assertSame(UIManager.get("SearchField.buttonMargin"), searchField.getOuterMargin());
 
 		UIManager.put("SearchField.buttonMargin", new InsetsUIResource(5,5,5,5));
-		searchField.setButtonMargin(new Insets(0,0,0,0));
+		searchField.setOuterMargin(new Insets(0,0,0,0));
 		searchField.updateUI();
-		assertNotSame(UIManager.get("SearchField.buttonMargin"), searchField.getButtonMargin());
+		assertNotSame(UIManager.get("SearchField.buttonMargin"), searchField.getOuterMargin());
 	}
 	
 	@Test

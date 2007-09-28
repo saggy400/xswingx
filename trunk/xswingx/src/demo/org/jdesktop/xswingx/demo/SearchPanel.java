@@ -193,12 +193,12 @@ public class SearchPanel extends javax.swing.JPanel {
             }
         });
 
-        jLabel1.setText("(Text) Margin:");
+        jLabel1.setText("Text Margin:");
 
-        jLabel2.setText("Button Margin:");
+        jLabel2.setText("Outer Margin:");
 
         txtBtnMargin.setFormatterFactory(ff);
-        txtBtnMargin.setValue(searchField.getButtonMargin());
+        txtBtnMargin.setValue(searchField.getOuterMargin());
         txtBtnMargin.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
             public void propertyChange(java.beans.PropertyChangeEvent evt) {
                 btnMarginChanged(evt);
@@ -570,7 +570,7 @@ public class SearchPanel extends javax.swing.JPanel {
     
     private void btnResetMarginsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetMarginsActionPerformed
         searchField.setMargin(UIManager.getInsets("TextField.margin"));
-        searchField.setButtonMargin(UIManager.getInsets("SearchField.buttonMargin"));
+        searchField.setOuterMargin(UIManager.getInsets("SearchField.buttonMargin"));
     }//GEN-LAST:event_btnResetMarginsActionPerformed
     
     private void searchFieldPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_searchFieldPropertyChange
@@ -580,7 +580,7 @@ public class SearchPanel extends javax.swing.JPanel {
             txtMargin.setValue(searchField.getMargin());
         }
         if("buttonMargin".equals(evt.getPropertyName())){
-            txtBtnMargin.setValue(searchField.getButtonMargin());
+            txtBtnMargin.setValue(searchField.getOuterMargin());
         }
         if("useSeperatePopupButton".equals(evt.getPropertyName())){
             cbPopupButton.setSelected(searchField.isUseSeperatePopupButton());
@@ -599,7 +599,7 @@ public class SearchPanel extends javax.swing.JPanel {
     private void btnMarginChanged(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_btnMarginChanged
         if(change) return;
         if("value".equals(evt.getPropertyName())){
-            searchField.setButtonMargin((Insets) txtBtnMargin.getValue());
+            searchField.setOuterMargin((Insets) txtBtnMargin.getValue());
         }
         searchFieldChanged();
     }//GEN-LAST:event_btnMarginChanged

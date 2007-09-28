@@ -2,6 +2,7 @@ package org.jdesktop.xswingx;
 
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -56,7 +57,7 @@ import org.jdesktop.xswingx.plaf.basic.BasicSearchFieldUI;
  * @author Peter Weishapl <petw@gmx.net>
  * 
  */
-public class JXSearchField extends JXPromptField {
+public class JXSearchField extends JXBuddyField {
 	/**
 	 * The default instant search delay.
 	 */
@@ -319,26 +320,6 @@ public class JXSearchField extends JXPromptField {
 	public void setLayoutStyle(LayoutStyle layoutStyle) {
 		layoutStyleSet = true;
 		firePropertyChange("layoutStyle", this.layoutStyle, this.layoutStyle = layoutStyle);
-	}
-
-	/**
-	 * Returns the margin between the search fields border and the search and
-	 * clear buttons.
-	 * 
-	 * @return
-	 */
-	public Insets getButtonMargin() {
-		return buttonMargin;
-	}
-
-	/**
-	 * Set the margin between the search fields border and the search and clear
-	 * buttons.
-	 * 
-	 * @param buttonMargin
-	 */
-	public void setButtonMargin(Insets buttonMargin) {
-		firePropertyChange("buttonMargin", this.buttonMargin, this.buttonMargin = buttonMargin);
 	}
 
 	/**

@@ -4,8 +4,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.beans.PropertyChangeListener;
 
-import javax.swing.JComponent;
-import javax.swing.UIDefaults;
 import javax.swing.plaf.TextUI;
 import javax.swing.plaf.basic.BasicTextAreaUI;
 import javax.swing.plaf.basic.BasicTextFieldUI;
@@ -121,12 +119,7 @@ public class PromptSupport {
 	}
 
 	/**
-	 * <p>
-	 * Removes the {@link PropertyChangeListener}, which listens for "UI"
-	 * property changes and then calls {@link JComponent#updateUI()} on the
-	 * <code>textComponent</code> to set the UI object provided by the current
-	 * {@link UIDefaults}.
-	 * </p>
+	 * Calls {@link TextUIWrapper}{@link #uninstall(JTextComponent)}
 	 * 
 	 * @param textComponent
 	 */
