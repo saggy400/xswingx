@@ -23,6 +23,7 @@ import javax.swing.UIManager;
 import javax.swing.border.LineBorder;
 import javax.swing.text.DefaultFormatterFactory;
 
+import org.jdesktop.xswingx.BuddySupport;
 import org.jdesktop.xswingx.JXSearchField;
 import org.jdesktop.xswingx.RecentSearches;
 
@@ -579,7 +580,7 @@ public class SearchPanel extends javax.swing.JPanel {
         if("margin".equals(evt.getPropertyName())){
             txtMargin.setValue(searchField.getMargin());
         }
-        if("buttonMargin".equals(evt.getPropertyName())){
+        if(BuddySupport.OUTER_MARGIN.equals(evt.getPropertyName())){
             txtBtnMargin.setValue(searchField.getOuterMargin());
         }
         if("useSeperatePopupButton".equals(evt.getPropertyName())){

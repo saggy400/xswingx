@@ -1,11 +1,11 @@
 package org.jdesktop.xswingx.plaf;
 
 import java.awt.Dimension;
+import java.awt.Graphics;
 
 import javax.swing.JComponent;
 import javax.swing.JTextField;
 import javax.swing.plaf.TextUI;
-
 
 /**
  * <p>
@@ -31,13 +31,27 @@ public class BuddyTextFieldUI extends PromptTextFieldUI {
 	@Override
 	public void installUI(JComponent c) {
 		super.installUI(c);
-		layoutAndBorder = BuddyLayoutAndBorder.install((JTextField) c);
+		layoutAndBorder = createBuddyLayoutAndBorder((JTextField) c);
 	}
-	
+
+	protected BuddyLayoutAndBorder createBuddyLayoutAndBorder(JTextField c) {
+		return new BuddyLayoutAndBorder(c);
+	}
+
 	@Override
 	public void uninstallUI(JComponent c) {
 		super.uninstallUI(c);
-		layoutAndBorder.uninstall((JTextField)c);
+		layoutAndBorder.uninstall((JTextField) c);
+	}
+
+	@Override
+	public void paint(Graphics g, JComponent c) {
+		// make Quaqua paint the background.
+//		if (UIManager.getLookAndFeel().getName().contains("Quaqua")) {
+//			g.setColor(c.getBackground());
+//			g.fillRect(0, 0, c.getWidth(), c.getHeight());
+//		}
+		super.paint(g, c);
 	}
 
 	/**

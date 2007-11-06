@@ -143,6 +143,8 @@ public abstract class PromptTextUI extends TextUI {
 		promptComponent.setSelectionColor(txt.getSelectionColor());
 		promptComponent.setEditable(txt.isEditable());
 		promptComponent.setMargin(txt.getMargin());
+		
+		promptComponent.putClientProperty("Quaqua.TextField.style", txt.getClientProperty("Quaqua.TextField.style"));
 
 		return promptComponent;
 	}

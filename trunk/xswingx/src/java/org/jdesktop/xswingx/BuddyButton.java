@@ -9,9 +9,9 @@ import javax.swing.border.Border;
 
 import org.jdesktop.xswingx.plaf.basic.BasicSearchFieldUI;
 
-
 /**
- * TODO:
+ * Non focusable, no border, no margin and insets button with no content area
+ * filled.
  * 
  * @author Peter Weishapl <petw@gmx.net>
  * 
@@ -20,7 +20,7 @@ public class BuddyButton extends JButton {
 	public BuddyButton() {
 		this(null);
 	}
-	
+
 	public BuddyButton(String text) {
 		super(text);
 		setFocusable(false);
