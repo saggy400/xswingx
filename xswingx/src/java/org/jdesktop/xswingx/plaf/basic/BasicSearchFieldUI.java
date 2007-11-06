@@ -11,9 +11,9 @@ import java.beans.PropertyChangeListener;
 import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
-import javax.swing.border.Border;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.plaf.TextUI;
@@ -23,6 +23,7 @@ import javax.swing.text.Document;
 import org.jdesktop.xswingx.BuddySupport;
 import org.jdesktop.xswingx.JXSearchField;
 import org.jdesktop.xswingx.JXSearchField.LayoutStyle;
+import org.jdesktop.xswingx.plaf.BuddyLayoutAndBorder;
 import org.jdesktop.xswingx.plaf.BuddyTextFieldUI;
 import org.jdesktop.xswingx.plaf.JXSearchFieldAddon;
 
@@ -65,8 +66,9 @@ public class BasicSearchFieldUI extends BuddyTextFieldUI {
 	 * button.
 	 */
 	public void installUI(JComponent c) {
-		super.installUI(c);
 		searchField = (JXSearchField) c;
+
+		super.installUI(c);
 
 		installDefaults();
 
@@ -76,23 +78,49 @@ public class BasicSearchFieldUI extends BuddyTextFieldUI {
 		searchField.getDocument().addDocumentListener(getHandler());
 		searchField.addPropertyChangeListener(getHandler());
 	}
-	
+
+	@Override
+	protected BuddyLayoutAndBorder createBuddyLayoutAndBorder(JTextField c) {
+		return new BuddyLayoutAndBorder(c) {
+			/**
+			 * Include the clear button, to prevent 'jumping' when text is
+			 * entered, when layout style is Mac.
+			 */
+			@Override
+			public Insets getBorderInsets(Component c) {
+				Insets insets = super.getBorderInsets(c);
+				if (searchField != null && !clearButton().isVisible() && isMacLayoutStyle()) {
+					insets.right += clearButton().getPreferredSize().width;
+				}
+				return insets;
+			}
+		};
+	}
+
 	private void layoutButtons() {
 		searchField.removeAll();
-		
+
 		searchField.add(clearButton(), BuddySupport.RIGHT);
-		
-		if(searchField.getLayoutStyle() == LayoutStyle.MAC){
+
+		if (isMacLayoutStyle()) {
 			searchField.add(searchButton(), BuddySupport.LEFT);
-			if(usingSeperatePopupButton()){
-				searchField.add(popupButton(), BuddySupport.RIGHT);
-			}else{
-				searchField.add(popupButton(), BuddySupport.LEFT);
-			}
-		}else{
+		} else {
 			searchField.add(searchButton(), BuddySupport.RIGHT);
-			searchField.add(popupButton(), BuddySupport.RIGHT);
 		}
+		
+		if (usingSeperatePopupButton()) {
+			searchField.add(BuddySupport.createGap(getPopupOffset()), BuddySupport.RIGHT);
+		}
+
+		if (usingSeperatePopupButton() || !isMacLayoutStyle()) {
+			searchField.add(popupButton(), BuddySupport.RIGHT);
+		} else {
+			searchField.add(popupButton(), BuddySupport.LEFT);
+		}
+	}
+
+	private boolean isMacLayoutStyle() {
+		return searchField.getLayoutStyle() == LayoutStyle.MAC;
 	}
 
 	/**
@@ -151,7 +179,6 @@ public class BasicSearchFieldUI extends BuddyTextFieldUI {
 		popupButton().removeActionListener(getHandler());
 
 		searchField.setLayout(null);
-		searchField.setBorder(getHandler().borderDelegate);
 		searchField.removeAll();
 		searchField = null;
 	}
@@ -256,9 +283,7 @@ public class BasicSearchFieldUI extends BuddyTextFieldUI {
 	 * the icons when the search field is in instant search mode.
 	 */
 	protected void updateButtons() {
-		clearButton().setVisible(
-				(!searchField.isRegularSearchMode() || searchField.isMacLayoutStyle()) && searchField.getText() != null
-						&& searchField.getText().length() > 0);
+		clearButton().setVisible((!searchField.isRegularSearchMode() || searchField.isMacLayoutStyle()) && hasText());
 
 		boolean clearNotHere = (searchField.isMacLayoutStyle() || !clearButton().isVisible());
 
@@ -281,58 +306,11 @@ public class BasicSearchFieldUI extends BuddyTextFieldUI {
 		}
 	}
 
+	private boolean hasText() {
+		return searchField.getText() != null && searchField.getText().length() > 0;
+	}
+
 	class Handler implements PropertyChangeListener, ActionListener, DocumentListener {
-		private Border borderDelegate;
-
-		/**
-		 * Returns the {@link Insets} of the original {@link Border} plus the
-		 * space required by the search, clear, and popup buttons and also the
-		 * button margin and the popup offset.
-		 * 
-		 * @see javax.swing.border.Border#getBorderInsets(java.awt.Component)
-		 */
-		public Insets getBorderInsets(Component c) {
-			if (searchField == null) {
-				return NO_INSETS;
-			}
-
-			// Original insets are cloned to make it work in Mac OS X Aqua LnF.
-			// Seems that this LnF uses a shared insets instance which should
-			// not be modified.
-			// Include margin here
-			Insets insets = borderDelegate != null ? (Insets) borderDelegate.getBorderInsets(c).clone() : NO_INSETS;
-			if (searchField.isVistaLayoutStyle()) {
-				insets.right += Math.max(searchOrPopupButtonWidth(), clearButtonWidth());
-			} else {
-				insets.left += searchOrPopupButtonWidth();
-				insets.right += clearButtonWidth();
-			}
-
-			if (usingSeperatePopupButton()) {
-				insets.right += popupButton().getPreferredSize().getWidth() + getPopupOffset();
-			}
-
-			Insets margin = searchField.getOuterMargin();
-			if (margin != null) {
-				insets.top += margin.top;
-				insets.left += margin.left;
-				insets.bottom += margin.bottom;
-				insets.right += margin.right;
-			}
-			return insets;
-		}
-
-		private int searchOrPopupButtonWidth() {
-			if (searchField.isUseSeperatePopupButton() || searchField.getSearchPopupMenu() == null) {
-				return searchButton().getPreferredSize().width;
-			}
-			return popupButton().getPreferredSize().width;
-		}
-
-		private int clearButtonWidth() {
-			return clearButton() != null ? clearButton().getPreferredSize().width : 0;
-		}
-
 		public void propertyChange(PropertyChangeEvent evt) {
 			String prop = evt.getPropertyName();
 			Object src = evt.getSource();

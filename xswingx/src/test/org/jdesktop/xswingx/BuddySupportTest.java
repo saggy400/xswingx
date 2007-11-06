@@ -1,5 +1,7 @@
 package org.jdesktop.xswingx;
 
+import java.awt.Component;
+
 import javax.swing.JTextField;
 
 import junit.framework.Assert;
@@ -19,6 +21,12 @@ public class BuddySupportTest {
 		Assert.assertSame(BuddyTextFieldUI.class, tf.getUI().getClass());
 		Assert.assertSame(BuddyLayoutAndBorder.class, tf.getBorder().getClass());
 		Assert.assertSame(BuddyLayoutAndBorder.class, tf.getLayout().getClass());
+	}
+	
+	@Test
+	public void testCreateNegativeGap() throws Exception {
+		Component c = BuddySupport.createGap(-1);
+		Assert.assertSame(-1, c.getPreferredSize().width);
 	}
 
 }

@@ -1,7 +1,6 @@
 package org.jdesktop.xswingx;
 
 import java.awt.Color;
-import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
@@ -11,7 +10,6 @@ import java.awt.event.KeyEvent;
 import java.beans.PropertyChangeEvent;
 
 import javax.swing.AbstractAction;
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JPopupMenu;
@@ -19,7 +17,6 @@ import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.UIManager;
-import javax.swing.border.Border;
 import javax.swing.plaf.TextUI;
 import javax.swing.text.Document;
 
@@ -381,7 +378,7 @@ public class JXSearchField extends JXBuddyField {
 	 * @return the clear button
 	 */
 	protected JButton createClearButton() {
-		IconButton btn = new IconButton();
+		BuddyButton btn = new BuddyButton();
 		btn.setAction(getClearAction());
 
 		return btn;
@@ -439,7 +436,7 @@ public class JXSearchField extends JXBuddyField {
 	 * @return the search button
 	 */
 	protected JButton createSearchButton() {
-		final IconButton btn = new IconButton();
+		BuddyButton btn = new BuddyButton();
 		btn.setAction(getSearchAction());
 
 		return btn;
@@ -470,7 +467,7 @@ public class JXSearchField extends JXBuddyField {
 	 * @return the popup button
 	 */
 	protected JButton createPopupButton() {
-		return new IconButton();
+		return new BuddyButton();
 	}
 
 	/**
@@ -685,49 +682,6 @@ public class JXSearchField extends JXBuddyField {
 	public void postActionEvent() {
 		getInstantSearchTimer().stop();
 		super.postActionEvent();
-	}
-
-	/**
-	 * Non focusable, no border, no margin and insets button with no content
-	 * area filled. Used for search, clear and popup buttons.
-	 */
-	public static class IconButton extends JButton {
-		public IconButton() {
-			setFocusable(false);
-			setMargin(BasicSearchFieldUI.NO_INSETS);
-
-			// Windows UI will add 1 pixel for width and height, if this is true
-			setFocusPainted(false);
-
-			setBorderPainted(false);
-			setContentAreaFilled(false);
-			setIconTextGap(0);
-
-			setBorder(null);
-
-			setOpaque(false);
-
-			setCursor(Cursor.getDefaultCursor());
-		}
-
-		// Windows UI overrides Insets.
-		// Who knows what other UIs are doing...
-		public Insets getInsets() {
-			return BasicSearchFieldUI.NO_INSETS;
-		}
-
-		public Insets getInsets(Insets insets) {
-			return getInsets();
-		}
-
-		public Insets getMargin() {
-			return getInsets();
-		}
-
-		public void setBorder(Border border) {
-			// Don't let Motif overwrite my Border
-			super.setBorder(BorderFactory.createEmptyBorder());
-		}
 	}
 
 	/**

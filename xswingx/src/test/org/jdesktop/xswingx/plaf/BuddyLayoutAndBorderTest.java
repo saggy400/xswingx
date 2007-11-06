@@ -21,7 +21,7 @@ public class BuddyLayoutAndBorderTest {
 	@Before
 	public void setup() {
 		textField = new JTextField();
-		blab = BuddyLayoutAndBorder.install(textField);
+		blab = new BuddyLayoutAndBorder(textField);
 	}
 
 	@Test
@@ -107,6 +107,8 @@ public class BuddyLayoutAndBorderTest {
 		int txtWidth = textField.getPreferredSize().width;
 		int btnWidth = btn.getPreferredSize().width;
 		
+		assertSame(txtWidth, blab.preferredLayoutSize(textField).width);
+		
 		textField.add(btn, BuddySupport.LEFT);
 		
 		assertSame(txtWidth+btnWidth, blab.preferredLayoutSize(textField).width);
@@ -126,6 +128,6 @@ public class BuddyLayoutAndBorderTest {
 		assertSame(left+btnWidth, blab.getBorderInsets(textField).left);
 		
 		btn.setVisible(false);
-		assertSame(left, blab.getBorderInsets(textField).left);
+		assertSame(left+btnWidth, blab.getBorderInsets(textField).left);
 	}
 }

@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Insets;
 
 import javax.swing.JFrame;
+import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -12,7 +13,7 @@ import org.jdesktop.xswingx.demo.BookmarkButton;
 import org.jdesktop.xswingx.demo.RssButton;
 import org.jdesktop.xswingx.demo.SnapBackButton;
 
-import ch.randelshofer.quaqua.QuaquaLookAndFeel;
+import com.jgoodies.looks.plastic.PlasticXPLookAndFeel;
 
 public class JXBuddyField extends JXPromptField {
 	public JXBuddyField() {
@@ -34,8 +35,8 @@ public class JXBuddyField extends JXPromptField {
 	
 	public static void main(String[] args) {
 		try {
-//			UIManager.setLookAndFeel(new PlasticXPLookAndFeel());
-			UIManager.setLookAndFeel(new QuaquaLookAndFeel());
+			UIManager.setLookAndFeel(new PlasticXPLookAndFeel());
+//			UIManager.setLookAndFeel(new QuaquaLookAndFeel());
 		} catch (UnsupportedLookAndFeelException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -52,7 +53,12 @@ public class JXBuddyField extends JXPromptField {
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.setLayout(new BorderLayout());
 		f.add(bf, BorderLayout.NORTH);
-		f.add(new JXPromptField("Simple Prompt Field"));
+		f.add(new JXPromptField("Simple Prompt Field"), BorderLayout.CENTER);
+		
+		JTextField tf = new JTextField();
+		tf.putClientProperty("Quaqua.TextField.style", "search");
+		PromptSupport.setPrompt("test", tf);
+		f.add(tf, BorderLayout.SOUTH);
 		f.pack();
 		f.setVisible(true);
 	}
