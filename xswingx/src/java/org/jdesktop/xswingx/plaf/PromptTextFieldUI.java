@@ -15,7 +15,7 @@ public class PromptTextFieldUI extends PromptTextUI {
 	/**
 	 * Shared prompt renderer.
 	 */
-	private final static JTextField txt = new JTextField();
+	private final static LabelField txt = new LabelField();
 	
     /**
      * Creates a new {@link PromptTextFieldUI}.
@@ -31,11 +31,14 @@ public class PromptTextFieldUI extends PromptTextUI {
      * {@link JTextField} specific properties.
      */
     public JTextComponent getPromptComponent(JTextComponent txt) {
-        JTextField lbl = (JTextField) super.getPromptComponent(txt);
+    	LabelField lbl = (LabelField) super.getPromptComponent(txt);
         JTextField txtField = (JTextField) txt;
 
         lbl.setHorizontalAlignment(txtField.getHorizontalAlignment());
         lbl.setColumns(txtField.getColumns());
+        
+        //make Aqua in Leopard paint focused border.
+        lbl.hasFocus = txtField.hasFocus();
 
         return lbl;
     }
@@ -45,5 +48,14 @@ public class PromptTextFieldUI extends PromptTextUI {
      */
     protected JTextComponent createPromptComponent() {
         return txt;
+    }
+    
+    private static final class LabelField extends JTextField{
+    	boolean hasFocus;
+    	
+    	@Override
+    	public boolean hasFocus() {
+    		return hasFocus;
+    	}
     }
 }

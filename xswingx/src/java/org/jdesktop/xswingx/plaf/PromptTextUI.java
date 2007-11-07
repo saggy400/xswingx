@@ -145,6 +145,8 @@ public abstract class PromptTextUI extends TextUI {
 		promptComponent.setMargin(txt.getMargin());
 		
 		promptComponent.putClientProperty("Quaqua.TextField.style", txt.getClientProperty("Quaqua.TextField.style"));
+		//leopard client properties. see http://developer.apple.com/technotes/tn2007/tn2196.html#JTEXTFIELD_VARIANT
+		promptComponent.putClientProperty("JTextField.variant", txt.getClientProperty("JTextField.variant")); 
 
 		return promptComponent;
 	}
@@ -172,16 +174,16 @@ public abstract class PromptTextUI extends TextUI {
 	 */
 	public void paint(Graphics g, final JComponent c) {
 		JTextComponent txt = (JTextComponent) c;
-		if (shouldPaintPrompt(txt)) {
 			JTextComponent lbl = getPromptComponent(txt);
 			lbl.paint(g);
 
 			if (txt.getCaret() != null) {
 				txt.getCaret().paint(g);
 			}
-		} else {
+		if(!shouldPaintPrompt(txt)) {
 			delegate.paint(g, c);
 		}
+		super.paint(g, c);
 	}
 
 	/**
@@ -287,7 +289,7 @@ public abstract class PromptTextUI extends TextUI {
 	}
 
 	public String toString() {
-		return delegate.toString();
+		return String.format("%s (%s)", getClass().getName(), delegate.toString());
 	}
 
 	public int viewToModel(JTextComponent t, Point pt, Bias[] biasReturn) {

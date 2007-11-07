@@ -4,6 +4,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import javax.swing.JComponent;
+import javax.swing.JTextField;
 import javax.swing.UIDefaults;
 import javax.swing.plaf.TextUI;
 import javax.swing.text.JTextComponent;
@@ -51,6 +52,14 @@ public abstract class TextUIWrapper<UI extends TextUI> {
 	private final void replaceUIIfNeeded(JTextComponent textComponent) {
 		if (!(wrapperClass.isAssignableFrom(textComponent.getUI().getClass()))) {
 			textComponent.setUI(wrapUI(textComponent.getUI()));
+
+			// Leopard hack to make appear correctly in search variant when changing LnF.
+			if (textComponent instanceof JTextField) {
+				Object variant = textComponent.getClientProperty("JTextField.variant");
+				//put some nonsense here to trigger a property change event.
+				textComponent.putClientProperty("JTextField.variant", "nonsense");
+				textComponent.putClientProperty("JTextField.variant", variant);
+			}
 		}
 	}
 
