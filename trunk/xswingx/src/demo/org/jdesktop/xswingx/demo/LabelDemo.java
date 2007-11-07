@@ -197,7 +197,7 @@ public class LabelDemo extends javax.swing.JFrame {
 	private void initComponents() {
 		jTabbedPane1 = new javax.swing.JTabbedPane();
 		contactPanel1 = new org.jdesktop.xswingx.demo.ContactPanel();
-		testPanel1 = new org.jdesktop.xswingx.demo.TestPanel();
+		testPanel1 = new org.jdesktop.xswingx.demo.TestPanelExt();
 
 		setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 		jTabbedPane1.addTab("Component Test", testPanel1);
@@ -262,7 +262,7 @@ public class LabelDemo extends javax.swing.JFrame {
 	// Variables declaration - do not modify//GEN-BEGIN:variables
 	private org.jdesktop.xswingx.demo.ContactPanel contactPanel1;
 	private javax.swing.JTabbedPane jTabbedPane1;
-	private org.jdesktop.xswingx.demo.TestPanel testPanel1;
+	private org.jdesktop.xswingx.demo.TestPanelExt testPanel1;
 	// End of variables declaration//GEN-END:variables
 
 }

@@ -240,8 +240,8 @@ public class BuddyLayoutAndBorder implements LayoutManager, Border, PropertyChan
 		if (borderDelegate != null) {
 			borderDelegate.paintBorder(c, g, x, y, width, height);
 		}
-		g.setColor(Color.CYAN);
-		((Graphics2D) g).draw(getVisibleRect());
+//		g.setColor(Color.CYAN);
+//		((Graphics2D) g).draw(getVisibleRect());
 	}
 
 	public void propertyChange(PropertyChangeEvent evt) {
