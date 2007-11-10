@@ -1,11 +1,9 @@
 package org.jdesktop.xswingx.plaf;
 
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Insets;
 import java.awt.LayoutManager;
 import java.awt.Rectangle;
@@ -46,10 +44,10 @@ public class BuddyLayoutAndBorder implements LayoutManager, Border, PropertyChan
 	/**
 	 * Does the installing.
 	 */
-	private void install() {
+	protected void install() {
 		textField.setLayout(this);
-		this.replaceBorderIfNecessary();
-		textField.addPropertyChangeListener(this);
+		replaceBorderIfNecessary();
+		textField.addPropertyChangeListener("border", this);
 	}
 
 	/**
@@ -177,13 +175,16 @@ public class BuddyLayoutAndBorder implements LayoutManager, Border, PropertyChan
 		if (c == null) {
 			return null;
 		}
-
-		// Original insets are cloned to make it work in Mac OS X Aqua LnF.
-		// Seems that this LnF uses a shared insets instance which should
-		// not be modified.
-		// Include margin here
-		Insets insets = (Insets) borderDelegate.getBorderInsets(c).clone();
-
+		Insets insets = null;
+		if (borderDelegate != null) {
+			// Original insets are cloned to make it work in Mac OS X Aqua LnF.
+			// Seems that this LnF uses a shared insets instance which should
+			// not be modified.
+			// Include margin here
+			insets = (Insets) borderDelegate.getBorderInsets(c).clone();
+		} else {
+			insets = new Insets(0, 0, 0, 0);
+		}
 		for (Component comp : left) {
 			insets.left += comp.isVisible() ? comp.getPreferredSize().width : 0;
 		}
@@ -240,8 +241,6 @@ public class BuddyLayoutAndBorder implements LayoutManager, Border, PropertyChan
 		if (borderDelegate != null) {
 			borderDelegate.paintBorder(c, g, x, y, width, height);
 		}
-//		g.setColor(Color.CYAN);
-//		((Graphics2D) g).draw(getVisibleRect());
 	}
 
 	public void propertyChange(PropertyChangeEvent evt) {

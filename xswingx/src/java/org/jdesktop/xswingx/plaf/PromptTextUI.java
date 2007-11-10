@@ -23,6 +23,7 @@ import javax.swing.text.DefaultHighlighter.DefaultHighlightPainter;
 import javax.swing.text.Position.Bias;
 
 import org.jdesktop.xswingx.PromptSupport;
+import org.jdesktop.xswingx.SearchFieldSupport;
 import org.jdesktop.xswingx.PromptSupport.FocusBehavior;
 
 /**
@@ -105,20 +106,17 @@ public abstract class PromptTextUI extends TextUI {
 		if (promptComponent == null) {
 			promptComponent = createPromptComponent();
 		}
-		if (txt.isFocusOwner()
-				&& PromptSupport.getFocusBehavior(txt) == FocusBehavior.HIDE_PROMPT) {
+		if (txt.isFocusOwner() && PromptSupport.getFocusBehavior(txt) == FocusBehavior.HIDE_PROMPT) {
 			promptComponent.setText(null);
 		} else {
 			promptComponent.setText(PromptSupport.getPrompt(txt));
 		}
 
 		promptComponent.getHighlighter().removeAllHighlights();
-		if (txt.isFocusOwner()
-				&& PromptSupport.getFocusBehavior(txt) == FocusBehavior.HIGHLIGHT_PROMPT) {
+		if (txt.isFocusOwner() && PromptSupport.getFocusBehavior(txt) == FocusBehavior.HIGHLIGHT_PROMPT) {
 			promptComponent.setForeground(txt.getSelectedTextColor());
 			try {
-				promptComponent.getHighlighter().addHighlight(0,
-						promptComponent.getText().length(),
+				promptComponent.getHighlighter().addHighlight(0, promptComponent.getText().length(),
 						new DefaultHighlightPainter(txt.getSelectionColor()));
 			} catch (BadLocationException e) {
 				e.printStackTrace();
@@ -130,10 +128,9 @@ public abstract class PromptTextUI extends TextUI {
 		if (PromptSupport.getFontStyle(txt) == null) {
 			promptComponent.setFont(txt.getFont());
 		} else {
-			promptComponent.setFont(txt.getFont().deriveFont(
-					PromptSupport.getFontStyle(txt)));
+			promptComponent.setFont(txt.getFont().deriveFont(PromptSupport.getFontStyle(txt)));
 		}
-		
+
 		promptComponent.setBackground(PromptSupport.getBackground(txt));
 		promptComponent.setEnabled(txt.isEnabled());
 		promptComponent.setOpaque(txt.isOpaque());
@@ -143,10 +140,14 @@ public abstract class PromptTextUI extends TextUI {
 		promptComponent.setSelectionColor(txt.getSelectionColor());
 		promptComponent.setEditable(txt.isEditable());
 		promptComponent.setMargin(txt.getMargin());
-		
+
 		promptComponent.putClientProperty("Quaqua.TextField.style", txt.getClientProperty("Quaqua.TextField.style"));
-		//leopard client properties. see http://developer.apple.com/technotes/tn2007/tn2196.html#JTEXTFIELD_VARIANT
-		promptComponent.putClientProperty("JTextField.variant", txt.getClientProperty("JTextField.variant")); 
+
+		// leopard client properties. see
+		// http://developer.apple.com/technotes/tn2007/tn2196.html#JTEXTFIELD_VARIANT
+		promptComponent.putClientProperty("JTextField.variant", txt.getClientProperty("JTextField.variant"));
+		promptComponent.putClientProperty("JTextField.Search.FindPopup", txt
+				.getClientProperty("JTextField.Search.FindPopup"));
 
 		return promptComponent;
 	}
@@ -174,16 +175,17 @@ public abstract class PromptTextUI extends TextUI {
 	 */
 	public void paint(Graphics g, final JComponent c) {
 		JTextComponent txt = (JTextComponent) c;
+
+		if (shouldPaintPrompt(txt)) {
 			JTextComponent lbl = getPromptComponent(txt);
 			lbl.paint(g);
 
 			if (txt.getCaret() != null) {
 				txt.getCaret().paint(g);
 			}
-		if(!shouldPaintPrompt(txt)) {
+		} else {
 			delegate.paint(g, c);
 		}
-		super.paint(g, c);
 	}
 
 	/**
@@ -212,8 +214,7 @@ public abstract class PromptTextUI extends TextUI {
 	 * important when the text is centered, so that the caret will not be
 	 * painted inside the label text)
 	 */
-	public Rectangle modelToView(JTextComponent t, int pos, Bias bias)
-			throws BadLocationException {
+	public Rectangle modelToView(JTextComponent t, int pos, Bias bias) throws BadLocationException {
 		if (shouldPaintPrompt(t)) {
 			return getPromptComponent(t).getUI().modelToView(t, pos, bias);
 		} else {
@@ -225,8 +226,7 @@ public abstract class PromptTextUI extends TextUI {
 	 * Calls {@link #modelToView(JTextComponent, int, Bias)} with
 	 * {@link Bias#Forward}.
 	 */
-	public Rectangle modelToView(JTextComponent t, int pos)
-			throws BadLocationException {
+	public Rectangle modelToView(JTextComponent t, int pos) throws BadLocationException {
 		return modelToView(t, pos, Position.Bias.Forward);
 	}
 
@@ -237,8 +237,7 @@ public abstract class PromptTextUI extends TextUI {
 		return delegate.contains(c, x, y);
 	}
 
-	public void damageRange(JTextComponent t, int p0, int p1, Bias firstBias,
-			Bias secondBias) {
+	public void damageRange(JTextComponent t, int p0, int p1, Bias firstBias, Bias secondBias) {
 		delegate.damageRange(t, p0, p1, firstBias, secondBias);
 	}
 
@@ -270,10 +269,9 @@ public abstract class PromptTextUI extends TextUI {
 		return delegate.getMinimumSize(c);
 	}
 
-	public int getNextVisualPositionFrom(JTextComponent t, int pos, Bias b,
-			int direction, Bias[] biasRet) throws BadLocationException {
-		return delegate
-				.getNextVisualPositionFrom(t, pos, b, direction, biasRet);
+	public int getNextVisualPositionFrom(JTextComponent t, int pos, Bias b, int direction, Bias[] biasRet)
+			throws BadLocationException {
+		return delegate.getNextVisualPositionFrom(t, pos, b, direction, biasRet);
 	}
 
 	public View getRootView(JTextComponent t) {
@@ -312,8 +310,7 @@ public abstract class PromptTextUI extends TextUI {
 	 */
 	public int getBaseline(JComponent c, int width, int height) {
 		try {
-			Method m = delegate.getClass().getMethod("getBaseline",
-					JComponent.class, int.class, int.class);
+			Method m = delegate.getClass().getMethod("getBaseline", JComponent.class, int.class, int.class);
 			Object o = m.invoke(delegate, new Object[] { c, width, height });
 			return (Integer) o;
 		} catch (Exception ex) {
