@@ -65,7 +65,9 @@ public class PromptTextFieldUI extends PromptTextUI {
 		if (SearchFieldSupport.isSearchField(txt) && SearchFieldSupport.isNativeSearchFieldSupported()) {
 			// Paint Mac OS 10.5 native search field.
 			getPromptComponent(txt).paint(g);
-			delegate.paint(g, c);
+			if (!shouldPaintPrompt(txt)) {
+				delegate.paint(g, c);
+			}
 		} else {
 			super.paint(g, c);
 		}
