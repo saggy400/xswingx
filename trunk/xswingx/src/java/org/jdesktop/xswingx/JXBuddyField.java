@@ -6,10 +6,14 @@ import java.awt.Insets;
 
 import javax.swing.JFrame;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 import org.jdesktop.xswingx.demo.BookmarkButton;
 import org.jdesktop.xswingx.demo.RssButton;
 import org.jdesktop.xswingx.demo.SnapBackButton;
+
+import com.jgoodies.looks.plastic.PlasticXPLookAndFeel;
 
 public class JXBuddyField extends JXPromptField {
 	public JXBuddyField() {
@@ -32,7 +36,7 @@ public class JXBuddyField extends JXPromptField {
 	public static void main(String[] args) {
 //		try {
 //			UIManager.setLookAndFeel(new PlasticXPLookAndFeel());
-//			UIManager.setLookAndFeel(new QuaquaLookAndFeel());
+////			UIManager.setLookAndFeel(new QuaquaLookAndFeel());
 //		} catch (UnsupportedLookAndFeelException e) {
 //			// TODO Auto-generated catch block
 //			e.printStackTrace();
@@ -56,7 +60,6 @@ public class JXBuddyField extends JXPromptField {
 		System.out.println(tf.getUI());
 		System.out.println(tf.getBorder());
 		
-//		tf.putClientProperty("JTextField.variant", "search");
 //		System.out.println(tf.getUI());
 //		System.out.println(tf.getBorder());
 		
@@ -65,7 +68,8 @@ public class JXBuddyField extends JXPromptField {
 		System.out.println(tf.getBorder());
 		
 //		tf.putClientProperty("JTextField.variant", "nonsense");
-		tf.putClientProperty("JTextField.variant", "search");
+		SearchFieldSupport.setSearchField(tf, true);
+		new RecentSearches("test").install(tf);
 		System.out.println(tf.getUI());
 		System.out.println(tf.getBorder());
 		
@@ -73,7 +77,8 @@ public class JXBuddyField extends JXPromptField {
 		System.out.println(tf.getUI());
 		System.out.println(tf.getBorder());
 		
-		f.add(tf, BorderLayout.SOUTH);
+		f.add(tf, BorderLayout.CENTER);
+		f.add(new JXSearchField(), BorderLayout.SOUTH);
 		f.pack();
 		f.setVisible(true);
 	}

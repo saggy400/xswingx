@@ -1,17 +1,14 @@
 package org.jdesktop.xswingx;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.beans.PropertyChangeEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JPopupMenu;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
@@ -142,13 +139,9 @@ public class JXSearchField extends JXBuddyField {
 
 	private JButton popupButton;
 
-	private Insets buttonMargin;
-
 	private LayoutStyle layoutStyle;
 
 	private SearchMode searchMode = SearchMode.INSTANT;
-
-	private JPopupMenu searchPopupMenu;
 
 	private boolean useSeperatePopupButton;
 
@@ -176,7 +169,7 @@ public class JXSearchField extends JXBuddyField {
 	 * @param prompt
 	 */
 	public JXSearchField(String prompt) {
-		putClientProperty("Quaqua.TextField.style", "search");
+		SearchFieldSupport.setSearchField(this, true);
 		setPrompt(prompt);
 
 		// We cannot register the ClearAction through the Input- and
@@ -535,18 +528,18 @@ public class JXSearchField extends JXBuddyField {
 	 * popup button will be displayed instead of the search button. Otherwise
 	 * the popup button will be displayed in addition to the search button.
 	 * 
-	 * We could use the <code>popupButton</code>s
-	 * <code>componentPopupMenu</code> property instead of introducing another
-	 * property, if {@link JComponent#setComponentPopupMenu(JPopupMenu)} would
-	 * just fire a {@link PropertyChangeEvent}...
-	 * 
+	 * The search popup menu is managed using {@link SearchFieldSupport} to
+	 * achieve compatibility with the native search field support provided by
+	 * the Mac Look And Feel since Mac OS 10.5.
 	 * 
 	 * @param searchPopupMenu
 	 *            the popup menu, which will be displayed when the popup button
 	 *            is clicked
 	 */
 	public void setSearchPopupMenu(JPopupMenu searchPopupMenu) {
-		firePropertyChange("searchPopupMenu", this.searchPopupMenu, this.searchPopupMenu = searchPopupMenu);
+		JPopupMenu oldPopup = getSearchPopupMenu();
+		SearchFieldSupport.setSearchPopupMenu(this, searchPopupMenu);
+		firePropertyChange("searchPopupMenu", oldPopup, searchPopupMenu);
 	}
 
 	/**
@@ -556,7 +549,7 @@ public class JXSearchField extends JXBuddyField {
 	 * @return the search popup menu
 	 */
 	public JPopupMenu getSearchPopupMenu() {
-		return searchPopupMenu;
+		return SearchFieldSupport.getSearchPopupMenu(this);
 	}
 
 	/**

@@ -1,6 +1,8 @@
 package org.jdesktop.xswingx.plaf.basic;
 
 import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
@@ -22,6 +24,7 @@ import javax.swing.text.Document;
 
 import org.jdesktop.xswingx.BuddySupport;
 import org.jdesktop.xswingx.JXSearchField;
+import org.jdesktop.xswingx.SearchFieldSupport;
 import org.jdesktop.xswingx.JXSearchField.LayoutStyle;
 import org.jdesktop.xswingx.plaf.BuddyLayoutAndBorder;
 import org.jdesktop.xswingx.plaf.BuddyTextFieldUI;
@@ -70,18 +73,49 @@ public class BasicSearchFieldUI extends BuddyTextFieldUI {
 
 		super.installUI(c);
 
-		installDefaults();
+		if (!isNativeSearchField()) {
+			installDefaults();
 
-		layoutButtons();
+			layoutButtons();
 
-		popupButton().addActionListener(getHandler());
+			popupButton().addActionListener(getHandler());
+			searchField.addPropertyChangeListener(getHandler());
+		}
+		// add support for instant search mode in any case.
 		searchField.getDocument().addDocumentListener(getHandler());
-		searchField.addPropertyChangeListener(getHandler());
+	}
+
+	private boolean isNativeSearchField() {
+		return SearchFieldSupport.isNativeSearchFieldSupported();
 	}
 
 	@Override
 	protected BuddyLayoutAndBorder createBuddyLayoutAndBorder(JTextField c) {
 		return new BuddyLayoutAndBorder(c) {
+			/**
+			 * This does nothing, if the search field is rendered natively on
+			 * Leopard.
+			 */
+			@Override
+			protected void replaceBorderIfNecessary() {
+				if(!isNativeSearchField()){
+					super.replaceBorderIfNecessary();
+				}
+			}
+
+			/**
+			 * Return zero, when the search field is rendered natively on
+			 * Leopard, to make painting work correctly.
+			 */
+			@Override
+			public Dimension preferredLayoutSize(Container parent) {
+				if (isNativeSearchField()) {
+					return new Dimension();
+				} else {
+					return super.preferredLayoutSize(parent);
+				}
+			}
+
 			/**
 			 * Include the clear button, to prevent 'jumping' when text is
 			 * entered, when layout style is Mac.
@@ -107,7 +141,7 @@ public class BasicSearchFieldUI extends BuddyTextFieldUI {
 		} else {
 			searchField.add(searchButton(), BuddySupport.RIGHT);
 		}
-		
+
 		if (usingSeperatePopupButton()) {
 			searchField.add(BuddySupport.createGap(getPopupOffset()), BuddySupport.RIGHT);
 		}

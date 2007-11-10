@@ -1,7 +1,6 @@
 package org.jdesktop.xswingx.plaf;
 
 import java.awt.Dimension;
-import java.awt.Graphics;
 
 import javax.swing.JComponent;
 import javax.swing.JTextField;
@@ -41,17 +40,9 @@ public class BuddyTextFieldUI extends PromptTextFieldUI {
 	@Override
 	public void uninstallUI(JComponent c) {
 		super.uninstallUI(c);
-		layoutAndBorder.uninstall((JTextField) c);
-	}
-
-	@Override
-	public void paint(Graphics g, JComponent c) {
-		// make Quaqua paint the background.
-//		if (UIManager.getLookAndFeel().getName().contains("Quaqua")) {
-//			g.setColor(c.getBackground());
-//			g.fillRect(0, 0, c.getWidth(), c.getHeight());
-//		}
-		super.paint(g, c);
+		if (layoutAndBorder != null) {
+			layoutAndBorder.uninstall((JTextField) c);
+		}
 	}
 
 	/**
@@ -67,6 +58,6 @@ public class BuddyTextFieldUI extends PromptTextFieldUI {
 		d.height = Math.max(cd.height, ld.height);
 		d.width = Math.max(cd.width, ld.width);
 
-		return d;
+		return cd;
 	}
 }
