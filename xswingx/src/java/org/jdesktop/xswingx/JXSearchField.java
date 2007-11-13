@@ -648,7 +648,7 @@ public class JXSearchField extends JXBuddyField {
 			}
 		} else if (propertyName == "layoutStyle") {
 			if (!layoutStyleSet || override) {
-				setLayoutStyle((LayoutStyle) value);
+				setLayoutStyle(LayoutStyle.valueOf(value.toString()));
 				layoutStyleSet = false;
 			}
 		} else if (propertyName == "promptFontStyle") {
