@@ -7,6 +7,7 @@ import javax.swing.JTextField;
 import javax.swing.plaf.TextUI;
 import javax.swing.text.JTextComponent;
 
+import org.jdesktop.xswingx.BuddySupport;
 import org.jdesktop.xswingx.SearchFieldSupport;
 
 /**
@@ -42,8 +43,21 @@ public class PromptTextFieldUI extends PromptTextUI {
 		lbl.setHorizontalAlignment(txtField.getHorizontalAlignment());
 		lbl.setColumns(txtField.getColumns());
 
-		// make Aqua in Leopard paint focused border.
-		lbl.hasFocus = txtField.hasFocus();
+		// Make search field in Leopard paint focused border.
+		lbl.hasFocus = txtField.hasFocus() && SearchFieldSupport.isNativeSearchField(txtField);
+
+		// quaqua rounded corners
+		promptComponent.putClientProperty("Quaqua.TextField.style", txt.getClientProperty("Quaqua.TextField.style"));
+
+		// leopard client properties. see
+		// http://developer.apple.com/technotes/tn2007/tn2196.html#JTEXTFIELD_VARIANT
+		promptComponent.putClientProperty("JTextField.variant", txt.getClientProperty("JTextField.variant"));
+		promptComponent.putClientProperty("JTextField.Search.FindPopup", txt
+				.getClientProperty("JTextField.Search.FindPopup"));
+
+		// copy buddies
+		BuddySupport.setLeft(lbl, BuddySupport.getLeft(txtField));
+		BuddySupport.setRight(lbl, BuddySupport.getRight(txtField));
 
 		return lbl;
 	}
@@ -62,7 +76,7 @@ public class PromptTextFieldUI extends PromptTextUI {
 	public void paint(Graphics g, JComponent c) {
 		JTextField txt = (JTextField) c;
 
-		if (SearchFieldSupport.isSearchField(txt) && SearchFieldSupport.isNativeSearchFieldSupported()) {
+		if (SearchFieldSupport.isNativeSearchField(txt)) {
 			// Paint Mac OS 10.5 native search field.
 			getPromptComponent(txt).paint(g);
 			if (!shouldPaintPrompt(txt)) {
@@ -77,6 +91,7 @@ public class PromptTextFieldUI extends PromptTextUI {
 	 * Returns a shared {@link JTextField}.
 	 */
 	protected JTextComponent createPromptComponent() {
+		txt.updateUI();
 		return txt;
 	}
 

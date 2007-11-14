@@ -47,7 +47,8 @@ public class JXSearchFieldAddon extends AbstractComponentAddon {
 						new InsetsUIResource(1, 1, 1, 1),
 						"SearchField.popupSource", BUTTON_SOURCE}));
 		
-		addResource(defaults, "org.jdesktop.xswingx.plaf.basic.resources.SearchField");
+		//FIXME: swingx changed.
+//		addResource(defaults, "org.jdesktop.xswingx.plaf.basic.resources.SearchField");
 	}
 
 	@Override

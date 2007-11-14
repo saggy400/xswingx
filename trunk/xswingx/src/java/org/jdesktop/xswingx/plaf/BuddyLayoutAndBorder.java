@@ -9,43 +9,31 @@ import java.awt.LayoutManager;
 import java.awt.Rectangle;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
+import javax.swing.plaf.UIResource;
 import javax.swing.plaf.basic.BasicBorders.MarginBorder;
 
 import org.jdesktop.xswingx.BuddySupport;
+import org.jdesktop.xswingx.BuddySupport.Position;
 
-public class BuddyLayoutAndBorder implements LayoutManager, Border, PropertyChangeListener {
+public class BuddyLayoutAndBorder implements LayoutManager, Border, PropertyChangeListener, UIResource {
 	private JTextField textField;
 	private Border borderDelegate;
 
-	private List<Component> left = new ArrayList<Component>();
-	private List<Component> right = new ArrayList<Component>();
-
 	/**
-	 * Creates and installs a {@link BuddyLayoutAndBorder} as a layout and
-	 * border of the given text field. Registers a
-	 * {@link PropertyChangeListener} to wrap any subsequentially set border on
-	 * the text field.
-	 * 
-	 * @param textField
+	 * Installs a {@link BuddyLayoutAndBorder} as a layout and border of the
+	 * given text field. Registers a {@link PropertyChangeListener} to wrap any
+	 * subsequently set border on the text field.
 	 */
-	public BuddyLayoutAndBorder(JTextField textField) {
+	protected void install(JTextField textField) {
 		this.textField = textField;
 		this.borderDelegate = textField.getBorder();
-
-		install();
-	}
-
-	/**
-	 * Does the installing.
-	 */
-	protected void install() {
+		
 		textField.setLayout(this);
+
 		replaceBorderIfNecessary();
 		textField.addPropertyChangeListener("border", this);
 	}
@@ -64,20 +52,11 @@ public class BuddyLayoutAndBorder implements LayoutManager, Border, PropertyChan
 		}
 	}
 
+	/**
+	 * Does nothing.
+	 * @see BuddySupport#add(javax.swing.JComponent, Position, JTextField)
+	 */
 	public void addLayoutComponent(String name, Component comp) {
-		if (BuddySupport.LEFT.equals(name)) {
-			if (right.contains(comp)) {
-				throw new IllegalStateException();
-			}
-			left.add(comp);
-		} else if (BuddySupport.RIGHT.equals(name)) {
-			if (left.contains(comp)) {
-				throw new IllegalStateException();
-			}
-			right.add(0, comp);
-		} else {
-			throw new IllegalArgumentException();
-		}
 	}
 
 	public Dimension minimumLayoutSize(Container parent) {
@@ -100,21 +79,19 @@ public class BuddyLayoutAndBorder implements LayoutManager, Border, PropertyChan
 		return d;
 	}
 
+	/**
+	 * Does nothing.
+	 * @see BuddySupport#remove(javax.swing.JComponent, JTextField)
+	 */
 	public void removeLayoutComponent(Component comp) {
-		if (left.contains(comp)) {
-			left.remove(comp);
-		} else if (right.contains(comp)) {
-			right.remove(comp);
-		} else {
-			throw new IllegalArgumentException();
-		}
 	}
 
 	public void layoutContainer(Container parent) {
 		Rectangle visibleRect = getVisibleRect();
 		Dimension size;
+		JTextField textField = (JTextField) parent;
 
-		for (Component comp : left) {
+		for (Component comp : BuddySupport.getLeft(textField)) {
 			if (!comp.isVisible()) {
 				continue;
 			}
@@ -125,7 +102,7 @@ public class BuddyLayoutAndBorder implements LayoutManager, Border, PropertyChan
 			visibleRect.width -= size.width;
 		}
 
-		for (Component comp : right) {
+		for (Component comp : BuddySupport.getRight(textField)) {
 			if (!comp.isVisible()) {
 				continue;
 			}
@@ -185,10 +162,11 @@ public class BuddyLayoutAndBorder implements LayoutManager, Border, PropertyChan
 		} else {
 			insets = new Insets(0, 0, 0, 0);
 		}
-		for (Component comp : left) {
+		JTextField textField = (JTextField) c;
+		for (Component comp : BuddySupport.getLeft(textField)) {
 			insets.left += comp.isVisible() ? comp.getPreferredSize().width : 0;
 		}
-		for (Component comp : right) {
+		for (Component comp : BuddySupport.getRight(textField)) {
 			insets.right += comp.isVisible() ? comp.getPreferredSize().width : 0;
 		}
 
@@ -247,8 +225,14 @@ public class BuddyLayoutAndBorder implements LayoutManager, Border, PropertyChan
 		replaceBorderIfNecessary();
 	}
 
-	public void uninstall(JTextField textField) {
-		textField.removePropertyChangeListener(this);
+	public void uninstall() {
+		textField.removePropertyChangeListener("border", this);
 		textField.setBorder(borderDelegate);
+		textField.setLayout(null);
+	}
+	
+	@Override
+	public String toString() {
+		return String.format("%s: %s", getClass().getName(), borderDelegate);
 	}
 }

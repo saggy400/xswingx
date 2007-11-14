@@ -23,7 +23,6 @@ import javax.swing.text.DefaultHighlighter.DefaultHighlightPainter;
 import javax.swing.text.Position.Bias;
 
 import org.jdesktop.xswingx.PromptSupport;
-import org.jdesktop.xswingx.SearchFieldSupport;
 import org.jdesktop.xswingx.PromptSupport.FocusBehavior;
 
 /**
@@ -31,7 +30,6 @@ import org.jdesktop.xswingx.PromptSupport.FocusBehavior;
  * Abstract {@link TextUI} class that delegates most work to another
  * {@link TextUI} and additionally renders a prompt text as specified in the
  * {@link JTextComponent}s client properties by {@link PromptSupport}.
- * </p>
  * <p>
  * Subclasses of this class must provide a prompt component used for rendering
  * the prompt text.
@@ -140,14 +138,6 @@ public abstract class PromptTextUI extends TextUI {
 		promptComponent.setSelectionColor(txt.getSelectionColor());
 		promptComponent.setEditable(txt.isEditable());
 		promptComponent.setMargin(txt.getMargin());
-
-		promptComponent.putClientProperty("Quaqua.TextField.style", txt.getClientProperty("Quaqua.TextField.style"));
-
-		// leopard client properties. see
-		// http://developer.apple.com/technotes/tn2007/tn2196.html#JTEXTFIELD_VARIANT
-		promptComponent.putClientProperty("JTextField.variant", txt.getClientProperty("JTextField.variant"));
-		promptComponent.putClientProperty("JTextField.Search.FindPopup", txt
-				.getClientProperty("JTextField.Search.FindPopup"));
 
 		return promptComponent;
 	}
