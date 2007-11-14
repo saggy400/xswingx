@@ -25,24 +25,23 @@ public class BuddyTextFieldUI extends PromptTextFieldUI {
 	 */
 	public BuddyTextFieldUI(TextUI delegate) {
 		super(delegate);
+		layoutAndBorder = createBuddyLayoutAndBorder();
 	}
 
 	@Override
 	public void installUI(JComponent c) {
 		super.installUI(c);
-		layoutAndBorder = createBuddyLayoutAndBorder((JTextField) c);
+		layoutAndBorder.install((JTextField) c);
 	}
 
-	protected BuddyLayoutAndBorder createBuddyLayoutAndBorder(JTextField c) {
-		return new BuddyLayoutAndBorder(c);
+	protected BuddyLayoutAndBorder createBuddyLayoutAndBorder() {
+		return new BuddyLayoutAndBorder();
 	}
 
 	@Override
 	public void uninstallUI(JComponent c) {
+		layoutAndBorder.uninstall();
 		super.uninstallUI(c);
-		if (layoutAndBorder != null) {
-			layoutAndBorder.uninstall((JTextField) c);
-		}
 	}
 
 	/**

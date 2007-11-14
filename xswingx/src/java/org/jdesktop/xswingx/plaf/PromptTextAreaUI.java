@@ -44,6 +44,7 @@ public class PromptTextAreaUI extends PromptTextUI {
 	 * Returns a shared {@link JTextArea}.
 	 */
 	protected JTextComponent createPromptComponent() {
+		txt.updateUI();
 		return txt;
 	}
 }

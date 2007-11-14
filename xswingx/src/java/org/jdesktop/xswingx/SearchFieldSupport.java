@@ -39,6 +39,10 @@ public class SearchFieldSupport {
 	public static boolean isSearchField(JTextField txt) {
 		return "search".equals(txt.getClientProperty("JTextField.variant"));
 	}
+	
+	public static boolean isNativeSearchField(JTextField txt) {
+		return isSearchField(txt) && isNativeSearchFieldSupported();
+	}
 
 	public static void setSearchPopupMenu(JTextField txt, JPopupMenu popupMenu) {
 		txt.putClientProperty("JTextField.Search.FindPopup", popupMenu);

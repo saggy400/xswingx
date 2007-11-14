@@ -10,19 +10,19 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import org.jdesktop.xswingx.demo.BookmarkButton;
+import org.jdesktop.xswingx.demo.LabelDemo;
 import org.jdesktop.xswingx.demo.RssButton;
-import org.jdesktop.xswingx.demo.SnapBackButton;
 
 import com.jgoodies.looks.plastic.PlasticXPLookAndFeel;
 
 public class JXBuddyField extends JXPromptField {
 	public JXBuddyField() {
-		BuddySupport.install(this);
 	}
 	
 	@Override
 	protected void installPromptSupport(String promptText, Color promptForeground, Color promptBackground) {
 		PromptSupport.init(promptText, promptForeground, promptBackground, this, false);
+		BuddySupport.install(this);
 	}
 	
 	public void setOuterMargin(Insets margin) {
@@ -41,35 +41,34 @@ public class JXBuddyField extends JXPromptField {
 //			// TODO Auto-generated catch block
 //			e.printStackTrace();
 //		}
-		JXBuddyField bf = new JXBuddyField();
+		JTextField bf = new JTextField();
 //		
-		PromptSupport.setPrompt("Go to this address", bf);
+		BuddySupport.addLeft(new BookmarkButton(), bf);
+		BuddySupport.addRight(new RssButton(), bf);
+//		BuddySupport.addRight(BuddySupport.createGap(3), bf);
+//		BuddySupport.addRight(new SnapBackButton(), bf);
 		
-		bf.add(new BookmarkButton(), BuddySupport.LEFT);
-		bf.add(new RssButton(), BuddySupport.RIGHT);
-		bf.add(BuddySupport.createGap(3), BuddySupport.RIGHT);
-		bf.add(new SnapBackButton(), BuddySupport.RIGHT);
+		PromptSupport.setPrompt("Go to this address", bf);
 		
 		JFrame f = new JFrame();
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.setLayout(new BorderLayout());
 		f.add(bf, BorderLayout.NORTH);
-		f.add(new JXPromptField("Simple Prompt Field"), BorderLayout.CENTER);
-		
+
 		final JTextField tf = new JTextField();
+		tf.setComponentPopupMenu(LabelDemo.createLookAndFeelMenu(f).getPopupMenu());
 		System.out.println(tf.getUI());
 		System.out.println(tf.getBorder());
-		
 //		System.out.println(tf.getUI());
 //		System.out.println(tf.getBorder());
 		
-		PromptSupport.setPrompt("search", tf);
 		System.out.println(tf.getUI());
 		System.out.println(tf.getBorder());
 		
 //		tf.putClientProperty("JTextField.variant", "nonsense");
 		SearchFieldSupport.setSearchField(tf, true);
-		new RecentSearches("test").install(tf);
+//		PromptSupport.setPrompt("search", tf);
+//		new RecentSearches("test").install(tf);
 		System.out.println(tf.getUI());
 		System.out.println(tf.getBorder());
 		

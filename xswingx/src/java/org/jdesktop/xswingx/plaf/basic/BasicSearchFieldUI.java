@@ -13,7 +13,6 @@ import java.beans.PropertyChangeListener;
 import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
-import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.event.DocumentEvent;
@@ -90,15 +89,15 @@ public class BasicSearchFieldUI extends BuddyTextFieldUI {
 	}
 
 	@Override
-	protected BuddyLayoutAndBorder createBuddyLayoutAndBorder(JTextField c) {
-		return new BuddyLayoutAndBorder(c) {
+	protected BuddyLayoutAndBorder createBuddyLayoutAndBorder() {
+		return new BuddyLayoutAndBorder() {
 			/**
 			 * This does nothing, if the search field is rendered natively on
 			 * Leopard.
 			 */
 			@Override
 			protected void replaceBorderIfNecessary() {
-				if(!isNativeSearchField()){
+				if (!isNativeSearchField()) {
 					super.replaceBorderIfNecessary();
 				}
 			}
@@ -123,8 +122,10 @@ public class BasicSearchFieldUI extends BuddyTextFieldUI {
 			@Override
 			public Insets getBorderInsets(Component c) {
 				Insets insets = super.getBorderInsets(c);
-				if (searchField != null && !clearButton().isVisible() && isMacLayoutStyle()) {
-					insets.right += clearButton().getPreferredSize().width;
+				if (!isNativeSearchField()) {
+					if (searchField != null && !clearButton().isVisible() && isMacLayoutStyle()) {
+						insets.right += clearButton().getPreferredSize().width;
+					}
 				}
 				return insets;
 			}
@@ -132,24 +133,24 @@ public class BasicSearchFieldUI extends BuddyTextFieldUI {
 	}
 
 	private void layoutButtons() {
-		searchField.removeAll();
-
-		searchField.add(clearButton(), BuddySupport.RIGHT);
+		BuddySupport.removeAll(searchField);
+		
+		BuddySupport.addRight(clearButton(), searchField);
 
 		if (isMacLayoutStyle()) {
-			searchField.add(searchButton(), BuddySupport.LEFT);
+			BuddySupport.addLeft(searchButton(), searchField);
 		} else {
-			searchField.add(searchButton(), BuddySupport.RIGHT);
+			BuddySupport.addRight(searchButton(), searchField);
 		}
 
 		if (usingSeperatePopupButton()) {
-			searchField.add(BuddySupport.createGap(getPopupOffset()), BuddySupport.RIGHT);
+			BuddySupport.addRight(BuddySupport.createGap(getPopupOffset()), searchField);
 		}
 
 		if (usingSeperatePopupButton() || !isMacLayoutStyle()) {
-			searchField.add(popupButton(), BuddySupport.RIGHT);
+			BuddySupport.addRight(popupButton(), searchField);
 		} else {
-			searchField.add(popupButton(), BuddySupport.LEFT);
+			BuddySupport.addLeft(popupButton(), searchField);
 		}
 	}
 

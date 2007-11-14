@@ -99,7 +99,7 @@ public class PromptSupport {
 	 * @see #install(JTextComponent, boolean)
 	 */
 	public static void install(final JTextComponent textComponent) {
-		install(textComponent, false);
+		install(textComponent, true);
 	}
 
 	/**

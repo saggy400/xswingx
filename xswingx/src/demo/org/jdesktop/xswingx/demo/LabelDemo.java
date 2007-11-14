@@ -46,24 +46,9 @@ public class LabelDemo extends javax.swing.JFrame {
 
 	class Menu extends JMenuBar {
 		public Menu() {
-			final JMenu lnf = new JMenu("Look and Feel");
+			final JMenu lnf = createLookAndFeelMenu(LabelDemo.this);
+			
 			add(lnf);
-			for (final LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-				final JMenuItem mi = new JMenuItem(info.getName());
-				lnf.add(mi);
-
-				mi.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						try {
-							UIManager.setLookAndFeel(info.getClassName());
-							SwingUtilities.updateComponentTreeUI(LabelDemo.this);
-						} catch (Exception ex) {
-							mi.setEnabled(false);
-							ex.printStackTrace();
-						}
-					}
-				});
-			}
 
 			final JMenu fbm = new JMenu("Focus Behavior");
 			add(fbm);
@@ -156,6 +141,28 @@ public class LabelDemo extends javax.swing.JFrame {
 				}
 			});
 		}
+
+	}
+	
+	public static JMenu createLookAndFeelMenu(final Component toUpdate) {
+		final JMenu lnf = new JMenu("Look and Feel");
+		for (final LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+			final JMenuItem mi = new JMenuItem(info.getName());
+			lnf.add(mi);
+
+			mi.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					try {
+						UIManager.setLookAndFeel(info.getClassName());
+						SwingUtilities.updateComponentTreeUI(toUpdate);
+					} catch (Exception ex) {
+						mi.setEnabled(false);
+						ex.printStackTrace();
+					}
+				}
+			});
+		}
+		return lnf;
 	}
 
 	private void updateLabelTextComponents() {

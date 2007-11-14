@@ -48,19 +48,25 @@ public abstract class TextUIWrapper<UI extends TextUI> {
 	 * instance of the given wrapper class.
 	 * 
 	 * @param textComponent
+	 * @return <code>true</code> if the UI has been replaced
 	 */
-	private final void replaceUIIfNeeded(JTextComponent textComponent) {
-		if (!(wrapperClass.isAssignableFrom(textComponent.getUI().getClass()))) {
-			textComponent.setUI(wrapUI(textComponent.getUI()));
-
-			// Leopard hack to make appear correctly in search variant when changing LnF.
-			if (textComponent instanceof JTextField) {
-				Object variant = textComponent.getClientProperty("JTextField.variant");
-				//put some nonsense here to trigger a property change event.
-				textComponent.putClientProperty("JTextField.variant", "nonsense");
-				textComponent.putClientProperty("JTextField.variant", variant);
-			}
+	protected boolean replaceUIIfNeeded(JTextComponent textComponent) {
+		if (wrapperClass.isAssignableFrom(textComponent.getUI().getClass())) {
+			return false;
 		}
+		
+		textComponent.setUI(wrapUI(textComponent.getUI()));
+		
+		// Leopard hack to make appear correctly in search variant when changing
+		// LnF. FIXME
+//		if (textComponent instanceof JTextField) {
+//			Object variant = textComponent.getClientProperty("JTextField.variant");
+//			// put some nonsense here to trigger a property change event.
+//			textComponent.putClientProperty("JTextField.variant", "nonsense");
+//			textComponent.putClientProperty("JTextField.variant", variant);
+//		}
+		
+		return true;
 	}
 
 	/**
