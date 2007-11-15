@@ -10,5 +10,8 @@ Java-Bean: True
 Name: org/jdesktop/xswingx/JXFormattedPromptField.class
 Java-Bean: True
 
+Name: org/jdesktop/xswingx/JXBuddyField.class
+Java-Bean: True
+
 Name: org/jdesktop/xswingx/JXSearchField.class
 Java-Bean: True
