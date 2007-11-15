@@ -55,7 +55,8 @@ public class PromptTextFieldUI extends PromptTextUI {
 		promptComponent.putClientProperty("JTextField.Search.FindPopup", txt
 				.getClientProperty("JTextField.Search.FindPopup"));
 
-		// copy buddies
+		//buddy support
+		BuddySupport.setOuterMargin(lbl, BuddySupport.getOuterMargin(txtField));
 		BuddySupport.setLeft(lbl, BuddySupport.getLeft(txtField));
 		BuddySupport.setRight(lbl, BuddySupport.getRight(txtField));
 

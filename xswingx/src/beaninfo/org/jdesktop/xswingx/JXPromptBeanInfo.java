@@ -2,12 +2,14 @@ package org.jdesktop.xswingx;
 
 import java.awt.Font;
 
+import javax.swing.text.JTextComponent;
+
 import org.jdesktop.swingx.BeanInfoSupport;
 import org.jdesktop.swingx.EnumerationValue;
 import org.jdesktop.xswingx.PromptSupport.FocusBehavior;
 
 public abstract class JXPromptBeanInfo extends BeanInfoSupport {
-	public JXPromptBeanInfo(Class beanClass) {
+	protected JXPromptBeanInfo(Class<? extends JTextComponent> beanClass) {
 		super(beanClass);
 	}
 

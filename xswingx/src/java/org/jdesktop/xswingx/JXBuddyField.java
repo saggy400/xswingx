@@ -7,10 +7,12 @@ import java.awt.Insets;
 import java.util.List;
 
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import org.jdesktop.xswingx.BuddySupport.Position;
 import org.jdesktop.xswingx.demo.BookmarkButton;
+import org.jdesktop.xswingx.demo.JXAddressField;
 import org.jdesktop.xswingx.demo.LabelDemo;
 import org.jdesktop.xswingx.demo.RssButton;
 
@@ -52,14 +54,7 @@ public class JXBuddyField extends JXPromptField {
 //			// TODO Auto-generated catch block
 //			e.printStackTrace();
 //		}
-		JTextField bf = new JTextField();
-//		
-		BuddySupport.addLeft(new BookmarkButton(), bf);
-		BuddySupport.addRight(new RssButton(), bf);
-//		BuddySupport.addRight(BuddySupport.createGap(3), bf);
-//		BuddySupport.addRight(new SnapBackButton(), bf);
-		
-		PromptSupport.setPrompt("Go to this address", bf);
+		JTextField bf = new JXAddressField();
 		
 		JFrame f = new JFrame();
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -67,18 +62,19 @@ public class JXBuddyField extends JXPromptField {
 		f.add(bf, BorderLayout.NORTH);
 
 		final JTextField tf = new JTextField();
-		tf.setComponentPopupMenu(LabelDemo.createLookAndFeelMenu(f).getPopupMenu());
+		bf.setComponentPopupMenu(LabelDemo.createLookAndFeelMenu(f).getPopupMenu());
 		
-		SearchFieldSupport.setSearchField(tf, true);
-		System.out.println(tf.getUI());
-		System.out.println(tf.getBorder());
-		tf.updateUI();
-		SearchFieldSupport.setSearchField(tf, true);
-		System.out.println(tf.getUI());
-		System.out.println(tf.getBorder());
+//		SearchFieldSupport.setSearchField(tf, true);
+//		System.out.println(tf.getUI());
+//		System.out.println(tf.getBorder());
+//		tf.updateUI();
+//		SearchFieldSupport.setSearchField(tf, true);
+//		System.out.println(tf.getUI());
+//		System.out.println(tf.getBorder());
 		
-		f.add(tf, BorderLayout.CENTER);
-		f.add(new JXSearchField(), BorderLayout.SOUTH);
+		f.add(new JPanel(), BorderLayout.CENTER);
+		f.add(tf, BorderLayout.SOUTH);
+//		f.add(new JXSearchField(), BorderLayout.SOUTH);
 		f.pack();
 		f.setVisible(true);
 	}

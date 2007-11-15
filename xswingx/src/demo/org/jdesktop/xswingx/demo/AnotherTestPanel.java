@@ -1,12 +1,18 @@
 package org.jdesktop.xswingx.demo;
 
-import javax.swing.*;
-import com.jgoodies.forms.factories.*;
-import com.jgoodies.forms.layout.*;
-import org.jdesktop.xswingx.*;
-/*
- * Created by JFormDesigner on Tue Nov 13 15:49:36 CET 2007
- */
+import java.awt.Insets;
+
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
+import com.jgoodies.forms.factories.Borders;
+import com.jgoodies.forms.factories.FormFactory;
+import com.jgoodies.forms.layout.CellConstraints;
+import com.jgoodies.forms.layout.ColumnSpec;
+import com.jgoodies.forms.layout.FormLayout;
+import com.jgoodies.forms.layout.FormSpec;
+import com.jgoodies.forms.layout.RowSpec;
+import com.jgoodies.forms.layout.Sizes;
 
 
 
@@ -21,11 +27,8 @@ public class AnotherTestPanel extends JPanel {
 	private void initComponents() {
 		// JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
 		// Generated using JFormDesigner Evaluation license - Peter Weishapl
-		xSearchField1 = new JXSearchField();
-		xPromptField1 = new JXPromptField();
 		textField1 = new JTextField();
-		xSearchField2 = new JXSearchField();
-		xAddressField1 = new JXAddressField();
+		xAddressField2 = new JXAddressField();
 		CellConstraints cc = new CellConstraints();
 
 		//======== this ========
@@ -40,7 +43,7 @@ public class AnotherTestPanel extends JPanel {
 
 		setLayout(new FormLayout(
 			new ColumnSpec[] {
-				FormFactory.DEFAULT_COLSPEC,
+				new ColumnSpec(ColumnSpec.FILL, Sizes.DEFAULT, FormSpec.DEFAULT_GROW),
 				FormFactory.LABEL_COMPONENT_GAP_COLSPEC,
 				FormFactory.DEFAULT_COLSPEC,
 				FormFactory.LABEL_COMPONENT_GAP_COLSPEC,
@@ -55,31 +58,16 @@ public class AnotherTestPanel extends JPanel {
 				FormFactory.LINE_GAP_ROWSPEC,
 				FormFactory.DEFAULT_ROWSPEC,
 				FormFactory.LINE_GAP_ROWSPEC,
-				FormFactory.DEFAULT_ROWSPEC
+				FormFactory.PREF_ROWSPEC
 			}));
-
-		//---- xSearchField1 ----
-		xSearchField1.setPrompt("Search");
-		add(xSearchField1, cc.xy(1, 1));
-
-		//---- xPromptField1 ----
-		xPromptField1.setPrompt("Enter Text");
-		add(xPromptField1, cc.xy(3, 1));
-		add(textField1, cc.xy(5, 1));
-
-		//---- xSearchField2 ----
-		xSearchField2.setPrompt("Type to Search");
-		add(xSearchField2, cc.xy(7, 1));
-		add(xAddressField1, cc.xywh(1, 5, 7, 1));
+		add(textField1, cc.xy(1, 3));
+		add(xAddressField2, cc.xywh(1, 7, 7, 1));
 		// JFormDesigner - End of component initialization  //GEN-END:initComponents
 	}
 
 	// JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
 	// Generated using JFormDesigner Evaluation license - Peter Weishapl
-	private JXSearchField xSearchField1;
-	private JXPromptField xPromptField1;
 	private JTextField textField1;
-	private JXSearchField xSearchField2;
-	private JXAddressField xAddressField1;
+	private JXAddressField xAddressField2;
 	// JFormDesigner - End of variables declaration  //GEN-END:variables
 }
