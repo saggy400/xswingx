@@ -54,6 +54,10 @@ public class BuddySupport {
 
 		addToComponentHierarchy(c, pos, textField);
 	}
+	
+	public static void addGap(int width, Position pos, JTextField textField) {
+		add(createGap(width), pos, textField);
+	}
 
 	public static void setRight(JTextField textField, List<Component> rightBuddies) {
 		set(rightBuddies, Position.RIGHT, textField);

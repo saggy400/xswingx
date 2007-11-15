@@ -2,18 +2,17 @@ package org.jdesktop.xswingx;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Insets;
+import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JTextField;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 
+import org.jdesktop.xswingx.BuddySupport.Position;
 import org.jdesktop.xswingx.demo.BookmarkButton;
 import org.jdesktop.xswingx.demo.LabelDemo;
 import org.jdesktop.xswingx.demo.RssButton;
-
-import com.jgoodies.looks.plastic.PlasticXPLookAndFeel;
 
 public class JXBuddyField extends JXPromptField {
 	public JXBuddyField() {
@@ -31,6 +30,18 @@ public class JXBuddyField extends JXPromptField {
 
 	public Insets getOuterMargin() {
 		return BuddySupport.getOuterMargin(this);
+	}
+	
+	public void addBuddy(Component buddy, Position pos){
+		BuddySupport.add(buddy, pos, this);
+	}
+	
+	public void addGap(int width, Position pos){
+		BuddySupport.addGap(width, pos, this);
+	}
+	
+	public List<Component> getBuddies(Position pos){
+		return BuddySupport.getBuddies(pos, this);
 	}
 	
 	public static void main(String[] args) {
@@ -57,22 +68,12 @@ public class JXBuddyField extends JXPromptField {
 
 		final JTextField tf = new JTextField();
 		tf.setComponentPopupMenu(LabelDemo.createLookAndFeelMenu(f).getPopupMenu());
-		System.out.println(tf.getUI());
-		System.out.println(tf.getBorder());
-//		System.out.println(tf.getUI());
-//		System.out.println(tf.getBorder());
 		
-		System.out.println(tf.getUI());
-		System.out.println(tf.getBorder());
-		
-//		tf.putClientProperty("JTextField.variant", "nonsense");
 		SearchFieldSupport.setSearchField(tf, true);
-//		PromptSupport.setPrompt("search", tf);
-//		new RecentSearches("test").install(tf);
 		System.out.println(tf.getUI());
 		System.out.println(tf.getBorder());
-		
-//		tf.setText("test");
+		tf.updateUI();
+		SearchFieldSupport.setSearchField(tf, true);
 		System.out.println(tf.getUI());
 		System.out.println(tf.getBorder());
 		

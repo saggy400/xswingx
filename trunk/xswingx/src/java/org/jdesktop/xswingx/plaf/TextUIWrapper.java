@@ -4,7 +4,6 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import javax.swing.JComponent;
-import javax.swing.JTextField;
 import javax.swing.UIDefaults;
 import javax.swing.plaf.TextUI;
 import javax.swing.text.JTextComponent;
@@ -38,7 +37,7 @@ public abstract class TextUIWrapper<UI extends TextUI> {
 	public final void install(final JTextComponent textComponent, boolean stayOnUIChange) {
 		replaceUIIfNeeded(textComponent);
 		if (stayOnUIChange) {
-			textComponent.addPropertyChangeListener("UI", uiChangeHandler);
+			uiChangeHandler.install(textComponent);
 		}
 	}
 
@@ -54,18 +53,9 @@ public abstract class TextUIWrapper<UI extends TextUI> {
 		if (wrapperClass.isAssignableFrom(textComponent.getUI().getClass())) {
 			return false;
 		}
-		
+
 		textComponent.setUI(wrapUI(textComponent.getUI()));
-		
-		// Leopard hack to make appear correctly in search variant when changing
-		// LnF. FIXME
-//		if (textComponent instanceof JTextField) {
-//			Object variant = textComponent.getClientProperty("JTextField.variant");
-//			// put some nonsense here to trigger a property change event.
-//			textComponent.putClientProperty("JTextField.variant", "nonsense");
-//			textComponent.putClientProperty("JTextField.variant", variant);
-//		}
-		
+
 		return true;
 	}
 
@@ -98,13 +88,12 @@ public abstract class TextUIWrapper<UI extends TextUI> {
 	 * @param textComponent
 	 */
 	public final void uninstall(final JTextComponent textComponent) {
-		textComponent.removePropertyChangeListener("UI", uiChangeHandler);
+		uiChangeHandler.uninstall(textComponent);
 		textComponent.updateUI();
 	}
 
-	private final UIChangeHandler uiChangeHandler = new UIChangeHandler();
-
-	private final class UIChangeHandler implements PropertyChangeListener {
+	private final TextUIChangeHandler uiChangeHandler = new TextUIChangeHandler();
+	private final class TextUIChangeHandler extends AbstractUIChangeHandler {
 		public void propertyChange(PropertyChangeEvent evt) {
 			JTextComponent txt = (JTextComponent) evt.getSource();
 
