@@ -1,6 +1,8 @@
 package org.jdesktop.xswingx.plaf;
 
 import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Insets;
 
 import javax.swing.JComponent;
 import javax.swing.JTextField;
@@ -16,6 +18,24 @@ import javax.swing.plaf.TextUI;
  */
 public class BuddyTextFieldUI extends PromptTextFieldUI {
 	protected BuddyLayoutAndBorder layoutAndBorder;
+
+	// Bad hacking: FIXME when know how to get the real margin.
+	private static final Insets MAC_MARGIN = new Insets(0, 2, 1, 2);
+
+	@Override
+	public void paint(Graphics g, JComponent c) {
+		// yet another dirty mac hack to prevent painting background outside of
+		// border.
+		if ("apple.laf.CUIAquaTextFieldBorder".equals(layoutAndBorder.getBorderDelegate().getClass().getName())) {
+			Insets borderInsets = layoutAndBorder.getRealBorderInsets();
+
+			borderInsets.left -= MAC_MARGIN.left;
+			int height = c.getHeight() - borderInsets.bottom - borderInsets.top + MAC_MARGIN.bottom + MAC_MARGIN.top;
+			int width = c.getWidth() - borderInsets.left - borderInsets.right + MAC_MARGIN.right;
+			g.clipRect(borderInsets.left, borderInsets.top, width, height);
+		}
+		super.paint(g, c);
+	}
 
 	/**
 	 * Creates a new {@link BuddyTextFieldUI} which delegates most work to
@@ -53,10 +73,10 @@ public class BuddyTextFieldUI extends PromptTextFieldUI {
 		Dimension d = new Dimension();
 		Dimension cd = super.getPreferredSize(c);
 		Dimension ld = c.getLayout().preferredLayoutSize(c);
-
+		
 		d.height = Math.max(cd.height, ld.height);
 		d.width = Math.max(cd.width, ld.width);
-
-		return cd;
+		
+		return d;
 	}
 }

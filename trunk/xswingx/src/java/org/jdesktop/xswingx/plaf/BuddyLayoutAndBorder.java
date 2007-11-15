@@ -38,6 +38,10 @@ public class BuddyLayoutAndBorder implements LayoutManager, Border, PropertyChan
 		textField.addPropertyChangeListener("border", this);
 	}
 
+	public Border getBorderDelegate() {
+		return borderDelegate;
+	}
+
 	/**
 	 * Wraps and replaces the text fields default border with this object, to
 	 * honor the button margins and sizes of the search, clear and popup buttons
@@ -65,6 +69,16 @@ public class BuddyLayoutAndBorder implements LayoutManager, Border, PropertyChan
 
 	public Dimension preferredLayoutSize(Container parent) {
 		Dimension d = new Dimension();
+		
+		JTextField tf = (JTextField) parent;
+		
+		//height of highest buddy.
+		for(Component c : BuddySupport.getLeft(tf)){
+			d.height = Math.max(d.height, c.getPreferredSize().height); 
+		}
+		for(Component c : BuddySupport.getRight(tf)){
+			d.height = Math.max(d.height, c.getPreferredSize().height); 
+		}
 
 		Insets insets = getBorderInsets(parent);
 		d.height += insets.top + insets.bottom;
