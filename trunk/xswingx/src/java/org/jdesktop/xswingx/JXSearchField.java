@@ -154,6 +154,8 @@ public class JXSearchField extends JXBuddyField {
 	private boolean promptFontStyleSet;
 
 	private Timer instantSearchTimer;
+	
+	private boolean useNativeSearchFieldIfPossible;
 
 	/**
 	 * Creates a new search field with a default prompt.
@@ -169,7 +171,7 @@ public class JXSearchField extends JXBuddyField {
 	 * @param prompt
 	 */
 	public JXSearchField(String prompt) {
-		SearchFieldSupport.setSearchField(this, true);
+		setUseNativeSearchFieldIfPossible(true);
 		setPrompt(prompt);
 
 		// We cannot register the ClearAction through the Input- and
@@ -486,6 +488,16 @@ public class JXSearchField extends JXBuddyField {
 				this.useSeperatePopupButton = useSeperatePopupButton);
 	}
 
+	public boolean isUseNativeSearchFieldIfPossible() {
+		return useNativeSearchFieldIfPossible;
+	}
+
+	public void setUseNativeSearchFieldIfPossible(boolean useNativeSearchFieldUIIfPossible) {
+		this.useNativeSearchFieldIfPossible = useNativeSearchFieldUIIfPossible;
+		NativeSearchFieldSupport.setSearchField(this, useNativeSearchFieldIfPossible);
+		updateUI();
+	}
+
 	/**
 	 * Updates the clear, search and popup buttons enabled state in addition to
 	 * setting the search fields editable state.
@@ -528,7 +540,7 @@ public class JXSearchField extends JXBuddyField {
 	 * popup button will be displayed instead of the search button. Otherwise
 	 * the popup button will be displayed in addition to the search button.
 	 * 
-	 * The search popup menu is managed using {@link SearchFieldSupport} to
+	 * The search popup menu is managed using {@link NativeSearchFieldSupport} to
 	 * achieve compatibility with the native search field support provided by
 	 * the Mac Look And Feel since Mac OS 10.5.
 	 * 
@@ -538,7 +550,7 @@ public class JXSearchField extends JXBuddyField {
 	 */
 	public void setSearchPopupMenu(JPopupMenu searchPopupMenu) {
 		JPopupMenu oldPopup = getSearchPopupMenu();
-		SearchFieldSupport.setSearchPopupMenu(this, searchPopupMenu);
+		NativeSearchFieldSupport.setSearchPopupMenu(this, searchPopupMenu);
 		firePropertyChange("searchPopupMenu", oldPopup, searchPopupMenu);
 	}
 
@@ -549,7 +561,7 @@ public class JXSearchField extends JXBuddyField {
 	 * @return the search popup menu
 	 */
 	public JPopupMenu getSearchPopupMenu() {
-		return SearchFieldSupport.getSearchPopupMenu(this);
+		return NativeSearchFieldSupport.getSearchPopupMenu(this);
 	}
 
 	/**

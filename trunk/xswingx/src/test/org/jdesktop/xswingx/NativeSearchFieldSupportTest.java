@@ -10,28 +10,28 @@ import junit.framework.Assert;
 import org.junit.Test;
 
 
-public class SearchFieldSupportTest implements PropertyChangeListener {
+public class NativeSearchFieldSupportTest implements PropertyChangeListener {
 	private JTextField tf = new JTextField();
 	private boolean propertyChanged;
 	
 	@Test
 	public void testPropertyChangeEvent() throws Exception {
-		tf.addPropertyChangeListener(SearchFieldSupport.MAC_TEXT_FIELD_VARIANT, this);
-		SearchFieldSupport.setSearchField(tf, true);
+		tf.addPropertyChangeListener(NativeSearchFieldSupport.MAC_TEXT_FIELD_VARIANT, this);
+		NativeSearchFieldSupport.setSearchField(tf, true);
 		Assert.assertTrue(propertyChanged);
 		propertyChanged = false;
-		SearchFieldSupport.setSearchField(tf, true);
+		NativeSearchFieldSupport.setSearchField(tf, true);
 		Assert.assertTrue(propertyChanged);
 	}
 	
 	@Test
 	public void testSearchFieldUIChange() throws Exception {
-		SearchFieldSupport.setSearchField(tf, true);
-		tf.addPropertyChangeListener(SearchFieldSupport.MAC_TEXT_FIELD_VARIANT, this);
+		NativeSearchFieldSupport.setSearchField(tf, true);
+		tf.addPropertyChangeListener(NativeSearchFieldSupport.MAC_TEXT_FIELD_VARIANT, this);
 		tf.updateUI();
 		Assert.assertTrue(propertyChanged);
 		
-		SearchFieldSupport.setSearchField(tf, false);
+		NativeSearchFieldSupport.setSearchField(tf, false);
 		propertyChanged = false;
 		tf.updateUI();
 		Assert.assertFalse(propertyChanged);
@@ -39,11 +39,11 @@ public class SearchFieldSupportTest implements PropertyChangeListener {
 	
 	@Test
 	public void testIsSearchField() throws Exception {
-		SearchFieldSupport.setSearchField(tf, true);
-		Assert.assertTrue(SearchFieldSupport.isSearchField(tf));
+		NativeSearchFieldSupport.setSearchField(tf, true);
+		Assert.assertTrue(NativeSearchFieldSupport.isSearchField(tf));
 		
-		SearchFieldSupport.setSearchField(tf, false);
-		Assert.assertFalse(SearchFieldSupport.isSearchField(tf));
+		NativeSearchFieldSupport.setSearchField(tf, false);
+		Assert.assertFalse(NativeSearchFieldSupport.isSearchField(tf));
 	}
 
 	public void propertyChange(PropertyChangeEvent evt) {

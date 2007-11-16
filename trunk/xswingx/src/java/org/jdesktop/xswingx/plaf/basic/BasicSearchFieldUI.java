@@ -23,7 +23,7 @@ import javax.swing.text.Document;
 
 import org.jdesktop.xswingx.BuddySupport;
 import org.jdesktop.xswingx.JXSearchField;
-import org.jdesktop.xswingx.SearchFieldSupport;
+import org.jdesktop.xswingx.NativeSearchFieldSupport;
 import org.jdesktop.xswingx.JXSearchField.LayoutStyle;
 import org.jdesktop.xswingx.plaf.BuddyLayoutAndBorder;
 import org.jdesktop.xswingx.plaf.BuddyTextFieldUI;
@@ -85,7 +85,7 @@ public class BasicSearchFieldUI extends BuddyTextFieldUI {
 	}
 
 	private boolean isNativeSearchField() {
-		return SearchFieldSupport.isNativeSearchFieldSupported();
+		return NativeSearchFieldSupport.isNativeSearchFieldSupported() && searchField.isUseNativeSearchFieldIfPossible();
 	}
 
 	@Override

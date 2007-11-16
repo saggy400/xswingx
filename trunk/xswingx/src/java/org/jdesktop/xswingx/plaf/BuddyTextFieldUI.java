@@ -8,6 +8,8 @@ import javax.swing.JComponent;
 import javax.swing.JTextField;
 import javax.swing.plaf.TextUI;
 
+import org.jdesktop.xswingx.NativeSearchFieldSupport;
+
 /**
  * <p>
  * TODO: queries the text components layout manager for the preferred size.
@@ -26,7 +28,7 @@ public class BuddyTextFieldUI extends PromptTextFieldUI {
 	public void paint(Graphics g, JComponent c) {
 		// yet another dirty mac hack to prevent painting background outside of
 		// border.
-		if ("apple.laf.CUIAquaTextFieldBorder".equals(layoutAndBorder.getBorderDelegate().getClass().getName())) {
+		if (!NativeSearchFieldSupport.isNativeSearchField((JTextField)c) && "apple.laf.CUIAquaTextFieldBorder".equals(layoutAndBorder.getBorderDelegate().getClass().getName())) {
 			Insets borderInsets = layoutAndBorder.getRealBorderInsets();
 
 			borderInsets.left -= MAC_MARGIN.left;

@@ -15,7 +15,7 @@ import org.jdesktop.xswingx.plaf.AbstractUIChangeHandler;
  * @author Peter Weishapl <petw@gmx.net>
  * 
  */
-public class SearchFieldSupport {
+public class NativeSearchFieldSupport {
 	private static final String MAC_SEARCH_VARIANT = "search";
 	public static final String MAC_TEXT_FIELD_VARIANT = "JTextField.variant";
 

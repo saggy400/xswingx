@@ -64,7 +64,8 @@ public class JXBuddyField extends JXPromptField {
 		final JTextField tf = new JTextField();
 		bf.setComponentPopupMenu(LabelDemo.createLookAndFeelMenu(f).getPopupMenu());
 		
-//		SearchFieldSupport.setSearchField(tf, true);
+		NativeSearchFieldSupport.setSearchField(tf, true);
+		PromptSupport.setPrompt("Search", tf);
 //		System.out.println(tf.getUI());
 //		System.out.println(tf.getBorder());
 //		tf.updateUI();

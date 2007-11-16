@@ -12,7 +12,7 @@ public class JXSearchFieldBeanInfo extends JXBuddyFieldBeanInfo {
 
 	protected void initialize() {
 		super.initialize();
-		setPreferred(true, "layoutStyle", "searchMode", "instantSearchDelay", "searchPopupMenu");
+		setPreferred(true, "layoutStyle", "searchMode", "instantSearchDelay", "searchPopupMenu", "useNativeSearchFieldIfPossible");
 
 		setEnumerationValues(
 				new EnumerationValue[] {
