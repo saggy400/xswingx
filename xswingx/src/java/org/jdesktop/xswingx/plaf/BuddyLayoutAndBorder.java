@@ -29,9 +29,9 @@ public class BuddyLayoutAndBorder implements LayoutManager, Border, PropertyChan
 	 * subsequently set border on the text field.
 	 */
 	protected void install(JTextField textField) {
+		uninstall();
 		this.textField = textField;
-		this.borderDelegate = textField.getBorder();
-		
+
 		textField.setLayout(this);
 
 		replaceBorderIfNecessary();
@@ -58,6 +58,7 @@ public class BuddyLayoutAndBorder implements LayoutManager, Border, PropertyChan
 
 	/**
 	 * Does nothing.
+	 * 
 	 * @see BuddySupport#add(javax.swing.JComponent, Position, JTextField)
 	 */
 	public void addLayoutComponent(String name, Component comp) {
@@ -69,18 +70,16 @@ public class BuddyLayoutAndBorder implements LayoutManager, Border, PropertyChan
 
 	public Dimension preferredLayoutSize(Container parent) {
 		Dimension d = new Dimension();
-		
-		JTextField tf = (JTextField) parent;
-		
-		//height of highest buddy.
-		for(Component c : BuddySupport.getLeft(tf)){
-			d.height = Math.max(d.height, c.getPreferredSize().height); 
+
+		// height of highest buddy.
+		for (Component c : BuddySupport.getLeft(textField)) {
+			d.height = Math.max(d.height, c.getPreferredSize().height);
 		}
-		for(Component c : BuddySupport.getRight(tf)){
-			d.height = Math.max(d.height, c.getPreferredSize().height); 
+		for (Component c : BuddySupport.getRight(textField)) {
+			d.height = Math.max(d.height, c.getPreferredSize().height);
 		}
 
-		Insets insets = getBorderInsets(parent);
+		Insets insets = getBorderInsets(textField);
 		d.height += insets.top + insets.bottom;
 		d.width += insets.left + insets.right;
 
@@ -95,6 +94,7 @@ public class BuddyLayoutAndBorder implements LayoutManager, Border, PropertyChan
 
 	/**
 	 * Does nothing.
+	 * 
 	 * @see BuddySupport#remove(javax.swing.JComponent, JTextField)
 	 */
 	public void removeLayoutComponent(Component comp) {
@@ -103,7 +103,6 @@ public class BuddyLayoutAndBorder implements LayoutManager, Border, PropertyChan
 	public void layoutContainer(Container parent) {
 		Rectangle visibleRect = getVisibleRect();
 		Dimension size;
-		JTextField textField = (JTextField) parent;
 
 		for (Component comp : BuddySupport.getLeft(textField)) {
 			if (!comp.isVisible()) {
@@ -163,20 +162,16 @@ public class BuddyLayoutAndBorder implements LayoutManager, Border, PropertyChan
 	 * @see javax.swing.border.Border#getBorderInsets(java.awt.Component)
 	 */
 	public Insets getBorderInsets(Component c) {
-		if (c == null) {
-			return null;
-		}
 		Insets insets = null;
 		if (borderDelegate != null) {
 			// Original insets are cloned to make it work in Mac OS X Aqua LnF.
 			// Seems that this LnF uses a shared insets instance which should
 			// not be modified.
 			// Include margin here
-			insets = (Insets) borderDelegate.getBorderInsets(c).clone();
+			insets = (Insets) borderDelegate.getBorderInsets(textField).clone();
 		} else {
 			insets = new Insets(0, 0, 0, 0);
 		}
-		JTextField textField = (JTextField) c;
 		for (Component comp : BuddySupport.getLeft(textField)) {
 			insets.left += comp.isVisible() ? comp.getPreferredSize().width : 0;
 		}
@@ -206,8 +201,6 @@ public class BuddyLayoutAndBorder implements LayoutManager, Border, PropertyChan
 			return null;
 		}
 		Insets insets = (Insets) borderDelegate.getBorderInsets(textField);
-
-		System.err.println(borderDelegate);
 		if (borderDelegate instanceof MarginBorder) {
 			// don't include margin!!
 			Insets margin = textField.getMargin();
@@ -240,13 +233,16 @@ public class BuddyLayoutAndBorder implements LayoutManager, Border, PropertyChan
 	}
 
 	public void uninstall() {
-		textField.removePropertyChangeListener("border", this);
-		textField.setBorder(borderDelegate);
-		textField.setLayout(null);
+		if (textField != null) {
+			textField.removePropertyChangeListener("border", this);
+			textField.setBorder(borderDelegate);
+			textField.setLayout(null);
+			textField = null;
+		}
 	}
-	
+
 	@Override
 	public String toString() {
-		return String.format("%s: %s", getClass().getName(), borderDelegate);
+		return String.format("%s (%s): %s", getClass().getName(), getBorderInsets(null), borderDelegate);
 	}
 }

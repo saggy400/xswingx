@@ -11,10 +11,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import org.jdesktop.xswingx.BuddySupport.Position;
-import org.jdesktop.xswingx.demo.BookmarkButton;
 import org.jdesktop.xswingx.demo.JXAddressField;
 import org.jdesktop.xswingx.demo.LabelDemo;
-import org.jdesktop.xswingx.demo.RssButton;
 
 public class JXBuddyField extends JXPromptField {
 	public JXBuddyField() {
@@ -74,8 +72,8 @@ public class JXBuddyField extends JXPromptField {
 //		System.out.println(tf.getBorder());
 		
 		f.add(new JPanel(), BorderLayout.CENTER);
-		f.add(tf, BorderLayout.SOUTH);
-//		f.add(new JXSearchField(), BorderLayout.SOUTH);
+		f.add(new JXSearchField("search"), BorderLayout.SOUTH);
+//		f.add(tf, BorderLayout.SOUTH);
 		f.pack();
 		f.setVisible(true);
 	}
