@@ -245,7 +245,7 @@ public class RecentSearches implements ActionListener {
 	 * and adds the search string to the list of recent searches whenever a
 	 * {@link ActionEvent} is received.
 	 * 
-	 * Uses {@link SearchFieldSupport} to achieve compatibility with the native
+	 * Uses {@link NativeSearchFieldSupport} to achieve compatibility with the native
 	 * search field support provided by the Mac Look And Feel since Mac OS 10.5.
 	 * 
 	 * @param searchField
@@ -253,7 +253,7 @@ public class RecentSearches implements ActionListener {
 	 */
 	public void install(JTextField searchField) {
 		searchField.addActionListener(this);
-		SearchFieldSupport.setSearchPopupMenu(searchField, createPopupMenu(searchField));
+		NativeSearchFieldSupport.setSearchPopupMenu(searchField, createPopupMenu(searchField));
 	}
 
 	/**

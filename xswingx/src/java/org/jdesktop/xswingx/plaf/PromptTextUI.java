@@ -167,14 +167,18 @@ public abstract class PromptTextUI extends TextUI {
 		JTextComponent txt = (JTextComponent) c;
 
 		if (shouldPaintPrompt(txt)) {
-			JTextComponent lbl = getPromptComponent(txt);
-			lbl.paint(g);
-
-			if (txt.getCaret() != null) {
-				txt.getCaret().paint(g);
-			}
+			paintPromptComponent(g, txt);
 		} else {
 			delegate.paint(g, c);
+		}
+	}
+
+	protected void paintPromptComponent(Graphics g, JTextComponent txt) {
+		JTextComponent lbl = getPromptComponent(txt);
+		lbl.paint(g);
+
+		if (txt.getCaret() != null) {
+			txt.getCaret().paint(g);
 		}
 	}
 

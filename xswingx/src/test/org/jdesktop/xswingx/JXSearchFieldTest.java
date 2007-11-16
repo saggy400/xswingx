@@ -28,6 +28,7 @@ import javax.swing.plaf.UIResource;
 
 import org.jdesktop.xswingx.JXSearchField.LayoutStyle;
 import org.jdesktop.xswingx.JXSearchField.SearchMode;
+import org.jdesktop.xswingx.plaf.basic.BasicSearchFieldUI;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -46,6 +47,8 @@ public class JXSearchFieldTest {
 			}
 		};
 		searchField.setInstantSearchDelay(0);
+		//make tests work under leopard
+		searchField.setUseNativeSearchFieldIfPossible(false);
 	}
 	
 	@Test
@@ -401,6 +404,20 @@ public class JXSearchFieldTest {
 		Border newBorder = BorderFactory.createEmptyBorder();
 		searchField.setBorder(newBorder);
 		assertNotSame("Border should have been wrapped.", newBorder, searchField.getBorder());
+	}
+	
+	@Test
+	public void testUseNativeSearchFieldIfPossible() throws Exception {
+		BasicSearchFieldUI ui = (BasicSearchFieldUI) searchField.getUI();
+		
+		searchField.setUseNativeSearchFieldIfPossible(true);
+		assertTrue(searchField.isUseNativeSearchFieldIfPossible());
+		assertTrue(NativeSearchFieldSupport.isSearchField(searchField));
+		assertNotSame(ui, searchField.getUI());
+		
+		searchField.setUseNativeSearchFieldIfPossible(false);
+		assertFalse(searchField.isUseNativeSearchFieldIfPossible());
+		assertFalse(NativeSearchFieldSupport.isSearchField(searchField));
 	}
 	
 	class TestIcon implements Icon{
