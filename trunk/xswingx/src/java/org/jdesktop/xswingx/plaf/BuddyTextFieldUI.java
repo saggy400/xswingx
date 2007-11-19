@@ -47,12 +47,12 @@ public class BuddyTextFieldUI extends PromptTextFieldUI {
 	 */
 	public BuddyTextFieldUI(TextUI delegate) {
 		super(delegate);
-		layoutAndBorder = createBuddyLayoutAndBorder();
 	}
 
 	@Override
 	public void installUI(JComponent c) {
 		super.installUI(c);
+		layoutAndBorder = createBuddyLayoutAndBorder();
 		layoutAndBorder.install((JTextField) c);
 	}
 

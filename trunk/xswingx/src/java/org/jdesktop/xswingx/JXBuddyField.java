@@ -9,10 +9,14 @@ import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 import org.jdesktop.xswingx.BuddySupport.Position;
 import org.jdesktop.xswingx.demo.JXAddressField;
 import org.jdesktop.xswingx.demo.LabelDemo;
+
+import com.jgoodies.looks.plastic.PlasticXPLookAndFeel;
 
 public class JXBuddyField extends JXPromptField {
 	public JXBuddyField() {
@@ -45,13 +49,13 @@ public class JXBuddyField extends JXPromptField {
 	}
 	
 	public static void main(String[] args) {
-//		try {
-//			UIManager.setLookAndFeel(new PlasticXPLookAndFeel());
-////			UIManager.setLookAndFeel(new QuaquaLookAndFeel());
-//		} catch (UnsupportedLookAndFeelException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
+		try {
+			UIManager.setLookAndFeel(new PlasticXPLookAndFeel());
+//			UIManager.setLookAndFeel(new QuaquaLookAndFeel());
+		} catch (UnsupportedLookAndFeelException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		JTextField bf = new JXAddressField();
 		
 		JFrame f = new JFrame();

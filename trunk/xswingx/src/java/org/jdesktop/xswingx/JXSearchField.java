@@ -6,9 +6,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.beans.PropertyChangeEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JPopupMenu;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
@@ -18,6 +20,7 @@ import javax.swing.plaf.TextUI;
 import javax.swing.text.Document;
 
 import org.jdesktop.swingx.plaf.LookAndFeelAddons;
+import org.jdesktop.xswingx.plaf.AbstractUIChangeHandler;
 import org.jdesktop.xswingx.plaf.JXSearchFieldAddon;
 import org.jdesktop.xswingx.plaf.PromptTextFieldUI;
 import org.jdesktop.xswingx.plaf.basic.BasicSearchFieldUI;
@@ -154,7 +157,7 @@ public class JXSearchField extends JXBuddyField {
 	private boolean promptFontStyleSet;
 
 	private Timer instantSearchTimer;
-	
+
 	private boolean useNativeSearchFieldIfPossible;
 
 	/**
@@ -171,7 +174,13 @@ public class JXSearchField extends JXBuddyField {
 	 * @param prompt
 	 */
 	public JXSearchField(String prompt) {
+		// This must be called BEFORE the default UI is replaced by the search
+		// fields UI to make the native search field on Mac OS Leopard render
+		// correctly.
 		setUseNativeSearchFieldIfPossible(true);
+		// now we can wrap the default UI.
+		uiChangeHandler.install(this);
+		
 		setPrompt(prompt);
 
 		// We cannot register the ClearAction through the Input- and
@@ -194,6 +203,7 @@ public class JXSearchField extends JXBuddyField {
 	 * 
 	 * @see #setUI(TextUI)
 	 */
+	@Override
 	protected void installPromptSupport(String promptText, Color promptForeground, Color promptBackground) {
 		// don't! Handled by setUI
 	}
@@ -540,8 +550,8 @@ public class JXSearchField extends JXBuddyField {
 	 * popup button will be displayed instead of the search button. Otherwise
 	 * the popup button will be displayed in addition to the search button.
 	 * 
-	 * The search popup menu is managed using {@link NativeSearchFieldSupport} to
-	 * achieve compatibility with the native search field support provided by
+	 * The search popup menu is managed using {@link NativeSearchFieldSupport}
+	 * to achieve compatibility with the native search field support provided by
 	 * the Mac Look And Feel since Mac OS 10.5.
 	 * 
 	 * @param searchPopupMenu
@@ -599,14 +609,6 @@ public class JXSearchField extends JXBuddyField {
 			return true;
 		}
 		return super.hasFocus();
-	}
-
-	public void setUI(TextUI ui) {
-		if (ui instanceof BasicSearchFieldUI) {
-			super.setUI(ui);
-		} else {
-			setUI(new BasicSearchFieldUI(ui));
-		}
 	}
 
 	/**
@@ -736,6 +738,30 @@ public class JXSearchField extends JXBuddyField {
 			}
 			requestFocusInWindow();
 			selectAll();
+		}
+	}
+
+	private static final UIChangeHandler uiChangeHandler = new UIChangeHandler();
+
+	private static class UIChangeHandler extends AbstractUIChangeHandler {
+		/**
+		 * Overriden to also replace the UI with {@link BasicSearchFieldUI} if
+		 * needed.
+		 */
+		@Override
+		public void install(JComponent c) {
+			super.install(c);
+			replaceUIIfNeeded((JXSearchField) c);
+		}
+
+		public void propertyChange(PropertyChangeEvent evt) {
+			replaceUIIfNeeded((JXSearchField) evt.getSource());
+		}
+
+		private void replaceUIIfNeeded(JXSearchField sf) {
+			if (!(sf.getUI() instanceof BasicSearchFieldUI)) {
+				sf.setUI(new BasicSearchFieldUI(sf.getUI()));
+			}
 		}
 	}
 }

@@ -5,7 +5,7 @@ import java.beans.PropertyChangeListener;
 import javax.swing.JComponent;
 
 public abstract class AbstractUIChangeHandler implements PropertyChangeListener {
-	public void install(JComponent c){System.out.println("add me");
+	public void install(JComponent c){
 		c.addPropertyChangeListener("UI", this);
 	}
 	
