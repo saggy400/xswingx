@@ -1,5 +1,7 @@
 package org.jdesktop.xswingx.demo;
 
+import java.awt.Insets;
+
 import org.jdesktop.xswingx.JXBuddyField;
 import org.jdesktop.xswingx.BuddySupport.Position;
 
@@ -17,6 +19,8 @@ public class JXAddressField extends JXBuddyField {
 		addBuddy(rssButton, Position.RIGHT);
 		addGap(3, Position.RIGHT);
 		addBuddy(snapBackButton, Position.RIGHT);
+		
+		setOuterMargin(new Insets(0,1,0,1));
 		
 		setPrompt("Go to this address");
 	}
