@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?> 
-<java version="1.6.0_01" class="java.beans.XMLDecoder"> 
+<java version="1.5.0_13" class="java.beans.XMLDecoder"> 
  <object class="com.jformdesigner.model.FormModel"> 
   <void property="contentType"> 
    <string>form/swing</string> 
@@ -70,7 +70,7 @@
         <string>javax.swing.JTextField</string> 
         <void method="setProperty"> 
          <string>text</string> 
-         <string>Hello, I&apos;m a plain JTextField. Please customize me.</string> 
+         <string>Hello, I&apos;m a plain JTextField. Come play with me...</string> 
         </void> 
         <void property="name"> 
          <string>txtPrompt</string> 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?> 
-<java version="1.6.0_01" class="java.beans.XMLDecoder"> 
+<java version="1.5.0_13" class="java.beans.XMLDecoder"> 
  <object class="com.jformdesigner.model.FormModel"> 
   <void property="contentType"> 
    <string>form/swing</string> 
@@ -17,9 +17,13 @@
        </void> 
        <void method="setProperty"> 
         <string>$rowSpecs</string> 
-        <string>default, default, linegap, default</string> 
+        <string>default, top:default, linegap, default:grow</string> 
        </void> 
       </object> 
+      <void method="setProperty"> 
+       <string>border</string> 
+       <object class="com.jgoodies.forms.factories.Borders" field="DLU2_BORDER"/> 
+      </void> 
       <void property="name"> 
        <string>this</string> 
       </void> 
@@ -37,12 +41,6 @@
           <string>unrelgap, default, unrelgap</string> 
          </void> 
         </object> 
-        <void method="setProperty"> 
-         <string>background</string> 
-         <object class="com.jformdesigner.model.SwingColor"> 
-          <string>info</string> 
-         </object> 
-        </void> 
         <void property="name"> 
          <string>panel1</string> 
         </void> 
@@ -71,21 +69,6 @@
        </object> 
       </void> 
       <void method="add"> 
-       <object class="com.jformdesigner.model.FormComponent"> 
-        <string>javax.swing.JSeparator</string> 
-        <void property="name"> 
-         <string>separator1</string> 
-        </void> 
-       </object> 
-       <object class="com.jformdesigner.model.FormLayoutConstraints"> 
-        <class>com.jgoodies.forms.layout.CellConstraints</class> 
-        <void method="setProperty"> 
-         <string>gridY</string> 
-         <int>2</int> 
-        </void> 
-       </object> 
-      </void> 
-      <void method="add"> 
        <object class="com.jformdesigner.model.FormContainer"> 
         <string>javax.swing.JScrollPane</string> 
         <object class="com.jformdesigner.model.FormLayoutManager"> 
@@ -109,7 +92,7 @@
            </void> 
            <void method="setProperty"> 
             <string>$rowSpecs</string> 
-            <string>default, linegap, default, linegap, default</string> 
+            <string>default, linegap, default, linegap, default, linegap, default:grow</string> 
            </void> 
           </object> 
           <void property="name"> 
@@ -134,6 +117,31 @@
           </void> 
           <void method="add"> 
            <object class="com.jformdesigner.model.FormComponent"> 
+            <string>org.jdesktop.xswingx.demo.CustomizeBuddyField</string> 
+            <void method="setProperty"> 
+             <string>field</string> 
+             <object class="com.jformdesigner.model.FormReference"> 
+              <string>field</string> 
+             </object> 
+            </void> 
+            <void property="name"> 
+             <string>customizeBuddyField1</string> 
+            </void> 
+           </object> 
+           <object class="com.jformdesigner.model.FormLayoutConstraints"> 
+            <class>com.jgoodies.forms.layout.CellConstraints</class> 
+            <void method="setProperty"> 
+             <string>gridX</string> 
+             <int>1</int> 
+            </void> 
+            <void method="setProperty"> 
+             <string>gridY</string> 
+             <int>3</int> 
+            </void> 
+           </object> 
+          </void> 
+          <void method="add"> 
+           <object class="com.jformdesigner.model.FormComponent"> 
             <string>org.jdesktop.xswingx.demo.CustomizeGeneralPanel</string> 
             <void method="setProperty"> 
              <string>field</string> 
@@ -149,7 +157,7 @@
             <class>com.jgoodies.forms.layout.CellConstraints</class> 
             <void method="setProperty"> 
              <string>gridY</string> 
-             <int>3</int> 
+             <int>5</int> 
             </void> 
            </object> 
           </void> 
@@ -177,8 +185,8 @@
       <void method="setProperty"> 
        <string>size</string> 
        <object class="java.awt.Dimension"> 
-        <int>400</int> 
-        <int>540</int> 
+        <int>450</int> 
+        <int>650</int> 
        </object> 
       </void> 
      </object> 

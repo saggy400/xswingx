@@ -21,14 +21,15 @@ public class TextFieldCustomizer extends JPanel {
 		// Generated using JFormDesigner Evaluation license - Peter Weishapl
 		panel1 = new JPanel();
 		field = new JTextField();
-		separator1 = new JSeparator();
 		scrollPane1 = new JScrollPane();
 		panel2 = new JPanel();
 		customizePromptPanel1 = new CustomizePromptPanel();
+		customizeBuddyField1 = new CustomizeBuddyField();
 		customizeGeneralPanel1 = new CustomizeGeneralPanel();
 		CellConstraints cc = new CellConstraints();
 
 		//======== this ========
+		setBorder(Borders.DLU2_BORDER);
 
 		// JFormDesigner evaluation mark
 		setBorder(new javax.swing.border.CompoundBorder(
@@ -41,14 +42,13 @@ public class TextFieldCustomizer extends JPanel {
 			ColumnSpec.decodeSpecs("default:grow"),
 			new RowSpec[] {
 				FormFactory.DEFAULT_ROWSPEC,
-				FormFactory.DEFAULT_ROWSPEC,
+				new RowSpec(RowSpec.TOP, Sizes.DEFAULT, FormSpec.NO_GROW),
 				FormFactory.LINE_GAP_ROWSPEC,
-				FormFactory.DEFAULT_ROWSPEC
+				new RowSpec(RowSpec.CENTER, Sizes.DEFAULT, FormSpec.DEFAULT_GROW)
 			}));
 
 		//======== panel1 ========
 		{
-			panel1.setBackground(UIManager.getColor("info"));
 			panel1.setLayout(new FormLayout(
 				ColumnSpec.decodeSpecs("default:grow, default, default:grow"),
 				new RowSpec[] {
@@ -59,7 +59,6 @@ public class TextFieldCustomizer extends JPanel {
 			panel1.add(field, cc.xy(2, 2));
 		}
 		add(panel1, cc.xy(1, 1));
-		add(separator1, cc.xy(1, 2));
 
 		//======== scrollPane1 ========
 		{
@@ -74,16 +73,22 @@ public class TextFieldCustomizer extends JPanel {
 						FormFactory.LINE_GAP_ROWSPEC,
 						FormFactory.DEFAULT_ROWSPEC,
 						FormFactory.LINE_GAP_ROWSPEC,
-						FormFactory.DEFAULT_ROWSPEC
+						FormFactory.DEFAULT_ROWSPEC,
+						FormFactory.LINE_GAP_ROWSPEC,
+						new RowSpec(RowSpec.CENTER, Sizes.DEFAULT, FormSpec.DEFAULT_GROW)
 					}));
 
 				//---- customizePromptPanel1 ----
 				customizePromptPanel1.setField(field);
 				panel2.add(customizePromptPanel1, cc.xy(1, 1));
 
+				//---- customizeBuddyField1 ----
+				customizeBuddyField1.setField(field);
+				panel2.add(customizeBuddyField1, cc.xy(1, 3));
+
 				//---- customizeGeneralPanel1 ----
 				customizeGeneralPanel1.setField(field);
-				panel2.add(customizeGeneralPanel1, cc.xy(1, 3));
+				panel2.add(customizeGeneralPanel1, cc.xy(1, 5));
 			}
 			scrollPane1.setViewportView(panel2);
 		}
@@ -95,10 +100,10 @@ public class TextFieldCustomizer extends JPanel {
 	// Generated using JFormDesigner Evaluation license - Peter Weishapl
 	private JPanel panel1;
 	private JTextField field;
-	private JSeparator separator1;
 	private JScrollPane scrollPane1;
 	private JPanel panel2;
 	private CustomizePromptPanel customizePromptPanel1;
+	private CustomizeBuddyField customizeBuddyField1;
 	private CustomizeGeneralPanel customizeGeneralPanel1;
 	// JFormDesigner - End of variables declaration  //GEN-END:variables
 }
