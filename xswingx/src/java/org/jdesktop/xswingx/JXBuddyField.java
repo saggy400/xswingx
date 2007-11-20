@@ -49,13 +49,13 @@ public class JXBuddyField extends JXPromptField {
 	}
 	
 	public static void main(String[] args) {
-		try {
-			UIManager.setLookAndFeel(new PlasticXPLookAndFeel());
-//			UIManager.setLookAndFeel(new QuaquaLookAndFeel());
-		} catch (UnsupportedLookAndFeelException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//		try {
+//			UIManager.setLookAndFeel(new PlasticXPLookAndFeel());
+////			UIManager.setLookAndFeel(new QuaquaLookAndFeel());
+//		} catch (UnsupportedLookAndFeelException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 		JTextField bf = new JXAddressField();
 		
 		JFrame f = new JFrame();

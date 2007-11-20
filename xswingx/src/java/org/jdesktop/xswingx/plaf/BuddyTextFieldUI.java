@@ -6,6 +6,7 @@ import java.awt.Insets;
 
 import javax.swing.JComponent;
 import javax.swing.JTextField;
+import javax.swing.border.Border;
 import javax.swing.plaf.TextUI;
 
 import org.jdesktop.xswingx.NativeSearchFieldSupport;
@@ -28,7 +29,7 @@ public class BuddyTextFieldUI extends PromptTextFieldUI {
 	public void paint(Graphics g, JComponent c) {
 		// yet another dirty mac hack to prevent painting background outside of
 		// border.
-		if (!NativeSearchFieldSupport.isNativeSearchField((JTextField)c) && "apple.laf.CUIAquaTextFieldBorder".equals(layoutAndBorder.getBorderDelegate().getClass().getName())) {
+		if (hasMacTextFieldBorder(c)) {
 			Insets borderInsets = layoutAndBorder.getRealBorderInsets();
 
 			borderInsets.left -= MAC_MARGIN.left;
@@ -37,6 +38,14 @@ public class BuddyTextFieldUI extends PromptTextFieldUI {
 			g.clipRect(borderInsets.left, borderInsets.top, width, height);
 		}
 		super.paint(g, c);
+	}
+
+	private boolean hasMacTextFieldBorder(JComponent c) {
+		Border border = c.getBorder();
+		if (border == layoutAndBorder) {
+			border = layoutAndBorder.getBorderDelegate();
+		}
+		return border != null && border.getClass().getName().equals("apple.laf.CUIAquaTextFieldBorder");
 	}
 
 	/**
@@ -75,10 +84,10 @@ public class BuddyTextFieldUI extends PromptTextFieldUI {
 		Dimension d = new Dimension();
 		Dimension cd = super.getPreferredSize(c);
 		Dimension ld = c.getLayout().preferredLayoutSize(c);
-		
+
 		d.height = Math.max(cd.height, ld.height);
 		d.width = Math.max(cd.width, ld.width);
-		
+
 		return d;
 	}
 }
