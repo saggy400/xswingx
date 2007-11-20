@@ -146,14 +146,14 @@ public class BasicSearchFieldUI extends BuddyTextFieldUI {
 			return;
 		}
 		
-		BuddySupport.addRight(clearButton(), searchField);
-
 		if (isMacLayoutStyle()) {
 			BuddySupport.addLeft(searchButton(), searchField);
 		} else {
 			BuddySupport.addRight(searchButton(), searchField);
 		}
 
+		BuddySupport.addRight(clearButton(), searchField);
+		
 		if (usingSeperatePopupButton()) {
 			BuddySupport.addRight(BuddySupport.createGap(getPopupOffset()), searchField);
 		}
