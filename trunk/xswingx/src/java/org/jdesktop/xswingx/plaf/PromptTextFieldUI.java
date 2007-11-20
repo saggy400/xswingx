@@ -57,32 +57,6 @@ public class PromptTextFieldUI extends PromptTextUI {
 
 		return lbl;
 	}
- 
-	/**
-	 * Overriden to support native search fields in Mac OS 10.5.
-	 * 
-	 * Also paints the prompt if the text field is a search field as returned by
-	 * {@link SearchFieldSupport#isSearchField(JTextField)} and native search
-	 * fields are supported.
-	 * 
-	 * @see SearchFieldSupport#isNativeSearchFieldSupported()
-	 * @see SearchFieldSupport#isSearchField(JTextField)
-	 */
-//	@Override
-//	public void paint(Graphics g, JComponent c) {
-//		JTextField txt = (JTextField) c;
-//
-//		// Paint Mac OS 10.5 native search field.
-//		if (NativeSearchFieldSupport.isNativeSearchField(txt)) {
-//			if (shouldPaintPrompt(txt))
-//				paintPromptComponent(g, txt);
-//			if (!shouldPaintPrompt(txt)) {
-//				delegate.paint(g, c);
-//			}
-//		} else {
-//			super.paint(g, c);
-//		}
-//	}
 
 	/**
 	 * Returns a shared {@link JTextField}.

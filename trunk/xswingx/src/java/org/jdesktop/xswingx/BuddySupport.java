@@ -49,7 +49,7 @@ public class BuddySupport {
 		if (Position.LEFT == pos) {
 			leftBuddies.add(c);
 		} else {
-			rightBuddies.add(c);
+			rightBuddies.add(0, c);
 		}
 
 		addToComponentHierarchy(c, pos, textField);

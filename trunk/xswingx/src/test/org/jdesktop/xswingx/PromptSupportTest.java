@@ -81,7 +81,7 @@ public class PromptSupportTest {
         assertEquals("test", txt.getClientProperty(PromptSupport.PROMPT));
         assertEquals("test", txt.getToolTipText());
         
-        promptSupportMustBeInstalled();
+        promptSupportMustStayInstalled();
         
         PromptSupport.setPrompt("test2", txt);
         assertEquals("test2", txt.getToolTipText());
@@ -110,13 +110,13 @@ public class PromptSupportTest {
     }
     
     @Test
-    public void testSetBackround() throws Exception {
+    public void testSetBackground() throws Exception {
         PromptSupport.setBackground(Color.RED, txt);
         
         assertEquals(Color.RED, PromptSupport.getBackground(txt));
         assertEquals(Color.RED, txt.getClientProperty(PromptSupport.BACKGROUND));
         
-        promptSupportMustBeInstalled();
+        promptSupportMustStayInstalled();
     }
     
     @Test
@@ -125,7 +125,7 @@ public class PromptSupportTest {
     	promptSupportMustBeInstalled();
     	
     	PromptSupport.install(txt);
-    	promptSupportMustBeInstalled();
+    	promptSupportMustStayInstalled();
 	}
     
     @Test
