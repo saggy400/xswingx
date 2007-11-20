@@ -6,6 +6,7 @@ import javax.swing.UIManager;
 import javax.swing.text.AbstractDocument;
 
 import org.jdesktop.xswingx.JXSearchField;
+import org.jdesktop.xswingx.NativeSearchFieldSupport;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -18,6 +19,7 @@ public class BasicSearchFieldUITest {
 	public void setUp() {
 		UIManager.put("SearchField.useSeperatePopupButton", Boolean.FALSE);
 		sf = new JXSearchField();
+		sf.setUseNativeSearchFieldIfPossible(false);
 		ui = (BasicSearchFieldUI) sf.getUI();
 	}
 	
@@ -27,12 +29,24 @@ public class BasicSearchFieldUITest {
 		ui.uninstallUI(sf);
 		assertSame(0, sf.getComponentCount());
 	}
+	
+	@Test
+	public void testChildComponentsNative() throws Exception {
+		if(!NativeSearchFieldSupport.isNativeSearchFieldSupported()){
+			return;
+		}
+		
+		sf.setUseNativeSearchFieldIfPossible(true);
+		
+		//search and clear buttons installed by AquaLnF
+		assertSame(2, sf.getComponentCount());
+	}
 
 	@Test
 	public void testDocumentListener() throws Exception {
-		assertSame(3, ((AbstractDocument)sf.getDocument()).getDocumentListeners().length);
+		int listenerCount = ((AbstractDocument)sf.getDocument()).getDocumentListeners().length;
 		ui.uninstallUI(sf);
-		assertSame(0, ((AbstractDocument)sf.getDocument()).getDocumentListeners().length);
+		assertSame(listenerCount-3, ((AbstractDocument)sf.getDocument()).getDocumentListeners().length);
 	}
 	
 	@Test

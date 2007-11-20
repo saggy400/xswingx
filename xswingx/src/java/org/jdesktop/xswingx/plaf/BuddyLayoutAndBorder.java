@@ -80,15 +80,15 @@ public class BuddyLayoutAndBorder implements LayoutManager, Border, PropertyChan
 			d.height = Math.max(d.height, c.getPreferredSize().height);
 		}
 
-		Insets insets = getRealBorderInsets();
+		Insets insets = getBorderInsets(textField);
 		d.height += insets.top + insets.bottom;
 		d.width += insets.left + insets.right;
 
-		Insets outerMargin = BuddySupport.getOuterMargin(textField);
-		if (outerMargin != null) {
-			d.width += outerMargin.left + outerMargin.right;
-			d.height += outerMargin.bottom + outerMargin.top;
-		}
+//		Insets outerMargin = BuddySupport.getOuterMargin(textField);
+//		if (outerMargin != null) {
+//			d.width += outerMargin.left + outerMargin.right;
+//			d.height += outerMargin.bottom + outerMargin.top;
+//		}
 
 		return d;
 	}

@@ -8,11 +8,7 @@ import javax.swing.JButton;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
 
-import junit.framework.Assert;
-import junit.framework.TestCase;
-
 import org.jdesktop.xswingx.BuddySupport;
-import org.jdesktop.xswingx.BuddySupport.Position;
 import org.junit.Before;
 import org.junit.Test;
 

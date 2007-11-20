@@ -16,7 +16,6 @@ import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.UIManager;
-import javax.swing.border.Border;
 import javax.swing.plaf.TextUI;
 import javax.swing.text.Document;
 
@@ -159,8 +158,6 @@ public class JXSearchField extends JXBuddyField {
 
 	private Timer instantSearchTimer;
 
-	private boolean useNativeSearchFieldIfPossible;
-
 	/**
 	 * Creates a new search field with a default prompt.
 	 */
@@ -181,7 +178,7 @@ public class JXSearchField extends JXBuddyField {
 		setUseNativeSearchFieldIfPossible(true);
 		// now we can wrap the default UI.
 		uiChangeHandler.install(this);
-		
+
 		setPrompt(prompt);
 
 		// We cannot register the ClearAction through the Input- and
@@ -196,7 +193,7 @@ public class JXSearchField extends JXBuddyField {
 			}
 		});
 	}
-	
+
 	/**
 	 * Overriden to prevent installation of {@link PromptSupport}. This is
 	 * handled by our UI class {@link BasicSearchFieldUI}, which is a
@@ -500,11 +497,10 @@ public class JXSearchField extends JXBuddyField {
 	}
 
 	public boolean isUseNativeSearchFieldIfPossible() {
-		return useNativeSearchFieldIfPossible;
+		return NativeSearchFieldSupport.isSearchField(this);
 	}
 
-	public void setUseNativeSearchFieldIfPossible(boolean useNativeSearchFieldUIIfPossible) {
-		this.useNativeSearchFieldIfPossible = useNativeSearchFieldUIIfPossible;
+	public void setUseNativeSearchFieldIfPossible(boolean useNativeSearchFieldIfPossible) {
 		NativeSearchFieldSupport.setSearchField(this, useNativeSearchFieldIfPossible);
 		updateUI();
 	}

@@ -3,10 +3,8 @@ package org.jdesktop.xswingx.plaf.basic;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.Graphics;
 import java.awt.Insets;
 import java.awt.Rectangle;
-import java.awt.PageAttributes.OriginType;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
@@ -74,20 +72,27 @@ public class BasicSearchFieldUI extends BuddyTextFieldUI {
 
 		super.installUI(c);
 
-		if (!isNativeSearchField()) {
-			installDefaults();
+		installDefaults();
+		layoutButtons();
+		
+		configureListeners();
+	}
 
-			layoutButtons();
-
+	private void configureListeners() {
+		if (isNativeSearchField()) {
+			popupButton().removeActionListener(getHandler());
+			searchField.removePropertyChangeListener(getHandler());
+		}else{
 			popupButton().addActionListener(getHandler());
 			searchField.addPropertyChangeListener(getHandler());
 		}
+		
 		// add support for instant search mode in any case.
 		searchField.getDocument().addDocumentListener(getHandler());
 	}
 
 	private boolean isNativeSearchField() {
-		return NativeSearchFieldSupport.isNativeSearchFieldSupported() && searchField.isUseNativeSearchFieldIfPossible();
+		return NativeSearchFieldSupport.isNativeSearchField(searchField);
 	}
 
 	@Override
@@ -137,6 +142,10 @@ public class BasicSearchFieldUI extends BuddyTextFieldUI {
 	private void layoutButtons() {
 		BuddySupport.removeAll(searchField);
 		
+		if(isNativeSearchField()){
+			return;
+		}
+		
 		BuddySupport.addRight(clearButton(), searchField);
 
 		if (isMacLayoutStyle()) {
@@ -173,6 +182,10 @@ public class BasicSearchFieldUI extends BuddyTextFieldUI {
 	 * @see JXSearchField#customSetUIProperty(String, Object)
 	 */
 	protected void installDefaults() {
+		if(isNativeSearchField()){
+			return;
+		}
+		
 		if (UIManager.getBoolean("SearchField.useSeperatePopupButton")) {
 			searchField.customSetUIProperty("useSeperatePopupButton", Boolean.TRUE);
 		} else {
@@ -211,6 +224,7 @@ public class BasicSearchFieldUI extends BuddyTextFieldUI {
 	 */
 	public void uninstallUI(JComponent c) {
 		super.uninstallUI(c);
+		
 		searchField.removePropertyChangeListener(getHandler());
 		searchField.getDocument().removeDocumentListener(getHandler());
 		popupButton().removeActionListener(getHandler());

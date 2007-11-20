@@ -9,8 +9,6 @@ import javax.swing.JTextField;
 import javax.swing.border.Border;
 import javax.swing.plaf.TextUI;
 
-import org.jdesktop.xswingx.NativeSearchFieldSupport;
-
 /**
  * <p>
  * TODO: queries the text components layout manager for the preferred size.
