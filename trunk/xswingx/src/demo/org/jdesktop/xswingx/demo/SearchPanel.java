@@ -13,11 +13,9 @@ import java.awt.event.FocusListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
-import java.text.ParseException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
-import javax.swing.JFormattedTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.LineBorder;
@@ -814,26 +812,6 @@ public class SearchPanel extends javax.swing.JPanel {
 	private org.jdesktop.xswingx.JXPromptField txtPromptField;
 
 	// End of variables declaration//GEN-END:variables
-
-	public static class InsetsFormatter extends JFormattedTextField.AbstractFormatter {
-		public Object stringToValue(String text) throws ParseException {
-			String[] s = text.split(",");
-			if (s.length == 4) {
-				return new Insets(Integer.parseInt(s[0]), Integer.parseInt(s[1]), Integer.parseInt(s[2]), Integer
-						.parseInt(s[3]));
-			}
-			return null;
-		}
-
-		public String valueToString(Object value) throws ParseException {
-			if (value == null)
-				return null;
-
-			Insets i = (Insets) value;
-
-			return i.top + "," + i.left + "," + i.bottom + "," + i.right;
-		}
-	}
 
 	class OpaqueHandler implements MouseListener, FocusListener {
 		private boolean enabled;

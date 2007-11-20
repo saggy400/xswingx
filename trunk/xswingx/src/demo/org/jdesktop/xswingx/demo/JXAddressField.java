@@ -20,7 +20,7 @@ public class JXAddressField extends JXBuddyField {
 		addGap(3, Position.RIGHT);
 		addBuddy(snapBackButton, Position.RIGHT);
 		
-		setOuterMargin(new Insets(0,1,0,1));
+		setOuterMargin(new Insets(0,1,1,1));
 		
 		setPrompt("Go to this address");
 	}

@@ -25,6 +25,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.text.JTextComponent;
 
+import org.jdesktop.swingx.plaf.nimbus.NimbusLookAndFeel;
 import org.jdesktop.xswingx.PromptSupport;
 import org.jdesktop.xswingx.PromptSupport.FocusBehavior;
 
@@ -249,6 +250,7 @@ public class LabelDemo extends javax.swing.JFrame {
 		UIManager.installLookAndFeel("JGoodies Windows", WindowsLookAndFeel.class.getName());
 		UIManager.installLookAndFeel("JGoodies Plastic", Plastic3DLookAndFeel.class.getName());
 		UIManager.installLookAndFeel("JGoodies Plastic XP", PlasticXPLookAndFeel.class.getName());
+		UIManager.installLookAndFeel("Nimbus", NimbusLookAndFeel.class.getName());
 		UIManager.installLookAndFeel("Quaqua", QuaquaLookAndFeel.class.getName());
 
 		java.awt.EventQueue.invokeLater(new Runnable() {
