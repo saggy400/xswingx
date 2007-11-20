@@ -1,6 +1,7 @@
 package org.jdesktop.xswingx.demo;
 
 import java.awt.Insets;
+import javax.swing.*;
 
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -13,6 +14,7 @@ import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.FormSpec;
 import com.jgoodies.forms.layout.RowSpec;
 import com.jgoodies.forms.layout.Sizes;
+import org.jdesktop.xswingx.*;
 
 
 
@@ -27,8 +29,11 @@ public class AnotherTestPanel extends JPanel {
 	private void initComponents() {
 		// JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
 		// Generated using JFormDesigner Evaluation license - Peter Weishapl
-		textField1 = new JTextField();
+		xAddressField1 = new JXAddressField();
 		xAddressField2 = new JXAddressField();
+		xSearchField1 = new JXSearchField();
+		popupMenu1 = new JPopupMenu();
+		menuItem1 = new JMenuItem();
 		CellConstraints cc = new CellConstraints();
 
 		//======== this ========
@@ -45,7 +50,7 @@ public class AnotherTestPanel extends JPanel {
 			new ColumnSpec[] {
 				new ColumnSpec(ColumnSpec.FILL, Sizes.DEFAULT, FormSpec.DEFAULT_GROW),
 				FormFactory.LABEL_COMPONENT_GAP_COLSPEC,
-				FormFactory.DEFAULT_COLSPEC,
+				new ColumnSpec(ColumnSpec.FILL, Sizes.DEFAULT, FormSpec.DEFAULT_GROW),
 				FormFactory.LABEL_COMPONENT_GAP_COLSPEC,
 				FormFactory.DEFAULT_COLSPEC,
 				FormFactory.LABEL_COMPONENT_GAP_COLSPEC,
@@ -56,18 +61,36 @@ public class AnotherTestPanel extends JPanel {
 				FormFactory.LINE_GAP_ROWSPEC,
 				FormFactory.DEFAULT_ROWSPEC,
 				FormFactory.LINE_GAP_ROWSPEC,
+				FormFactory.PREF_ROWSPEC,
+				FormFactory.LINE_GAP_ROWSPEC,
 				FormFactory.DEFAULT_ROWSPEC,
 				FormFactory.LINE_GAP_ROWSPEC,
-				FormFactory.PREF_ROWSPEC
+				new RowSpec(RowSpec.TOP, Sizes.PREFERRED, FormSpec.NO_GROW)
 			}));
-		add(textField1, cc.xy(1, 3));
-		add(xAddressField2, cc.xywh(1, 7, 7, 1));
+		add(xAddressField1, cc.xywh(1, 1, 7, 1));
+		add(xAddressField2, cc.xywh(1, 5, 7, 1));
+
+		//---- xSearchField1 ----
+		xSearchField1.setPrompt("Search");
+		xSearchField1.setSearchPopupMenu(popupMenu1);
+		add(xSearchField1, cc.xy(1, 9));
+
+		//======== popupMenu1 ========
+		{
+
+			//---- menuItem1 ----
+			menuItem1.setText("fasdf");
+			popupMenu1.add(menuItem1);
+		}
 		// JFormDesigner - End of component initialization  //GEN-END:initComponents
 	}
 
 	// JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
 	// Generated using JFormDesigner Evaluation license - Peter Weishapl
-	private JTextField textField1;
+	private JXAddressField xAddressField1;
 	private JXAddressField xAddressField2;
+	private JXSearchField xSearchField1;
+	private JPopupMenu popupMenu1;
+	private JMenuItem menuItem1;
 	// JFormDesigner - End of variables declaration  //GEN-END:variables
 }

@@ -19,8 +19,7 @@ import javax.swing.plaf.basic.BasicBorders.MarginBorder;
 import org.jdesktop.xswingx.BuddySupport;
 import org.jdesktop.xswingx.BuddySupport.Position;
 
-public class BuddyLayoutAndBorder implements LayoutManager, Border,
-		PropertyChangeListener, UIResource {
+public class BuddyLayoutAndBorder implements LayoutManager, Border, PropertyChangeListener, UIResource {
 	private JTextField textField;
 
 	private Border borderDelegate;
@@ -111,8 +110,7 @@ public class BuddyLayoutAndBorder implements LayoutManager, Border,
 				continue;
 			}
 			size = comp.getPreferredSize();
-			comp.setBounds(visibleRect.x, centerY(visibleRect, size),
-					size.width, size.height);
+			comp.setBounds(visibleRect.x, centerY(visibleRect, size), size.width, size.height);
 
 			visibleRect.x += size.width;
 			visibleRect.width -= size.width;
@@ -124,8 +122,8 @@ public class BuddyLayoutAndBorder implements LayoutManager, Border,
 			}
 
 			size = comp.getPreferredSize();
-			comp.setBounds(visibleRect.x + visibleRect.width - size.width,
-					centerY(visibleRect, size), size.width, size.height);
+			comp.setBounds(visibleRect.x + visibleRect.width - size.width, centerY(visibleRect, size), size.width,
+					size.height);
 			visibleRect.width -= size.width;
 		}
 	}
@@ -179,8 +177,7 @@ public class BuddyLayoutAndBorder implements LayoutManager, Border,
 			insets.left += comp.isVisible() ? comp.getPreferredSize().width : 0;
 		}
 		for (Component comp : BuddySupport.getRight(textField)) {
-			insets.right += comp.isVisible() ? comp.getPreferredSize().width
-					: 0;
+			insets.right += comp.isVisible() ? comp.getPreferredSize().width : 0;
 		}
 
 		Insets outerMargin = BuddySupport.getOuterMargin(textField);
@@ -232,8 +229,7 @@ public class BuddyLayoutAndBorder implements LayoutManager, Border,
 		return borderDelegate.isBorderOpaque();
 	}
 
-	public void paintBorder(Component c, Graphics g, int x, int y, int width,
-			int height) {
+	public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
 		if (borderDelegate != null) {
 			borderDelegate.paintBorder(c, g, x, y, width, height);
 		}
@@ -246,7 +242,9 @@ public class BuddyLayoutAndBorder implements LayoutManager, Border,
 	public void uninstall() {
 		if (textField != null) {
 			textField.removePropertyChangeListener("border", this);
-			textField.setBorder(borderDelegate);
+			if (textField.getBorder() == this) {
+				textField.setBorder(borderDelegate);
+			}
 			textField.setLayout(null);
 			textField = null;
 		}
@@ -254,7 +252,6 @@ public class BuddyLayoutAndBorder implements LayoutManager, Border,
 
 	@Override
 	public String toString() {
-		return String.format("%s (%s): %s", getClass().getName(),
-				getBorderInsets(null), borderDelegate);
+		return String.format("%s (%s): %s", getClass().getName(), getBorderInsets(null), borderDelegate);
 	}
 }
