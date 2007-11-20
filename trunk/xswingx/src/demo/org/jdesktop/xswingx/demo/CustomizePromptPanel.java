@@ -153,18 +153,18 @@ public class CustomizePromptPanel extends CustomizePanel {
 		add(label5, cc.xy(2, 3));
 
 		//---- txtPrompt ----
-		txtPrompt.setText("Hello, I'm a plain JTextField. Please customize me.");
+		txtPrompt.setText("Hello, I'm a plain JTextField. Come play with me...");
 		txtPrompt.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				promptChanged(e);
+			}
 			@Override
 			public void keyPressed(KeyEvent e) {
 				promptChanged(e);
 			}
 			@Override
 			public void keyReleased(KeyEvent e) {
-				promptChanged(e);
-			}
-			@Override
-			public void keyTyped(KeyEvent e) {
 				promptChanged(e);
 			}
 		});
