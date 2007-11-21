@@ -109,7 +109,7 @@
            <class>com.jgoodies.forms.layout.FormLayout</class> 
            <void method="setProperty"> 
             <string>$columnSpecs</string> 
-            <string>default, labelcompgap, default, unrelgap, default, labelcompgap, default, unrelgap, default, labelcompgap, default, unrelgap, default:grow</string> 
+            <string>default, left:1dlu, default, unrelgap, default, left:1dlu, default, unrelgap, default, left:1dlu, default, unrelgap, default:grow</string> 
            </void> 
            <void method="setProperty"> 
             <string>$rowSpecs</string> 
@@ -277,7 +277,7 @@
              <class>com.jgoodies.forms.layout.FormLayout</class> 
              <void method="setProperty"> 
               <string>$columnSpecs</string> 
-              <string>unrelgap, right:default, labelcompgap, left:default, labelcompgap, default</string> 
+              <string>unrelgap, right:default, labelcompgap, left:default, unrelgap, default</string> 
              </void> 
              <void method="setProperty"> 
               <string>$rowSpecs</string> 

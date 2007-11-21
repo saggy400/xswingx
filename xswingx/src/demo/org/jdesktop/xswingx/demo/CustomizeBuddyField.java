@@ -6,6 +6,7 @@ package org.jdesktop.xswingx.demo;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -52,7 +53,11 @@ public class CustomizeBuddyField extends CustomizePanel {
 
 	private Component getSelectedComponent() {
 		if (cbCheckbox.isSelected()) {
-			return new JCheckBox();
+			JCheckBox cb = new JCheckBox();
+			cb.setMargin(new Insets(0,0,0,0));
+			cb.setOpaque(false);
+			cb.setCursor(Cursor.getDefaultCursor());
+			return cb;
 		} else if (cbRss.isSelected()) {
 			return new RssButton();
 		} else if (cbSnapBack.isSelected()) {
@@ -155,15 +160,15 @@ public class CustomizeBuddyField extends CustomizePanel {
 					panel3.setLayout(new FormLayout(
 						new ColumnSpec[] {
 							FormFactory.DEFAULT_COLSPEC,
-							FormFactory.LABEL_COMPONENT_GAP_COLSPEC,
+							new ColumnSpec(ColumnSpec.LEFT, Sizes.DLUX1, FormSpec.NO_GROW),
 							FormFactory.DEFAULT_COLSPEC,
 							FormFactory.UNRELATED_GAP_COLSPEC,
 							FormFactory.DEFAULT_COLSPEC,
-							FormFactory.LABEL_COMPONENT_GAP_COLSPEC,
+							new ColumnSpec(ColumnSpec.LEFT, Sizes.DLUX1, FormSpec.NO_GROW),
 							FormFactory.DEFAULT_COLSPEC,
 							FormFactory.UNRELATED_GAP_COLSPEC,
 							FormFactory.DEFAULT_COLSPEC,
-							FormFactory.LABEL_COMPONENT_GAP_COLSPEC,
+							new ColumnSpec(ColumnSpec.LEFT, Sizes.DLUX1, FormSpec.NO_GROW),
 							FormFactory.DEFAULT_COLSPEC,
 							FormFactory.UNRELATED_GAP_COLSPEC,
 							new ColumnSpec(ColumnSpec.FILL, Sizes.DEFAULT, FormSpec.DEFAULT_GROW)
@@ -201,7 +206,7 @@ public class CustomizeBuddyField extends CustomizePanel {
 								new ColumnSpec(ColumnSpec.RIGHT, Sizes.DEFAULT, FormSpec.NO_GROW),
 								FormFactory.LABEL_COMPONENT_GAP_COLSPEC,
 								new ColumnSpec(ColumnSpec.LEFT, Sizes.DEFAULT, FormSpec.NO_GROW),
-								FormFactory.LABEL_COMPONENT_GAP_COLSPEC,
+								FormFactory.UNRELATED_GAP_COLSPEC,
 								FormFactory.DEFAULT_COLSPEC
 							},
 							RowSpec.decodeSpecs("default")));

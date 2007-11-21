@@ -52,6 +52,7 @@ public class CustomizeGeneralPanel extends CustomizePanel {
 		cbOpaque.setSelected(textComponent.isOpaque());
 		txtMargin.setFormatterFactory(ff);
 		txtMargin.setValue(textComponent.getMargin());
+		cbOpaque.setSelected(textComponent.isOpaque());
 		columnsChanged(null);
 	}
 
@@ -98,6 +99,14 @@ public class CustomizeGeneralPanel extends CustomizePanel {
 		changed();
 	}
 
+	private void cbEnabledStateChanged(ChangeEvent e) {
+		getField().setEnabled(cbEnabled.isSelected());
+	}
+
+	private void cbEditableStateChanged(ChangeEvent e) {
+		getField().setEditable(cbEditable.isSelected());
+	}
+
 	private void initComponents() {
 		// JFormDesigner - Component initialization - DO NOT MODIFY
 		// //GEN-BEGIN:initComponents
@@ -117,6 +126,9 @@ public class CustomizeGeneralPanel extends CustomizePanel {
 		cbFixedSize = new JCheckBox();
 		spColumns = new JSpinner();
 		label2 = new JLabel();
+		panel1 = new JPanel();
+		cbEnabled = new JCheckBox();
+		cbEditable = new JCheckBox();
 		cbOpaque = new JCheckBox();
 		CellConstraints cc = new CellConstraints();
 
@@ -278,14 +290,48 @@ public class CustomizeGeneralPanel extends CustomizePanel {
 		label2.setText("Columns");
 		add(label2, cc.xy(6, 5));
 
-		//---- cbOpaque ----
-		cbOpaque.setText("Opaque");
-		cbOpaque.addChangeListener(new ChangeListener() {
-			public void stateChanged(ChangeEvent e) {
-				opaqueChanged(e);
-			}
-		});
-		add(cbOpaque, cc.xy(2, 7));
+		//======== panel1 ========
+		{
+			panel1.setLayout(new FormLayout(
+				new ColumnSpec[] {
+					FormFactory.DEFAULT_COLSPEC,
+					FormFactory.LABEL_COMPONENT_GAP_COLSPEC,
+					FormFactory.DEFAULT_COLSPEC,
+					FormFactory.LABEL_COMPONENT_GAP_COLSPEC,
+					new ColumnSpec(ColumnSpec.LEFT, Sizes.DEFAULT, FormSpec.NO_GROW)
+				},
+				RowSpec.decodeSpecs("default")));
+
+			//---- cbEnabled ----
+			cbEnabled.setText("Enabled");
+			cbEnabled.setSelected(true);
+			cbEnabled.addChangeListener(new ChangeListener() {
+				public void stateChanged(ChangeEvent e) {
+					cbEnabledStateChanged(e);
+				}
+			});
+			panel1.add(cbEnabled, cc.xy(1, 1));
+
+			//---- cbEditable ----
+			cbEditable.setText("Editable");
+			cbEditable.setSelected(true);
+			cbEditable.addChangeListener(new ChangeListener() {
+				public void stateChanged(ChangeEvent e) {
+					cbEditableStateChanged(e);
+				}
+			});
+			panel1.add(cbEditable, cc.xy(3, 1));
+
+			//---- cbOpaque ----
+			cbOpaque.setText("Opaque");
+			cbOpaque.addChangeListener(new ChangeListener() {
+				public void stateChanged(ChangeEvent e) {
+					opaqueChanged(e);
+				}
+			});
+			panel1.add(cbOpaque, cc.xy(5, 1));
+		}
+		add(panel1, cc.xywh(2, 7, 5, 1));
 
 		//---- grpBorder ----
 		ButtonGroup grpBorder = new ButtonGroup();
@@ -318,6 +364,9 @@ public class CustomizeGeneralPanel extends CustomizePanel {
 	private JCheckBox cbFixedSize;
 	private JSpinner spColumns;
 	private JLabel label2;
+	private JPanel panel1;
+	private JCheckBox cbEnabled;
+	private JCheckBox cbEditable;
 	private JCheckBox cbOpaque;
 	// JFormDesigner - End of variables declaration //GEN-END:variables
 }
