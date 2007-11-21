@@ -10,7 +10,6 @@ public abstract class AbstractUIChangeHandler implements PropertyChangeListener 
 	}
 	
 	public void uninstall(JComponent c){
-		System.out.println("remove me");
 		c.removePropertyChangeListener("UI", this);
 	}
 }

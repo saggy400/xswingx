@@ -58,7 +58,7 @@ public class JXSearchField extends JXBuddyField {
 	/**
 	 * The default instant search delay.
 	 */
-	private static final int DEFAULT_INSTANT_SEARCH_DELAY = 50;
+	private static final int DEFAULT_INSTANT_SEARCH_DELAY = 200;
 	/**
 	 * The key used to invoke the clear action.
 	 */

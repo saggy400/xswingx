@@ -62,7 +62,8 @@ public class TextFieldCustomizer extends JPanel {
 
 		//======== scrollPane1 ========
 		{
-			scrollPane1.setBorder(null);
+			scrollPane1.setBorder(Borders.DLU2_BORDER);
+			scrollPane1.setOpaque(false);
 
 			//======== panel2 ========
 			{

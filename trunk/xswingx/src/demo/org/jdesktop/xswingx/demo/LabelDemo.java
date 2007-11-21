@@ -250,8 +250,9 @@ public class LabelDemo extends javax.swing.JFrame {
 		UIManager.installLookAndFeel("JGoodies Windows", WindowsLookAndFeel.class.getName());
 		UIManager.installLookAndFeel("JGoodies Plastic", Plastic3DLookAndFeel.class.getName());
 		UIManager.installLookAndFeel("JGoodies Plastic XP", PlasticXPLookAndFeel.class.getName());
-		UIManager.installLookAndFeel("Nimbus", NimbusLookAndFeel.class.getName());
 		UIManager.installLookAndFeel("Quaqua", QuaquaLookAndFeel.class.getName());
+//		UIManager.installLookAndFeel("Nimbus", NimbusLookAndFeel.class.getName());
+		
 
 		java.awt.EventQueue.invokeLater(new Runnable() {
 			public void run() {
