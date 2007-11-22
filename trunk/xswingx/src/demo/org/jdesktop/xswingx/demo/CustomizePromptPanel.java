@@ -41,6 +41,9 @@ public class CustomizePromptPanel extends CustomizePanel {
 		super.setField(textComponent);
 		promptChanged(null);
 		focusBehaviorChanged(null);
+		backgroundChanged(null);
+		foregroundChanged(null);
+		fontChanged(null);
 	}
 
 	private void promptChanged(KeyEvent e) {
