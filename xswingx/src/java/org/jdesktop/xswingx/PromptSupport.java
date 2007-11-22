@@ -24,14 +24,14 @@ import org.jdesktop.xswingx.plaf.TextUIWrapper;
  * </p>
  * 
  * <p>
- * This class is used by {@link JXPromptField}, {@link JXFormattedPromptField}
- * and {@link JXPromptArea} to get and set prompt properties.
+ * This class is used by {@link JXTextField}, {@link JXFormattedTextField}
+ * and {@link JXTextArea} to get and set prompt properties.
  * {@link PromptTextUI} retrieves these properties using PromptSupport.
  * </p>
  * 
- * @see JXPromptField
- * @see JXFormattedPromptField
- * @see JXPromptArea
+ * @see JXTextField
+ * @see JXFormattedTextField
+ * @see JXTextArea
  * @see PromptTextUI
  * 
  * @author Peter Weishapl <petw@gmx.net>

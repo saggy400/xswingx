@@ -74,7 +74,7 @@ public class BuddyTextFieldUI extends PromptTextFieldUI {
 	}
 
 	/**
-	 * TODO:
+	 * TODO: comment
 	 * 
 	 * @see javax.swing.plaf.ComponentUI#getPreferredSize(javax.swing.JComponent)
 	 */

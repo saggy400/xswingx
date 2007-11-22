@@ -4,14 +4,14 @@ import static org.junit.Assert.assertEquals;
 
 import javax.swing.JTextArea;
 
-import org.jdesktop.xswingx.JXPromptArea;
+import org.jdesktop.xswingx.JXTextArea;
 import org.junit.Test;
 
 public class PromptTextAreaUITest extends PromptTextUITest {
     JTextArea textArea;
     
     public void setup() {
-        textComponent = textArea = new JXPromptArea();
+        textComponent = textArea = new JXTextArea();
     }
     
     @Test

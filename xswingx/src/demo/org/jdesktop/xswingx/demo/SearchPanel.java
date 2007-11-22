@@ -67,7 +67,7 @@ public class SearchPanel extends javax.swing.JPanel {
 		rbLineBorder = new javax.swing.JRadioButton();
 		slBorderThickness = new javax.swing.JSlider();
 		jXTitledSeparator3 = new org.jdesktop.swingx.JXTitledSeparator();
-		txtPromptField = new org.jdesktop.xswingx.JXPromptField();
+		txtPromptField = new org.jdesktop.xswingx.JXTextField();
 		jXTitledSeparator4 = new org.jdesktop.swingx.JXTitledSeparator();
 		txtMargin = new javax.swing.JFormattedTextField();
 		jLabel1 = new javax.swing.JLabel();
@@ -809,7 +809,7 @@ public class SearchPanel extends javax.swing.JPanel {
 	private javax.swing.ButtonGroup styleGroup;
 	private javax.swing.JFormattedTextField txtBtnMargin;
 	private javax.swing.JFormattedTextField txtMargin;
-	private org.jdesktop.xswingx.JXPromptField txtPromptField;
+	private org.jdesktop.xswingx.JXTextField txtPromptField;
 
 	// End of variables declaration//GEN-END:variables
 

@@ -135,7 +135,7 @@ public class BuddySupport {
 	 * 
 	 * @param buddyField
 	 */
-	public static void install(JTextField buddyField) {
+	private static void install(JTextField buddyField) {
 		wrapper.install(buddyField, true);
 	}
 

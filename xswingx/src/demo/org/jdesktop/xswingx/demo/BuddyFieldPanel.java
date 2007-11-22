@@ -25,7 +25,7 @@ public class BuddyFieldPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jXPromptField1 = new org.jdesktop.xswingx.JXPromptField();
+        jXPromptField1 = new org.jdesktop.xswingx.JXTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
@@ -80,7 +80,7 @@ public class BuddyFieldPanel extends javax.swing.JPanel {
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private org.jdesktop.xswingx.JXPromptField jXPromptField1;
+    private org.jdesktop.xswingx.JXTextField jXPromptField1;
     // End of variables declaration//GEN-END:variables
     
 }
