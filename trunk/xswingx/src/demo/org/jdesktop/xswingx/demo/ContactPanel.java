@@ -90,15 +90,15 @@ public class ContactPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:initComponents
     private void initComponents() {
         jScrollPane1 = new javax.swing.JScrollPane();
-        jLabelTextField1 = new org.jdesktop.xswingx.JXPromptField();
-        jLabelTextField2 = new org.jdesktop.xswingx.JXPromptField();
-        jLabelTextField3 = new org.jdesktop.xswingx.JXPromptField();
-        jLabelFormattedTextField1 = new org.jdesktop.xswingx.JXFormattedPromptField();
+        jLabelTextField1 = new org.jdesktop.xswingx.JXTextField();
+        jLabelTextField2 = new org.jdesktop.xswingx.JXTextField();
+        jLabelTextField3 = new org.jdesktop.xswingx.JXTextField();
+        jLabelFormattedTextField1 = new org.jdesktop.xswingx.JXFormattedTextField();
         jLabel1 = new javax.swing.JLabel();
-        jLabelTextField4 = new org.jdesktop.xswingx.JXPromptField();
+        jLabelTextField4 = new org.jdesktop.xswingx.JXTextField();
         jSeparator1 = new javax.swing.JSeparator();
         jPanel1 = new javax.swing.JPanel();
-        jLabelTextArea1 = new org.jdesktop.xswingx.JXPromptArea();
+        jLabelTextArea1 = new org.jdesktop.xswingx.JXTextArea();
 
         setBackground(new java.awt.Color(255, 255, 255));
         jLabelTextField1.setBorder(null);
@@ -184,12 +184,12 @@ public class ContactPanel extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
-    private org.jdesktop.xswingx.JXFormattedPromptField jLabelFormattedTextField1;
-    private org.jdesktop.xswingx.JXPromptArea jLabelTextArea1;
-    private org.jdesktop.xswingx.JXPromptField jLabelTextField1;
-    private org.jdesktop.xswingx.JXPromptField jLabelTextField2;
-    private org.jdesktop.xswingx.JXPromptField jLabelTextField3;
-    private org.jdesktop.xswingx.JXPromptField jLabelTextField4;
+    private org.jdesktop.xswingx.JXFormattedTextField jLabelFormattedTextField1;
+    private org.jdesktop.xswingx.JXTextArea jLabelTextArea1;
+    private org.jdesktop.xswingx.JXTextField jLabelTextField1;
+    private org.jdesktop.xswingx.JXTextField jLabelTextField2;
+    private org.jdesktop.xswingx.JXTextField jLabelTextField3;
+    private org.jdesktop.xswingx.JXTextField jLabelTextField4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;

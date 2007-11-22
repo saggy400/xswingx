@@ -4,14 +4,14 @@ import static org.junit.Assert.assertEquals;
 
 import javax.swing.JTextField;
 
-import org.jdesktop.xswingx.JXPromptField;
+import org.jdesktop.xswingx.JXTextField;
 import org.junit.Test;
 
 public class PromptTextFieldUITest extends PromptTextUITest {
     JTextField txtField;
     
     public void setup() {
-        textComponent = txtField = new JXPromptField();
+        textComponent = txtField = new JXTextField();
     }
     
     @Test

@@ -33,15 +33,15 @@ public class TestPanel extends javax.swing.JPanel {
      */
     // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:initComponents
     private void initComponents() {
-        jLabelTextField1 = new org.jdesktop.xswingx.JXPromptField();
-        jLabelTextField2 = new org.jdesktop.xswingx.JXPromptField();
-        jLabelTextField3 = new org.jdesktop.xswingx.JXPromptField();
-        jLabelTextField4 = new org.jdesktop.xswingx.JXPromptField();
-        jLabelTextField5 = new org.jdesktop.xswingx.JXPromptField();
-        jLabelTextField6 = new org.jdesktop.xswingx.JXPromptField();
-        jLabelTextField7 = new org.jdesktop.xswingx.JXPromptField();
+        jLabelTextField1 = new org.jdesktop.xswingx.JXTextField();
+        jLabelTextField2 = new org.jdesktop.xswingx.JXTextField();
+        jLabelTextField3 = new org.jdesktop.xswingx.JXTextField();
+        jLabelTextField4 = new org.jdesktop.xswingx.JXTextField();
+        jLabelTextField5 = new org.jdesktop.xswingx.JXTextField();
+        jLabelTextField6 = new org.jdesktop.xswingx.JXTextField();
+        jLabelTextField7 = new org.jdesktop.xswingx.JXTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jLabelTextArea1 = new org.jdesktop.xswingx.JXPromptArea();
+        jLabelTextArea1 = new org.jdesktop.xswingx.JXTextArea();
 
         jLabelTextField1.setPrompt("Prompt Text");
 
@@ -124,14 +124,14 @@ public class TestPanel extends javax.swing.JPanel {
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private org.jdesktop.xswingx.JXPromptArea jLabelTextArea1;
-    private org.jdesktop.xswingx.JXPromptField jLabelTextField1;
-    private org.jdesktop.xswingx.JXPromptField jLabelTextField2;
-    private org.jdesktop.xswingx.JXPromptField jLabelTextField3;
-    private org.jdesktop.xswingx.JXPromptField jLabelTextField4;
-    private org.jdesktop.xswingx.JXPromptField jLabelTextField5;
-    private org.jdesktop.xswingx.JXPromptField jLabelTextField6;
-    private org.jdesktop.xswingx.JXPromptField jLabelTextField7;
+    private org.jdesktop.xswingx.JXTextArea jLabelTextArea1;
+    private org.jdesktop.xswingx.JXTextField jLabelTextField1;
+    private org.jdesktop.xswingx.JXTextField jLabelTextField2;
+    private org.jdesktop.xswingx.JXTextField jLabelTextField3;
+    private org.jdesktop.xswingx.JXTextField jLabelTextField4;
+    private org.jdesktop.xswingx.JXTextField jLabelTextField5;
+    private org.jdesktop.xswingx.JXTextField jLabelTextField6;
+    private org.jdesktop.xswingx.JXTextField jLabelTextField7;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
     

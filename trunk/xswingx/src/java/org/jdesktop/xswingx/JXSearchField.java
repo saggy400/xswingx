@@ -1,6 +1,5 @@
 package org.jdesktop.xswingx;
 
-import java.awt.Color;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,13 +15,11 @@ import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.UIManager;
-import javax.swing.plaf.TextUI;
 import javax.swing.text.Document;
 
 import org.jdesktop.swingx.plaf.LookAndFeelAddons;
 import org.jdesktop.xswingx.plaf.AbstractUIChangeHandler;
 import org.jdesktop.xswingx.plaf.JXSearchFieldAddon;
-import org.jdesktop.xswingx.plaf.PromptTextFieldUI;
 import org.jdesktop.xswingx.plaf.basic.BasicSearchFieldUI;
 
 /**
@@ -54,7 +51,7 @@ import org.jdesktop.xswingx.plaf.basic.BasicSearchFieldUI;
  * @author Peter Weishapl <petw@gmx.net>
  * 
  */
-public class JXSearchField extends JXBuddyField {
+public class JXSearchField extends JXTextField {
 	/**
 	 * The default instant search delay.
 	 */
@@ -192,18 +189,6 @@ public class JXSearchField extends JXBuddyField {
 				}
 			}
 		});
-	}
-
-	/**
-	 * Overriden to prevent installation of {@link PromptSupport}. This is
-	 * handled by our UI class {@link BasicSearchFieldUI}, which is a
-	 * {@link PromptTextFieldUI}.
-	 * 
-	 * @see #setUI(TextUI)
-	 */
-	@Override
-	protected void installPromptSupport(String promptText, Color promptForeground, Color promptBackground) {
-		// don't! Handled by setUI
 	}
 
 	/**

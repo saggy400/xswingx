@@ -2,47 +2,35 @@ package org.jdesktop.xswingx;
 
 import java.awt.Color;
 
-import javax.swing.JFormattedTextField;
+import javax.swing.JTextArea;
 
 import org.jdesktop.xswingx.PromptSupport.FocusBehavior;
-import org.jdesktop.xswingx.plaf.PromptTextFieldUI;
-
 
 /**
- * {@link JFormattedTextField}, which wraps the default UI class into a
- * {@link PromptTextFieldUI} and provides convenience methods for getting and
- * setting label properties supported by {@link PromptSupport}.
+ * {@link JTextArea}, with integrated support for prompts.
  * 
+ * @see PromptSupport
+ * @see BuddySupport
  * @author Peter Weishapl <petw@gmx.net>
  * 
  */
-public class JXFormattedPromptField extends JFormattedTextField {
-	public JXFormattedPromptField() {
+public class JXTextArea extends JTextArea {
+	public JXTextArea() {
 		this(null);
 	}
 
-	public JXFormattedPromptField(String labelText) {
-		this(labelText, null);
+	public JXTextArea(String promptText) {
+		this(promptText, null);
 	}
 
-	public JXFormattedPromptField(String promptText, Color promptForeground) {
+	public JXTextArea(String promptText, Color promptForeground) {
 		this(promptText, promptForeground, null);
 	}
-	
-	public JXFormattedPromptField(String promptText, Color promptForeground, Color promptBackground) {
-		installPromptSupport(promptText, promptForeground, promptBackground);
-	}
 
-	/**
-	 * Calls
-	 * {@link PromptSupport#install(String, javax.swing.text.JTextComponent)}.
-	 * Override this method to customize or disable prompt support.
-	 * 
-	 * @param promptText
-	 * @param promptForeground
-	 */
-	protected void installPromptSupport(String promptText, Color promptForeground, Color promptBackground) {
-		PromptSupport.init(promptText, promptForeground, promptBackground, this, true);
+	public JXTextArea(String promptText, Color promptForeground,
+			Color promptBackground) {
+		PromptSupport.init(promptText, promptForeground, promptBackground,
+				this, true);
 	}
 
 	/**
@@ -65,7 +53,7 @@ public class JXFormattedPromptField extends JFormattedTextField {
 	public Color getPromptForeground() {
 		return PromptSupport.getForeground(this);
 	}
-	
+
 	/**
 	 * @see PromptSupport#getForeground(javax.swing.text.JTextComponent)
 	 */
@@ -100,7 +88,7 @@ public class JXFormattedPromptField extends JFormattedTextField {
 	public void setPromptForeground(Color promptTextColor) {
 		PromptSupport.setForeground(promptTextColor, this);
 	}
-	
+
 	/**
 	 * @see PromptSupport#setBackground(Color, javax.swing.text.JTextComponent)
 	 */
@@ -109,8 +97,7 @@ public class JXFormattedPromptField extends JFormattedTextField {
 	}
 
 	/**
-	 * @see PromptSupport#setFontStyle(Integer,
-	 *      javax.swing.text.JTextComponent)
+	 * @see PromptSupport#setFontStyle(Integer, javax.swing.text.JTextComponent)
 	 */
 	public void setPromptFontStyle(Integer fontStyle) {
 		PromptSupport.setFontStyle(fontStyle, this);

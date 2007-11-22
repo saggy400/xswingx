@@ -2,10 +2,10 @@ package org.jdesktop.xswingx.demo;
 
 import java.awt.Insets;
 
-import org.jdesktop.xswingx.JXBuddyField;
+import org.jdesktop.xswingx.JXTextField;
 import org.jdesktop.xswingx.BuddySupport.Position;
 
-public class JXAddressField extends JXBuddyField {
+public class JXAddressField extends JXTextField {
 	private BookmarkButton bookmarkButton;
 	private RssButton rssButton;
 	private SnapBackButton snapBackButton;

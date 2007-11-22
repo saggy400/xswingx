@@ -27,7 +27,7 @@ public class TestPanelExt extends javax.swing.JPanel {
 
         testPanel1 = new org.jdesktop.xswingx.demo.TestPanel();
         jLabel1 = new javax.swing.JLabel();
-        jXPromptField1 = new org.jdesktop.xswingx.JXPromptField();
+        jXPromptField1 = new org.jdesktop.xswingx.JXTextField();
         jTextArea1 = new javax.swing.JTextArea();
 
         jLabel1.setText("This should look like a search field in Leopard with a prompt:");
@@ -76,7 +76,7 @@ public class TestPanelExt extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JTextArea jTextArea1;
-    private org.jdesktop.xswingx.JXPromptField jXPromptField1;
+    private org.jdesktop.xswingx.JXTextField jXPromptField1;
     private org.jdesktop.xswingx.demo.TestPanel testPanel1;
     // End of variables declaration//GEN-END:variables
     
