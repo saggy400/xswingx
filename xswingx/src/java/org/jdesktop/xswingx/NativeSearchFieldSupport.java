@@ -16,8 +16,9 @@ import org.jdesktop.xswingx.plaf.AbstractUIChangeHandler;
  * 
  */
 public class NativeSearchFieldSupport {
-	private static final String MAC_SEARCH_VARIANT = "search";
-	public static final String MAC_TEXT_FIELD_VARIANT = "JTextField.variant";
+	public static final String FIND_POPUP_PROPERTY = "JTextField.Search.FindPopup";
+	public static final String MAC_SEARCH_VARIANT = "search";
+	public static final String MAC_TEXT_FIELD_VARIANT_PROPERTY = "JTextField.variant";
 
 	/**
 	 * @return <code>true</code> if we run Leopard and the Mac Look And Feel.
@@ -25,13 +26,13 @@ public class NativeSearchFieldSupport {
 	public static boolean isNativeSearchFieldSupported() {
 		try {
 			String versionString = System.getProperty("os.version");
-			//Mac versions have the format 10.x or 10.x.x
-			if(versionString.length() < 4){
+			// Mac versions have the format 10.x or 10.x.x
+			if (versionString.length() < 4) {
 				return false;
 			}
-			//only the part 10.x is important
+			// only the part 10.x is important
 			versionString = versionString.substring(0, 4);
-			
+
 			return OS.isMacOSX() && Float.parseFloat(versionString) >= 10.5
 					&& UIManager.getLookAndFeel().getName().equals("Mac OS X");
 		} catch (Exception e) {
@@ -45,7 +46,7 @@ public class NativeSearchFieldSupport {
 		// Leopard Hack: ensure property change event is triggered, if nothing
 		// changes.
 		if (isSearchField == isSearchField(txt)) {
-			txt.putClientProperty(MAC_TEXT_FIELD_VARIANT, "_triggerevent_");
+			txt.putClientProperty(MAC_TEXT_FIELD_VARIANT_PROPERTY, "_triggerevent_");
 		} else if (isSearchField) {
 			// if we have a search field here, register listener for ui changes
 			// (leopard hack)
@@ -56,17 +57,17 @@ public class NativeSearchFieldSupport {
 		}
 
 		if (isSearchField) {
-			txt.putClientProperty(MAC_TEXT_FIELD_VARIANT, MAC_SEARCH_VARIANT);
+			txt.putClientProperty(MAC_TEXT_FIELD_VARIANT_PROPERTY, MAC_SEARCH_VARIANT);
 			txt.putClientProperty("Quaqua.TextField.style", MAC_SEARCH_VARIANT);
 
 		} else {
-			txt.putClientProperty(MAC_TEXT_FIELD_VARIANT, "default");
+			txt.putClientProperty(MAC_TEXT_FIELD_VARIANT_PROPERTY, "default");
 			txt.putClientProperty("Quaqua.TextField.style", "default");
 		}
 	}
 
 	public static boolean isSearchField(JTextField txt) {
-		return MAC_SEARCH_VARIANT.equals(txt.getClientProperty(MAC_TEXT_FIELD_VARIANT));
+		return MAC_SEARCH_VARIANT.equals(txt.getClientProperty(MAC_TEXT_FIELD_VARIANT_PROPERTY));
 	}
 
 	public static boolean isNativeSearchField(JTextField txt) {
@@ -74,11 +75,11 @@ public class NativeSearchFieldSupport {
 	}
 
 	public static void setSearchPopupMenu(JTextField txt, JPopupMenu popupMenu) {
-		txt.putClientProperty("JTextField.Search.FindPopup", popupMenu);
+		txt.putClientProperty(FIND_POPUP_PROPERTY, popupMenu);
 	}
 
 	public static JPopupMenu getSearchPopupMenu(JTextField txt) {
-		return (JPopupMenu) txt.getClientProperty("JTextField.Search.FindPopup");
+		return (JPopupMenu) txt.getClientProperty(FIND_POPUP_PROPERTY);
 	}
 
 	private static final SearchFieldUIChangeHandler uiChangeHandler = new SearchFieldUIChangeHandler();

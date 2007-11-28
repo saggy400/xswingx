@@ -16,7 +16,7 @@ public class NativeSearchFieldSupportTest implements PropertyChangeListener {
 	
 	@Test
 	public void testPropertyChangeEvent() throws Exception {
-		tf.addPropertyChangeListener(NativeSearchFieldSupport.MAC_TEXT_FIELD_VARIANT, this);
+		tf.addPropertyChangeListener(NativeSearchFieldSupport.MAC_TEXT_FIELD_VARIANT_PROPERTY, this);
 		NativeSearchFieldSupport.setSearchField(tf, true);
 		Assert.assertTrue(propertyChanged);
 		propertyChanged = false;
@@ -27,7 +27,7 @@ public class NativeSearchFieldSupportTest implements PropertyChangeListener {
 	@Test
 	public void testSearchFieldUIChange() throws Exception {
 		NativeSearchFieldSupport.setSearchField(tf, true);
-		tf.addPropertyChangeListener(NativeSearchFieldSupport.MAC_TEXT_FIELD_VARIANT, this);
+		tf.addPropertyChangeListener(NativeSearchFieldSupport.MAC_TEXT_FIELD_VARIANT_PROPERTY, this);
 		tf.updateUI();
 		Assert.assertTrue(propertyChanged);
 		

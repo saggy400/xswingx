@@ -1,12 +1,12 @@
 package org.jdesktop.xswingx;
 
-import java.awt.Color;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
@@ -192,6 +192,14 @@ public class JXSearchField extends JXTextField {
 				if (CLEAR_KEY.equals(KeyStroke.getKeyStroke(e.getKeyCode(), e.getModifiers()))) {
 					getClearAction().clear();
 				}
+			}
+		});
+		
+		//Map specific native properties to general JXSearchField properties.
+		addPropertyChangeListener(NativeSearchFieldSupport.FIND_POPUP_PROPERTY, new PropertyChangeListener(){
+			public void propertyChange(PropertyChangeEvent evt) {
+				JPopupMenu oldPopup = (JPopupMenu) evt.getOldValue();
+				firePropertyChange("searchPopupMenu", oldPopup, evt.getNewValue());
 			}
 		});
 	}
@@ -492,7 +500,7 @@ public class JXSearchField extends JXTextField {
 
 	public void setUseNativeSearchFieldIfPossible(boolean useNativeSearchFieldIfPossible) {
 		NativeSearchFieldSupport.setSearchField(this, useNativeSearchFieldIfPossible);
-		// updateUI();
+		updateUI();
 	}
 
 	/**
@@ -546,9 +554,7 @@ public class JXSearchField extends JXTextField {
 	 *            is clicked
 	 */
 	public void setSearchPopupMenu(JPopupMenu searchPopupMenu) {
-		JPopupMenu oldPopup = getSearchPopupMenu();
 		NativeSearchFieldSupport.setSearchPopupMenu(this, searchPopupMenu);
-		firePropertyChange("searchPopupMenu", oldPopup, searchPopupMenu);
 	}
 
 	/**

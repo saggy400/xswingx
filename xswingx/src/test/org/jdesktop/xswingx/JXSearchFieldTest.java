@@ -6,12 +6,10 @@ import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.IllegalComponentStateException;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -49,6 +47,21 @@ public class JXSearchFieldTest {
 		searchField.setInstantSearchDelay(0);
 		//make tests work under leopard
 		searchField.setUseNativeSearchFieldIfPossible(false);
+	}
+	
+	@Test
+	public void testSearchPopupPropertyChange() throws Exception {
+		final JPopupMenu popupMenu = new JPopupMenu();
+		searchField.addPropertyChangeListener("searchPopupMenu", new PropertyChangeListener(){
+			public void propertyChange(PropertyChangeEvent evt) {
+				assertNull(evt.getOldValue());
+				assertSame(evt.getNewValue(), popupMenu);
+				eventReceived = true;
+			}
+		});
+		
+		NativeSearchFieldSupport.setSearchPopupMenu(searchField, popupMenu);
+		assertTrue(eventReceived);
 	}
 	
 	@Test
