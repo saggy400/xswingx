@@ -1,13 +1,7 @@
 package org.jdesktop.xswingx.demo;
 
-import javax.swing.ButtonGroup;
-import javax.swing.JCheckBox;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-import javax.swing.JSpinner;
-import javax.swing.JTextField;
-import javax.swing.SpinnerNumberModel;
+import java.awt.event.*;
+import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -39,6 +33,7 @@ public class CustomizeSearchPanel extends CustomizePanel {
 		spnDelay.setValue(getSearchField().getInstantSearchDelay());
 		cbUseNative.setSelected(getSearchField().isUseNativeSearchFieldIfPossible());
 		cbUseNative.setEnabled(NativeSearchFieldSupport.isNativeSearchFieldSupported());
+		cbUseSeperate.setSelected(getSearchField().isUseSeperatePopupButton());
 		
 		if(getSearchField().isVistaLayoutStyle()){
 			rbVista.setSelected(true);
@@ -96,6 +91,19 @@ public class CustomizeSearchPanel extends CustomizePanel {
 		getSearchField().setUseSeperatePopupButton(cbUseSeperate.isSelected());
 	}
 
+	private void btnResetStyleActionPerformed(ActionEvent e) {
+		if (UIManager.getBoolean("SearchField.useSeperatePopupButton")) {
+			getSearchField().customSetUIProperty("useSeperatePopupButton", Boolean.TRUE, true);
+		} else {
+			getSearchField().customSetUIProperty("useSeperatePopupButton", Boolean.FALSE, true);
+		}
+
+		getSearchField().customSetUIProperty("layoutStyle", UIManager.get("SearchField.layoutStyle"), true);
+		getSearchField().customSetUIProperty("promptFontStyle", UIManager.get("SearchField.promptFontStyle"), true);
+		
+		setField(getSearchField());
+	}
+
 	private void initComponents() {
 		// JFormDesigner - Component initialization - DO NOT MODIFY
 		// //GEN-BEGIN:initComponents
@@ -115,8 +123,12 @@ public class CustomizeSearchPanel extends CustomizePanel {
 		rbMac = new JRadioButton();
 		rbVista = new JRadioButton();
 		cbWithPopup = new JCheckBox();
+		panel5 = new JPanel();
 		cbUseSeperate = new JCheckBox();
 		cbUseNative = new JCheckBox();
+		panel4 = new JPanel();
+		btnResetStyle = new JButton();
+		label6 = new JLabel();
 		CellConstraints cc = new CellConstraints();
 
 		//======== this ========
@@ -286,14 +298,26 @@ public class CustomizeSearchPanel extends CustomizePanel {
 			});
 			panel3.add(cbWithPopup, cc.xywh(1, 3, 5, 1));
 
-			//---- cbUseSeperate ----
-			cbUseSeperate.setText("Use Seperate Popup Button");
-			cbUseSeperate.addChangeListener(new ChangeListener() {
-				public void stateChanged(ChangeEvent e) {
-					cbUseSeperateStateChanged(e);
-				}
-			});
-			panel3.add(cbUseSeperate, cc.xywh(1, 5, 5, 1));
+			//======== panel5 ========
+			{
+				panel5.setLayout(new FormLayout(
+					new ColumnSpec[] {
+						FormFactory.UNRELATED_GAP_COLSPEC,
+						FormFactory.DEFAULT_COLSPEC,
+						new ColumnSpec(ColumnSpec.FILL, Sizes.DEFAULT, FormSpec.DEFAULT_GROW)
+					},
+					RowSpec.decodeSpecs("default")));
+
+				//---- cbUseSeperate ----
+				cbUseSeperate.setText("Use Seperate Popup Button");
+				cbUseSeperate.addChangeListener(new ChangeListener() {
+					public void stateChanged(ChangeEvent e) {
+						cbUseSeperateStateChanged(e);
+					}
+				});
+				panel5.add(cbUseSeperate, cc.xywh(2, 1, 2, 1));
+			}
+			panel3.add(panel5, cc.xywh(1, 5, 5, 1));
 
 			//---- cbUseNative ----
 			cbUseNative.setText("Use Native Search Field (Mac OS X Leopard only)");
@@ -305,6 +329,34 @@ public class CustomizeSearchPanel extends CustomizePanel {
 			panel3.add(cbUseNative, cc.xywh(1, 7, 5, 1));
 		}
 		add(panel3, cc.xywh(4, 11, 5, 1));
+
+		//======== panel4 ========
+		{
+			panel4.setLayout(new FormLayout(
+				new ColumnSpec[] {
+					FormFactory.DEFAULT_COLSPEC,
+					FormFactory.LABEL_COMPONENT_GAP_COLSPEC,
+					FormFactory.DEFAULT_COLSPEC,
+					FormFactory.LABEL_COMPONENT_GAP_COLSPEC,
+					new ColumnSpec(ColumnSpec.FILL, Sizes.DEFAULT, FormSpec.DEFAULT_GROW)
+				},
+				RowSpec.decodeSpecs("default")));
+
+			//---- btnResetStyle ----
+			btnResetStyle.setText("Set Default Style");
+			btnResetStyle.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					btnResetStyleActionPerformed(e);
+				}
+			});
+			panel4.add(btnResetStyle, cc.xy(1, 1));
+
+			//---- label6 ----
+			label6.setText("Depending on the current Look and Feel.");
+			label6.setEnabled(false);
+			panel4.add(label6, cc.xywh(3, 1, 3, 1));
+		}
+		add(panel4, cc.xywh(4, 13, 5, 1));
 
 		//---- buttonGroup1 ----
 		ButtonGroup buttonGroup1 = new ButtonGroup();
@@ -336,7 +388,11 @@ public class CustomizeSearchPanel extends CustomizePanel {
 	private JRadioButton rbMac;
 	private JRadioButton rbVista;
 	private JCheckBox cbWithPopup;
+	private JPanel panel5;
 	private JCheckBox cbUseSeperate;
 	private JCheckBox cbUseNative;
+	private JPanel panel4;
+	private JButton btnResetStyle;
+	private JLabel label6;
 	// JFormDesigner - End of variables declaration //GEN-END:variables
 }
