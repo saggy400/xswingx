@@ -1,5 +1,6 @@
 package org.jdesktop.xswingx;
 
+import java.awt.Color;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -55,7 +56,7 @@ public class JXSearchField extends JXTextField {
 	/**
 	 * The default instant search delay.
 	 */
-	private static final int DEFAULT_INSTANT_SEARCH_DELAY = 200;
+	private static final int DEFAULT_INSTANT_SEARCH_DELAY = 180;
 	/**
 	 * The key used to invoke the clear action.
 	 */
@@ -176,6 +177,10 @@ public class JXSearchField extends JXTextField {
 		// now we can wrap the default UI.
 		uiChangeHandler.install(this);
 
+		// We're extending JXTextField, but we cannot call the super constructor
+		// with the prompt because then the wrapping UI would be installed,
+		// before the native search field support is installed (see above) and
+		// thus rendering of the native search field on Leopard would be broken.
 		setPrompt(prompt);
 
 		// We cannot register the ClearAction through the Input- and
@@ -487,7 +492,7 @@ public class JXSearchField extends JXTextField {
 
 	public void setUseNativeSearchFieldIfPossible(boolean useNativeSearchFieldIfPossible) {
 		NativeSearchFieldSupport.setSearchField(this, useNativeSearchFieldIfPossible);
-		updateUI();
+		// updateUI();
 	}
 
 	/**
