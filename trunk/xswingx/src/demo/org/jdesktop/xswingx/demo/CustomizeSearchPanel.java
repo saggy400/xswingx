@@ -65,7 +65,7 @@ public class CustomizeSearchPanel extends CustomizePanel {
 	}
 
 	private void cbUseNativeStateChanged(ChangeEvent e) {
-		getSearchField().setUseNativeSearchFieldIfPossible(cbUseNative.isEnabled());
+		getSearchField().setUseNativeSearchFieldIfPossible(cbUseNative.isSelected());
 		
 		boolean nat = cbUseNative.isSelected() && cbUseNative.isEnabled();
 		rbMac.setEnabled(!nat);
