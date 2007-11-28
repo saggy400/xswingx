@@ -6,8 +6,10 @@ package org.jdesktop.xswingx.demo;
 
 import java.awt.Color;
 import java.awt.Insets;
+import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import javax.swing.*;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JCheckBox;
@@ -107,6 +109,11 @@ public class CustomizeGeneralPanel extends CustomizePanel {
 		getField().setEditable(cbEditable.isSelected());
 	}
 
+	private void btnResetActionPerformed(ActionEvent e) {
+		getField().setMargin(UIManager.getInsets("TextField.margin"));
+		setField(getField());
+	}
+
 	private void initComponents() {
 		// JFormDesigner - Component initialization - DO NOT MODIFY
 		// //GEN-BEGIN:initComponents
@@ -119,6 +126,7 @@ public class CustomizeGeneralPanel extends CustomizePanel {
 		lineSlider = new JSlider();
 		label1 = new JLabel();
 		txtMargin = new JFormattedTextField();
+		btnReset = new JButton();
 		label3 = new JLabel();
 		rbLeading = new JRadioButton();
 		rbCenter = new JRadioButton();
@@ -177,7 +185,9 @@ public class CustomizeGeneralPanel extends CustomizePanel {
 					FormFactory.LABEL_COMPONENT_GAP_COLSPEC,
 					FormFactory.DEFAULT_COLSPEC,
 					FormFactory.LABEL_COMPONENT_GAP_COLSPEC,
-					new ColumnSpec(ColumnSpec.FILL, Sizes.DEFAULT, FormSpec.DEFAULT_GROW)
+					new ColumnSpec(ColumnSpec.FILL, Sizes.DEFAULT, FormSpec.DEFAULT_GROW),
+					FormFactory.LABEL_COMPONENT_GAP_COLSPEC,
+					FormFactory.DEFAULT_COLSPEC
 				},
 				new RowSpec[] {
 					FormFactory.DEFAULT_ROWSPEC,
@@ -220,7 +230,7 @@ public class CustomizeGeneralPanel extends CustomizePanel {
 					rbBorderStateChanged(e);
 				}
 			});
-			panel3.add(lineSlider, cc.xywh(5, 3, 5, 1));
+			panel3.add(lineSlider, cc.xywh(5, 3, 7, 1));
 
 			//---- label1 ----
 			label1.setText("Margin:");
@@ -233,6 +243,15 @@ public class CustomizeGeneralPanel extends CustomizePanel {
 				}
 			});
 			panel3.add(txtMargin, cc.xywh(3, 5, 7, 1));
+
+			//---- btnReset ----
+			btnReset.setText("Reset");
+			btnReset.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					btnResetActionPerformed(e);
+				}
+			});
+			panel3.add(btnReset, cc.xy(11, 5));
 
 			//---- label3 ----
 			label3.setText("Alignment:");
@@ -357,6 +376,7 @@ public class CustomizeGeneralPanel extends CustomizePanel {
 	private JSlider lineSlider;
 	private JLabel label1;
 	private JFormattedTextField txtMargin;
+	private JButton btnReset;
 	private JLabel label3;
 	private JRadioButton rbLeading;
 	private JRadioButton rbCenter;
