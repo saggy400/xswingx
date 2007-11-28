@@ -24,9 +24,9 @@ import org.jdesktop.xswingx.plaf.TextUIWrapper;
  * </p>
  * 
  * <p>
- * This class is used by {@link JXTextField}, {@link JXFormattedTextField}
- * and {@link JXTextArea} to get and set prompt properties.
- * {@link PromptTextUI} retrieves these properties using PromptSupport.
+ * This class is used by {@link JXTextField}, {@link JXFormattedTextField} and
+ * {@link JXTextArea} to get and set prompt properties. {@link PromptTextUI}
+ * retrieves these properties using PromptSupport.
  * </p>
  * 
  * @see JXTextField
@@ -165,8 +165,9 @@ public class PromptSupport {
 	 * <code>promptTextColor</code> on a {@link JTextComponent}.
 	 * </p>
 	 * <p>
-	 * If <code>stayOnUIChange</code> is true,  The prompt support will stay installed, even when the text components UI
-	 * changes. See {@link #install(JTextComponent, boolean)}.
+	 * If <code>stayOnUIChange</code> is true, The prompt support will stay
+	 * installed, even when the text components UI changes. See
+	 * {@link #install(JTextComponent, boolean)}.
 	 * </p>
 	 * 
 	 * @param promptText
@@ -177,11 +178,15 @@ public class PromptSupport {
 	 */
 	public static void init(String promptText, Color promptForeground, Color promptBackground,
 			final JTextComponent textComponent, boolean stayOnUIChange) {
-		install(textComponent, stayOnUIChange);
-		
-		setPrompt(promptText, textComponent);
-		setForeground(promptForeground, textComponent);
-		setBackground(promptBackground, textComponent);
+		if (promptText != null && promptText.length() > 0) {
+			setPrompt(promptText, textComponent);
+		}
+		if (promptForeground != null) {
+			setForeground(promptForeground, textComponent);
+		}
+		if (promptBackground != null) {
+			setBackground(promptBackground, textComponent);
+		}
 	}
 
 	/**
@@ -351,6 +356,7 @@ public class PromptSupport {
 	}
 
 	private static final PromptWrapper wrapper = new PromptWrapper();
+
 	private static final class PromptWrapper extends TextUIWrapper<PromptTextUI> {
 		private PromptWrapper() {
 			super(PromptTextUI.class);
