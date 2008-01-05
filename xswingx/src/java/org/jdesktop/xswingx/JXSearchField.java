@@ -22,20 +22,20 @@ import org.jdesktop.xswingx.plaf.JXSearchFieldAddon;
 import org.jdesktop.xswingx.plaf.TextUIWrapper;
 
 /**
- * A text field with a search icon in which the user enters text that identifies
+ * A text field with a find icon in which the user enters text that identifies
  * items to search for.
  * 
  * JXSearchField almost looks and behaves like a native Windows Vista search
  * box, a Mac OS X search field, or a search field like the one used in Mozilla
  * Thunderbird 2.0 - depending on the current look and feel.
  * 
- * JXSearchField is a text field that contains a search button and a cancel
- * button. The search button normally displays a lens icon appropriate for the
+ * JXSearchField is a text field that contains a find button and a cancel
+ * button. The find button normally displays a lens icon appropriate for the
  * current look and feel. The cancel button is used to clear the text and
  * therefore only visible when text is present. It normally displays a 'x' like
  * icon. Text can also be cleared, using the 'Esc' key.
  * 
- * The position of the search and cancel buttons can be customized by either
+ * The position of the find and cancel buttons can be customized by either
  * changing the search fields (text) margin or button margin, or by changing the
  * {@link LayoutStyle}.
  * 
@@ -61,16 +61,16 @@ public class JXSearchField extends JXTextField {
 	private static final KeyStroke CANCEL_KEY = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0);
 
 	/**
-	 * Defines, how the search and cancel button are layouted.
+	 * Defines, how the find and cancel button are layouted.
 	 */
 	public enum LayoutStyle {
 		/**
 		 * <p>
-		 * In VISTA layout style, the search button is placed on the right side
-		 * of the search field. If text is entered, the search button is
+		 * In VISTA layout style, the find button is placed on the right side
+		 * of the search field. If text is entered, the find button is
 		 * replaced by the cancel button when the actual search mode is
 		 * {@link SearchMode#INSTANT}. When the search mode is
-		 * {@link SearchMode#REGULAR} the search button will always stay visible
+		 * {@link SearchMode#REGULAR} the find button will always stay visible
 		 * and the cancel button will never be shown. However, 'Escape' can
 		 * still be pressed to clear the text.
 		 * </p>
@@ -78,7 +78,7 @@ public class JXSearchField extends JXTextField {
 		VISTA,
 		/**
 		 * <p>
-		 * In MAC layout style, the search button is placed on the left side of
+		 * In MAC layout style, the find button is placed on the left side of
 		 * the search field and the cancel button on the right side. The cancel
 		 * button is only visible when text is present.
 		 * </p>
@@ -93,18 +93,18 @@ public class JXSearchField extends JXTextField {
 		/**
 		 * <p>
 		 * In REGULAR search mode, an action event is fired, when the user
-		 * presses enter or clicks the search button.
+		 * presses enter or clicks the find button.
 		 * </p>
 		 * <p>
-		 * However, if a search popup menu is set and layout style is
-		 * {@link LayoutStyle#MAC}, no action will be fired, when the search
+		 * However, if a find popup menu is set and layout style is
+		 * {@link LayoutStyle#MAC}, no action will be fired, when the find
 		 * button is clicked, because instead the popup menu is shown. A search
 		 * can therefore only be triggered, by pressing the enter key.
 		 * </p>
 		 * <p>
-		 * The search button can have a rollover and a pressed icon, defined by
+		 * The find button can have a rollover and a pressed icon, defined by
 		 * the "SearchField.rolloverIcon" and "SearchField.pressedIcon" UI
-		 * properties. When a search popup menu is set,
+		 * properties. When a find popup menu is set,
 		 * "SearchField.popupRolloverIcon" and "SearchField.popupPressedIcon"
 		 * are used.
 		 * </p>
@@ -118,7 +118,7 @@ public class JXSearchField extends JXTextField {
 		 * The action event is delayed about the number of milliseconds
 		 * specified by {@link JXSearchField#getInstantSearchDelay()}.
 		 * 
-		 * No rollover and pressed icon is used for the search button.
+		 * No rollover and pressed icon is used for the find button.
 		 */
 		INSTANT
 	}
@@ -128,9 +128,7 @@ public class JXSearchField extends JXTextField {
 		LookAndFeelAddons.contribute(new JXSearchFieldAddon());
 	}
 
-	private SearchAction searchAction;
-
-	private JButton searchButton;
+	private JButton findButton;
 
 	private JButton cancelButton;
 
@@ -167,8 +165,11 @@ public class JXSearchField extends JXTextField {
 	 */
 	public JXSearchField(String prompt) {
 		super(prompt);
-		setCancelAction(new ClearAction());
+		// use the native search field if possible.
 		setUseNativeSearchFieldIfPossible(true);
+		// install default actions
+		setCancelAction(new ClearAction());
+		setFindAction(new FindAction());
 
 		// We cannot register the ClearAction through the Input- and
 		// ActionMap because ToolTipManager registers the escape key with an
@@ -194,6 +195,12 @@ public class JXSearchField extends JXTextField {
 			public void propertyChange(PropertyChangeEvent evt) {
 				ActionListener oldAction = (ActionListener) evt.getOldValue();
 				firePropertyChange("cancelAction", oldAction, evt.getNewValue());
+			}
+		});
+		addPropertyChangeListener(NativeSearchFieldSupport.FIND_ACTION_PROPERTY, new PropertyChangeListener() {
+			public void propertyChange(PropertyChangeEvent evt) {
+				ActionListener oldAction = (ActionListener) evt.getOldValue();
+				firePropertyChange("findAction", oldAction, evt.getNewValue());
 			}
 		});
 	}
@@ -337,6 +344,12 @@ public class JXSearchField extends JXTextField {
 		return a;
 	}
 
+	/**
+	 * Sets the action that is invoked, when the user presses the 'Esc' key or
+	 * clicks the cancel button.
+	 * 
+	 * @param cancelAction
+	 */
 	public final void setCancelAction(ActionListener cancelAction) {
 		NativeSearchFieldSupport.setCancelAction(this, cancelAction);
 	}
@@ -344,16 +357,17 @@ public class JXSearchField extends JXTextField {
 	/**
 	 * Returns the cancel button.
 	 * 
-	 * Calls {@link #createCancelButton()} to create the cancel button, if
-	 * needed. Registers an {@link ActionListener} that delegates actions to the
-	 * {@link ActionListener} returned by {@link #getCancelAction()}.
+	 * Calls {@link #createCancelButton()} to create the cancel button and
+	 * registers an {@link ActionListener} that delegates actions to the
+	 * {@link ActionListener} returned by {@link #getCancelAction()}, if
+	 * needed.
 	 * 
 	 * @return the cancel button
 	 */
 	public final JButton getCancelButton() {
 		if (cancelButton == null) {
 			cancelButton = createCancelButton();
-			cancelButton.addActionListener(new ActionListener(){
+			cancelButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					getCancelAction().actionPerformed(e);
 				}
@@ -378,69 +392,72 @@ public class JXSearchField extends JXTextField {
 
 	/**
 	 * Returns the action that is invoked when the enter key is pressed or the
-	 * search button is clicked.
+	 * find button is clicked. If no action has been set, a new instance of
+	 * {@link FindAction} will be returned.
 	 * 
-	 * Calls {@link #createSearchAction()} to create the search action, if
-	 * needed.
-	 * 
-	 * @return the search action
+	 * @return the find action
 	 */
-	protected final SearchAction getSearchAction() {
-		if (searchAction == null) {
-			searchAction = createSearchAction();
+	public final ActionListener getFindAction() {
+		ActionListener a = NativeSearchFieldSupport.getFindAction(this);
+		if (a == null) {
+			a = new FindAction();
 		}
-		return searchAction;
+		return a;
 	}
 
 	/**
-	 * Creates and returns {@link SearchAction}. Override to use a custom
-	 * search action.
+	 * Sets the action that is invoked when the enter key is pressed or the find
+	 * button is clicked.
 	 * 
-	 * @see #getSearchAction()
-	 * @return the search action
+	 * @return the find action
 	 */
-	protected SearchAction createSearchAction() {
-		return new SearchAction();
+	public final void setFindAction(ActionListener findAction) {
+		NativeSearchFieldSupport.setFindAction(this, findAction);
 	}
 
 	/**
-	 * Returns the search button.
+	 * Returns the find button.
 	 * 
-	 * Calls {@link #createSearchButton()} to create the search button, if
-	 * needed.
+	 * Calls {@link #createFindButton()} to create the find button and registers
+	 * an {@link ActionListener} that delegates actions to the
+	 * {@link ActionListener} returned by {@link #getFindAction()}, if needed.
 	 * 
-	 * @return the search button
+	 * @return the find button
 	 */
-	public final JButton getSearchButton() {
-		if (searchButton == null) {
-			searchButton = createSearchButton();
+	public final JButton getFindButton() {
+		if (findButton == null) {
+			findButton = createFindButton();
+			findButton.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					getFindAction().actionPerformed(e);
+				}
+			});
 		}
-		return searchButton;
+		return findButton;
 	}
 
 	/**
-	 * Creates and returns the search button. The buttons action is set to the
+	 * Creates and returns the find button. The buttons action is set to the
 	 * action returned by {@link #getSearchAction()}.
 	 * 
-	 * Override to use a custom search button.
+	 * Override to use a custom find button.
 	 * 
-	 * @see #getSearchButton()
-	 * @return the search button
+	 * @see #getFindButton()
+	 * @return the find button
 	 */
-	protected JButton createSearchButton() {
+	protected JButton createFindButton() {
 		BuddyButton btn = new BuddyButton();
-		btn.setAction(getSearchAction());
 
 		return btn;
 	}
 
 	/**
-	 * Returns the popup button. If a search popup menu is set, it will be
+	 * Returns the popup button. If a find popup menu is set, it will be
 	 * displayed when this button is clicked.
 	 * 
 	 * This button will only be visible, if {@link #isUseSeperatePopupButton()}
 	 * returns <code>true</code>. Otherwise the popup menu will be displayed
-	 * when the search button is clicked.
+	 * when the find button is clicked.
 	 * 
 	 * @return the popup button
 	 */
@@ -464,8 +481,8 @@ public class JXSearchField extends JXTextField {
 
 	/**
 	 * Returns <code>true</code> if the popup button should be visible and
-	 * used for displaying the search popup menu. Otherwise, the search popup
-	 * menu will be displayed when the search button is clicked.
+	 * used for displaying the find popup menu. Otherwise, the find popup
+	 * menu will be displayed when the find button is clicked.
 	 * 
 	 * @return <code>true</code> if the popup button should be used
 	 */
@@ -474,7 +491,7 @@ public class JXSearchField extends JXTextField {
 	}
 
 	/**
-	 * Set if the popup button should be used for displaying the search popup
+	 * Set if the popup button should be used for displaying the find popup
 	 * menu.
 	 * 
 	 * @param useSeperatePopupButton
@@ -497,7 +514,7 @@ public class JXSearchField extends JXTextField {
 	}
 
 	/**
-	 * Updates the cancel, search and popup buttons enabled state in addition to
+	 * Updates the cancel, find and popup buttons enabled state in addition to
 	 * setting the search fields editable state.
 	 * 
 	 * @see #updateButtonState()
@@ -509,7 +526,7 @@ public class JXSearchField extends JXTextField {
 	}
 
 	/**
-	 * Updates the cancel, search and popup buttons enabled state in addition to
+	 * Updates the cancel, find and popup buttons enabled state in addition to
 	 * setting the search fields enabled state.
 	 * 
 	 * @see #updateButtonState()
@@ -527,18 +544,18 @@ public class JXSearchField extends JXTextField {
 	 */
 	protected void updateButtonState() {
 		getCancelButton().setEnabled(isEditable() & isEnabled());
-		getSearchAction().setEnabled(isEnabled());
+		getFindButton().setEnabled(isEnabled());
 		getPopupButton().setEnabled(isEnabled());
 	}
 
 	/**
 	 * Sets the popup menu that will be displayed when the popup button is
-	 * clicked. If a search popup menu is set and
+	 * clicked. If a find popup menu is set and
 	 * {@link #isUseSeperatePopupButton()} returns <code>false</code>, the
-	 * popup button will be displayed instead of the search button. Otherwise
-	 * the popup button will be displayed in addition to the search button.
+	 * popup button will be displayed instead of the find button. Otherwise
+	 * the popup button will be displayed in addition to the find button.
 	 * 
-	 * The search popup menu is managed using {@link NativeSearchFieldSupport}
+	 * The find popup menu is managed using {@link NativeSearchFieldSupport}
 	 * to achieve compatibility with the native search field support provided by
 	 * the Mac Look And Feel since Mac OS 10.5.
 	 * 
@@ -551,10 +568,10 @@ public class JXSearchField extends JXTextField {
 	}
 
 	/**
-	 * Returns the search popup menu.
+	 * Returns the find popup menu.
 	 * 
 	 * @see #setFindPopupMenu(JPopupMenu)
-	 * @return the search popup menu
+	 * @return the find popup menu
 	 */
 	public JPopupMenu getFindPopupMenu() {
 		return NativeSearchFieldSupport.getFindPopupMenu(this);
@@ -582,13 +599,13 @@ public class JXSearchField extends JXTextField {
 
 	/**
 	 * Returns <code>true</code> if this search field is the focus owner or
-	 * the search popup menu is visible.
+	 * the find popup menu is visible.
 	 * 
 	 * This is a hack to make the search field paint the focus indicator in Mac
-	 * OS X Aqua when the search popup menu is visible.
+	 * OS X Aqua when the find popup menu is visible.
 	 * 
 	 * @return <code>true</code> if this search field is the focus owner or
-	 *         the search popup menu is visible
+	 *         the find popup menu is visible
 	 */
 	public boolean hasFocus() {
 		if (getFindPopupMenu() != null && getFindPopupMenu().isVisible()) {
@@ -598,7 +615,7 @@ public class JXSearchField extends JXTextField {
 	}
 
 	/**
-	 * Overriden to also update the search popup menu if set.
+	 * Overriden to also update the find popup menu if set.
 	 */
 	public void updateUI() {
 		super.updateUI();
@@ -705,10 +722,10 @@ public class JXSearchField extends JXTextField {
 	}
 
 	/**
-	 * Invoked when the search button is pressed.
+	 * Invoked when the find button is pressed.
 	 */
-	public class SearchAction extends AbstractAction {
-		public SearchAction() {
+	public class FindAction extends AbstractAction {
+		public FindAction() {
 		}
 
 		/**

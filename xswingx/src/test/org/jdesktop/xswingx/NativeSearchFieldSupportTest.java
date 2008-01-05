@@ -27,6 +27,20 @@ public class NativeSearchFieldSupportTest implements PropertyChangeListener {
 	}
 	
 	@Test
+	public void testFindActionPropertyChangeEvent() throws Exception {
+		tf.addPropertyChangeListener(NativeSearchFieldSupport.FIND_ACTION_PROPERTY, this);
+		NativeSearchFieldSupport.setFindAction(tf, new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				eventFired = true;
+			}
+		});
+		Assert.assertTrue(eventFired);
+		eventFired = false;
+		NativeSearchFieldSupport.setFindAction(tf, null);
+		Assert.assertTrue(eventFired);
+	}
+	
+	@Test
 	public void testCancelActionPropertyChangeEvent() throws Exception {
 		tf.addPropertyChangeListener(NativeSearchFieldSupport.CANCEL_ACTION_PROPERTY, this);
 		NativeSearchFieldSupport.setCancelAction(tf, new ActionListener(){

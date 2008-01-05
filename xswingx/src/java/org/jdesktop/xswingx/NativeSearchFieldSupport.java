@@ -11,13 +11,13 @@ import org.jdesktop.swingx.util.OS;
 import org.jdesktop.xswingx.plaf.AbstractUIChangeHandler;
 
 /**
- * TODO
+ * TODO: comment
  * 
  * @author Peter Weishapl <petw@gmx.net>
- * TODO: Find Action
  */
 public class NativeSearchFieldSupport {
 	public static final String FIND_POPUP_PROPERTY = "JTextField.Search.FindPopup";
+	public static final String FIND_ACTION_PROPERTY = "JTextField.Search.FindAction";
 	public static final String MAC_SEARCH_VARIANT = "search";
 	public static final String MAC_TEXT_FIELD_VARIANT_PROPERTY = "JTextField.variant";
 	public static final String CANCEL_ACTION_PROPERTY = "JTextField.Search.CancelAction";
@@ -82,6 +82,14 @@ public class NativeSearchFieldSupport {
 
 	public static JPopupMenu getFindPopupMenu(JTextField txt) {
 		return (JPopupMenu) txt.getClientProperty(FIND_POPUP_PROPERTY);
+	}
+
+	public static void setFindAction(JTextField txt, ActionListener findAction) {
+		txt.putClientProperty(FIND_ACTION_PROPERTY, findAction);
+	}
+
+	public static ActionListener getFindAction(JTextField txt) {
+		return (ActionListener) txt.getClientProperty(FIND_ACTION_PROPERTY);
 	}
 	
 	public static void setCancelAction(JTextField txt, ActionListener cancelAction) {

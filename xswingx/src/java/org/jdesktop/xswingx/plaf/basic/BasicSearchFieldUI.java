@@ -301,11 +301,11 @@ public class BasicSearchFieldUI extends BuddyTextFieldUI {
 	/**
 	 * Convienence method.
 	 * 
-	 * @see JXSearchField#getSearchButton()
+	 * @see JXSearchField#getFindButton()
 	 * @return the search button
 	 */
 	protected final JButton searchButton() {
-		return searchField.getSearchButton();
+		return searchField.getFindButton();
 	}
 
 	/**

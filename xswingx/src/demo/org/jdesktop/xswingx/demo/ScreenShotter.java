@@ -80,12 +80,12 @@ public class ScreenShotter {
 
 		c.setText("rollover");
 		c.setSearchMode(SearchMode.REGULAR);
-		c.getSearchButton().setIcon(c.getSearchButton().getRolloverIcon());
+		c.getFindButton().setIcon(c.getFindButton().getRolloverIcon());
 		shoot("search_rollover");
 		c.updateUI();
 		c.setText("pressed");
 		c.setSearchMode(SearchMode.REGULAR);
-		c.getSearchButton().setIcon(c.getSearchButton().getPressedIcon());
+		c.getFindButton().setIcon(c.getFindButton().getPressedIcon());
 		shoot("search_pressed");
 
 		c.setSearchMode(SearchMode.INSTANT);
