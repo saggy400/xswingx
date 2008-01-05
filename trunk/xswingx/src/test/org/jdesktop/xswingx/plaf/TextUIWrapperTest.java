@@ -2,32 +2,31 @@ package org.jdesktop.xswingx.plaf;
 
 import static org.junit.Assert.assertEquals;
 
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.plaf.TextUI;
 import javax.swing.plaf.basic.BasicTextFieldUI;
 
+import org.jdesktop.xswingx.JXSearchField;
+import org.jdesktop.xswingx.plaf.basic.BasicSearchFieldUI;
 import org.junit.Before;
 import org.junit.Test;
 
 
 public class TextUIWrapperTest {
 	private JTextField txt;
-	private TextUIWrapper<PromptTextFieldUI> wrapper;
+	private TextUIWrapper<? extends PromptTextUI> wrapper;
 
 	@Before
     public void setup() {
         txt = new JTextField();
-        wrapper = new TextUIWrapper<PromptTextFieldUI>(PromptTextFieldUI.class){
-			@Override
-			public PromptTextFieldUI wrapUI(TextUI textUI) {
-				return new PromptTextFieldUI(textUI);
-			}
-        };
+        wrapper = TextUIWrapper.getDefaultWrapper();
     }
     
 	@Test
     public void testWrapUI() throws Exception {
-    	assertEquals(PromptTextFieldUI.class, wrapper.wrapUI(new JTextField().getUI()).getClass());
+    	assertEquals(BuddyTextFieldUI.class, wrapper.wrapUI(new JTextField()).getClass());
+    	assertEquals(PromptTextAreaUI.class, wrapper.wrapUI(new JTextArea()).getClass());
+    	assertEquals(BasicSearchFieldUI.class, wrapper.wrapUI(new JXSearchField()).getClass());
 	}
 	
 	
@@ -52,14 +51,14 @@ public class TextUIWrapperTest {
 	}
 
 	private void mustBeInstalled() {
-		assertEquals(PromptTextFieldUI.class, txt.getUI().getClass());
+		assertEquals(BuddyTextFieldUI.class, txt.getUI().getClass());
 		txt.setUI(new BasicTextFieldUI());
     	assertEquals(BasicTextFieldUI.class, txt.getUI().getClass());
 	}
 	
 	private void mustStayInstalled() {
-		assertEquals(PromptTextFieldUI.class, txt.getUI().getClass());
+		assertEquals(BuddyTextFieldUI.class, txt.getUI().getClass());
     	txt.setUI(new BasicTextFieldUI());
-    	assertEquals(PromptTextFieldUI.class, txt.getUI().getClass());
+    	assertEquals(BuddyTextFieldUI.class, txt.getUI().getClass());
 	}
 }

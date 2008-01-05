@@ -2,15 +2,9 @@ package org.jdesktop.xswingx;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.beans.PropertyChangeListener;
 
-import javax.swing.plaf.TextUI;
-import javax.swing.plaf.basic.BasicTextAreaUI;
-import javax.swing.plaf.basic.BasicTextFieldUI;
 import javax.swing.text.JTextComponent;
 
-import org.jdesktop.xswingx.plaf.PromptTextAreaUI;
-import org.jdesktop.xswingx.plaf.PromptTextFieldUI;
 import org.jdesktop.xswingx.plaf.PromptTextUI;
 import org.jdesktop.xswingx.plaf.TextUIWrapper;
 
@@ -83,81 +77,6 @@ public class PromptSupport {
 		 */
 		HIDE_PROMPT
 	};
-
-	/**
-	 * <p>
-	 * Wraps and replaces the current UI of the given <code>textComponent</code>,
-	 * by calling {@link #wrapUI(JTextComponent)} if necessary.
-	 * </p>
-	 * <p>
-	 * The support for prompts will be discontinued on any change of the text
-	 * components UI. If you want to prevent this, use
-	 * {@link #install(JTextComponent, boolean)}.
-	 * </p>
-	 * 
-	 * @param textComponent
-	 * @see #install(JTextComponent, boolean)
-	 */
-	public static void install(final JTextComponent textComponent) {
-		install(textComponent, true);
-	}
-
-	/**
-	 * <p>
-	 * Wraps and replaces the current UI of the given <code>textComponent</code>,
-	 * by calling {@link #wrapUI(JTextComponent)} if necessary.
-	 * </p>
-	 * 
-	 * @param textComponent
-	 * @param stayOnUIChange
-	 *            if <code>true</code>, a {@link PropertyChangeListener} is
-	 *            registered, which listens for UI changes and wraps any new UI
-	 *            object.
-	 */
-	public static void install(final JTextComponent textComponent, boolean stayOnUIChange) {
-		wrapper.install(textComponent, stayOnUIChange);
-	}
-
-	/**
-	 * Calls {@link TextUIWrapper}{@link #uninstall(JTextComponent)}
-	 * 
-	 * @param textComponent
-	 */
-	public static void uninstall(final JTextComponent textComponent) {
-		wrapper.uninstall(textComponent);
-	}
-
-	/**
-	 * Wraps the UI of <code>textComponent</code>.
-	 * 
-	 * @see #wrapUI(TextUI)
-	 * @param textComponent
-	 * @return
-	 */
-	public static PromptTextUI wrapUI(JTextComponent textComponent) {
-		return wrapUI(textComponent.getUI());
-	}
-
-	/**
-	 * <p>
-	 * Creates a new {@link PromptTextUI}, which wraps the given
-	 * <code>textUI</code>.
-	 * </p>
-	 * <p>
-	 * If <code>textUI</code> is of type {@link PromptTextUI},
-	 * <code>textUI</code> will be returned. If <code>textUI</code> is of
-	 * type {@link BasicTextFieldUI} a {@link PromptTextFieldUI} object will be
-	 * returned. If <code>textUI</code> is of type {@link BasicTextAreaUI} a
-	 * {@link PromptTextAreaUI} object will be returned.
-	 * </p>
-	 * 
-	 * @param textUI
-	 *            wrap this UI
-	 * @return a {@link PromptTextUI} which wraps <code>textUI</code>
-	 */
-	public static PromptTextUI wrapUI(TextUI textUI) {
-		return wrapper.wrapUI(textUI);
-	}
 
 	/**
 	 * <p>
@@ -245,7 +164,7 @@ public class PromptSupport {
 	 * @param textComponent
 	 */
 	public static void setPrompt(String promptText, JTextComponent textComponent) {
-		install(textComponent);
+		TextUIWrapper.getDefaultWrapper().install(textComponent, true);
 
 		// display prompt as tooltip by default
 		if (textComponent.getToolTipText() == null || textComponent.getToolTipText().equals(getPrompt(textComponent))) {
@@ -316,7 +235,7 @@ public class PromptSupport {
 	 * @param textComponent
 	 */
 	public static void setBackground(Color background, JTextComponent textComponent) {
-		install(textComponent);
+		TextUIWrapper.getDefaultWrapper().install(textComponent, true);
 
 		textComponent.putClientProperty(BACKGROUND, background);
 		textComponent.repaint();
@@ -353,25 +272,5 @@ public class PromptSupport {
 	 */
 	public static Integer getFontStyle(JTextComponent textComponent) {
 		return (Integer) textComponent.getClientProperty(FONT_STYLE);
-	}
-
-	private static final PromptWrapper wrapper = new PromptWrapper();
-
-	private static final class PromptWrapper extends TextUIWrapper<PromptTextUI> {
-		private PromptWrapper() {
-			super(PromptTextUI.class);
-		}
-
-		@Override
-		public PromptTextUI wrapUI(TextUI textUI) {
-			if (textUI instanceof PromptTextUI) {
-				return (PromptTextUI) textUI;
-			} else if (textUI instanceof BasicTextFieldUI) {
-				return new PromptTextFieldUI(textUI);
-			} else if (textUI instanceof BasicTextAreaUI) {
-				return new PromptTextAreaUI(textUI);
-			}
-			throw new IllegalArgumentException();
-		}
 	}
 }

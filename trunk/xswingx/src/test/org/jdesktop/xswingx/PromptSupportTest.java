@@ -2,20 +2,17 @@ package org.jdesktop.xswingx;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
 
 import java.awt.Color;
 import java.awt.Font;
 
-import javax.swing.JFormattedTextField;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.plaf.basic.BasicTextFieldUI;
 
 import junit.framework.Assert;
 
 import org.jdesktop.xswingx.PromptSupport.FocusBehavior;
-import org.jdesktop.xswingx.plaf.PromptTextAreaUI;
+import org.jdesktop.xswingx.plaf.BuddyTextFieldUI;
 import org.jdesktop.xswingx.plaf.PromptTextFieldUI;
 import org.junit.Before;
 import org.junit.Test;
@@ -26,16 +23,6 @@ public class PromptSupportTest {
 	@Before
 	public void setup() {
 		txt = new JTextField();
-	}
-
-	@Test
-	public void testWrapUI() throws Exception {
-		assertEquals(PromptTextFieldUI.class, PromptSupport.wrapUI(new JTextField()).getClass());
-		assertEquals(PromptTextFieldUI.class, PromptSupport.wrapUI(new JFormattedTextField()).getClass());
-		assertEquals(PromptTextAreaUI.class, PromptSupport.wrapUI(new JTextArea()).getClass());
-
-		txt.setUI(PromptSupport.wrapUI(txt));
-		assertSame(txt.getUI(), PromptSupport.wrapUI(txt));
 	}
 
 	@Test
@@ -57,16 +44,6 @@ public class PromptSupportTest {
 		PromptSupport.init(null, null, null, txt, false);
 		Assert.assertNotSame("PromptSupport should not be installed, unless it is necessary.", PromptTextFieldUI.class,
 				txt.getUI().getClass());
-	}
-
-	@Test
-	public void testUninstall() {
-		Class defaultUiClass = txt.getUI().getClass();
-		PromptSupport.uninstall(txt);
-		assertEquals(defaultUiClass, txt.getUI().getClass());
-		PromptSupport.setPrompt("test", txt);
-		PromptSupport.uninstall(txt);
-		assertEquals(defaultUiClass, txt.getUI().getClass());
 	}
 
 	@Test
@@ -108,7 +85,7 @@ public class PromptSupportTest {
 	@Test
 	public void testSetForeground() throws Exception {
 		PromptSupport.setForeground(Color.RED, txt);
-
+ 
 		assertEquals(Color.RED, PromptSupport.getForeground(txt));
 		assertEquals(Color.RED, txt.getClientProperty(PromptSupport.FOREGROUND));
 	}
@@ -128,31 +105,10 @@ public class PromptSupportTest {
 		promptSupportMustStayInstalled();
 	}
 
-	@Test
-	public void testInstall() {
-		PromptSupport.install(txt, false);
-		promptSupportMustBeInstalled();
-
-		PromptSupport.install(txt);
-		promptSupportMustStayInstalled();
-	}
-
-	@Test
-	public void testInstallAndStay() {
-		PromptSupport.install(txt, true);
-		promptSupportMustStayInstalled();
-	}
-
-	private void promptSupportMustBeInstalled() {
-		assertEquals(PromptTextFieldUI.class, txt.getUI().getClass());
-		txt.setUI(new BasicTextFieldUI());
-		assertEquals(BasicTextFieldUI.class, txt.getUI().getClass());
-	}
-
 	private void promptSupportMustStayInstalled() {
-		assertEquals(PromptTextFieldUI.class, txt.getUI().getClass());
+		assertEquals(BuddyTextFieldUI.class, txt.getUI().getClass());
 		txt.setUI(new BasicTextFieldUI());
-		assertEquals(PromptTextFieldUI.class, txt.getUI().getClass());
+		assertEquals(BuddyTextFieldUI.class, txt.getUI().getClass());
 	}
 
 	@Test

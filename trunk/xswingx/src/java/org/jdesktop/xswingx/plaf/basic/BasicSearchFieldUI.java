@@ -74,7 +74,7 @@ public class BasicSearchFieldUI extends BuddyTextFieldUI {
 
 		installDefaults();
 		layoutButtons();
-		
+
 		configureListeners();
 	}
 
@@ -82,11 +82,11 @@ public class BasicSearchFieldUI extends BuddyTextFieldUI {
 		if (isNativeSearchField()) {
 			popupButton().removeActionListener(getHandler());
 			searchField.removePropertyChangeListener(getHandler());
-		}else{
+		} else {
 			popupButton().addActionListener(getHandler());
 			searchField.addPropertyChangeListener(getHandler());
 		}
-		
+
 		// add support for instant search mode in any case.
 		searchField.getDocument().addDocumentListener(getHandler());
 	}
@@ -123,16 +123,35 @@ public class BasicSearchFieldUI extends BuddyTextFieldUI {
 			}
 
 			/**
-			 * Include the clear button, to prevent 'jumping' when text is
-			 * entered, when layout style is Mac.
+			 * Prevent 'jumping' when text is entered: Include the clear button,
+			 * when layout style is Mac. When layout style is Vista: Take the
+			 * clear button's preferred width if its either greater than the
+			 * search button's pref. width or greater than the popup button's
+			 * pref. width when a popup menu is installed and not using a
+			 * seperate popup button.
 			 */
 			@Override
 			public Insets getBorderInsets(Component c) {
 				Insets insets = super.getBorderInsets(c);
-				if (!isNativeSearchField()) {
-					if (searchField != null && !clearButton().isVisible() && isMacLayoutStyle()) {
-						insets.right += clearButton().getPreferredSize().width;
+				if (searchField != null && !isNativeSearchField()) {
+					if (isMacLayoutStyle()) {
+						if (!clearButton().isVisible()) {
+							insets.right += clearButton().getPreferredSize().width;
+						}
+					} else {
+						JButton refButton = popupButton();
+						if (searchField.getSearchPopupMenu() == null ^ searchField.isUseSeperatePopupButton()) {
+							refButton = searchButton();
+						}
+
+						int clearWidth = clearButton().getPreferredSize().width;
+						int refWidth = refButton.getPreferredSize().width;
+						int overSize = clearButton().isVisible() ? refWidth - clearWidth : clearWidth - refWidth;
+						if (overSize > 0) {
+							insets.right += overSize;
+						}
 					}
+
 				}
 				return insets;
 			}
@@ -141,11 +160,11 @@ public class BasicSearchFieldUI extends BuddyTextFieldUI {
 
 	private void layoutButtons() {
 		BuddySupport.removeAll(searchField);
-		
-		if(isNativeSearchField()){
+
+		if (isNativeSearchField()) {
 			return;
 		}
-		
+
 		if (isMacLayoutStyle()) {
 			BuddySupport.addLeft(searchButton(), searchField);
 		} else {
@@ -153,7 +172,7 @@ public class BasicSearchFieldUI extends BuddyTextFieldUI {
 		}
 
 		BuddySupport.addRight(clearButton(), searchField);
-		
+
 		if (usingSeperatePopupButton()) {
 			BuddySupport.addRight(BuddySupport.createGap(getPopupOffset()), searchField);
 		}
@@ -182,10 +201,10 @@ public class BasicSearchFieldUI extends BuddyTextFieldUI {
 	 * @see JXSearchField#customSetUIProperty(String, Object)
 	 */
 	protected void installDefaults() {
-		if(isNativeSearchField()){
+		if (isNativeSearchField()) {
 			return;
 		}
-		
+
 		if (UIManager.getBoolean("SearchField.useSeperatePopupButton")) {
 			searchField.customSetUIProperty("useSeperatePopupButton", Boolean.TRUE);
 		} else {
@@ -224,7 +243,7 @@ public class BasicSearchFieldUI extends BuddyTextFieldUI {
 	 */
 	public void uninstallUI(JComponent c) {
 		super.uninstallUI(c);
-		
+
 		searchField.removePropertyChangeListener(getHandler());
 		searchField.getDocument().removeDocumentListener(getHandler());
 		popupButton().removeActionListener(getHandler());

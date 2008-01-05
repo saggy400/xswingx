@@ -84,7 +84,7 @@ public abstract class PromptTextUI extends TextUI {
 	}
 
 	/**
-	 * Delegates, and uninstalls the focus listener.
+	 * Delegates, then uninstalls the focus listener.
 	 */
 	public void uninstallUI(JComponent c) {
 		delegate.uninstallUI(c);
