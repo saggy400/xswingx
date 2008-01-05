@@ -26,6 +26,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.text.DefaultFormatterFactory;
+import javax.swing.text.JTextComponent;
 
 import org.jdesktop.swingx.util.OS;
 import org.jdesktop.xswingx.NativeSearchFieldSupport;
@@ -49,26 +50,37 @@ public class CustomizeGeneralPanel extends CustomizePanel {
 	}
 
 	@Override
-	public void setField(JTextField textComponent) {
+	public void setField(JTextComponent textComponent) {
 		super.setField(textComponent);
 		cbOpaque.setSelected(textComponent.isOpaque());
 		txtMargin.setFormatterFactory(ff);
 		txtMargin.setValue(textComponent.getMargin());
 
-		// Mac Hack: Textfields look odd when opaque, otherwise opaque is default.
+		// Mac Hack: Textfields look odd when opaque, otherwise opaque is
+		// default.
 		if (OS.isMacOSX() && UIManager.getLookAndFeel().isNativeLookAndFeel()) {
 			cbOpaque.setSelected(false);
 		} else {
 			cbOpaque.setSelected(true);
 		}
-		
+
 		columnsChanged(null);
+
+		if (!(textComponent instanceof JTextField)) {
+			rbLeading.setEnabled(false);
+			rbCenter.setEnabled(false);
+			rbTrailing.setEnabled(false);
+			cbFixedSize.setEnabled(false);
+		}
 	}
 
 	private void rbBorderStateChanged(ChangeEvent e) {
 		if (rbDefault.isSelected()) {
 			getField().setBorder(UIManager.getBorder("TextField.border"));
-			NativeSearchFieldSupport.setSearchField(getField(), NativeSearchFieldSupport.isSearchField(getField()));
+			if (getField() instanceof JTextField) {
+				JTextField field = (JTextField) getField();
+				NativeSearchFieldSupport.setSearchField(field, NativeSearchFieldSupport.isSearchField(field));
+			}
 		} else {
 			getField().setBorder(new LineBorder(Color.BLACK, lineSlider.getValue()));
 		}
@@ -86,24 +98,30 @@ public class CustomizeGeneralPanel extends CustomizePanel {
 	}
 
 	private void columnsChanged(ChangeEvent e) {
-		if (cbFixedSize.isSelected()) {
-			getField().setColumns(((Integer) spColumns.getValue()).intValue());
-		} else {
-			getField().setColumns(0);
-		}
+		if (getField() instanceof JTextField) {
+			JTextField field = (JTextField) getField();
+			if (cbFixedSize.isSelected()) {
+				field.setColumns(((Integer) spColumns.getValue()).intValue());
+			} else {
+				field.setColumns(0);
+			}
 
-		changed();
+			changed();
+		}
 	}
 
 	private void alignmentChanged(ChangeEvent e) {
-		if (rbCenter.isSelected()) {
-			getField().setHorizontalAlignment(JTextField.CENTER);
-		} else if (rbTrailing.isSelected()) {
-			getField().setHorizontalAlignment(JTextField.TRAILING);
-		} else {
-			getField().setHorizontalAlignment(JTextField.LEADING);
+		if (getField() instanceof JTextField) {
+			JTextField field = (JTextField) getField();
+			if (rbCenter.isSelected()) {
+				field.setHorizontalAlignment(JTextField.CENTER);
+			} else if (rbTrailing.isSelected()) {
+				field.setHorizontalAlignment(JTextField.TRAILING);
+			} else {
+				field.setHorizontalAlignment(JTextField.LEADING);
+			}
+			changed();
 		}
-		changed();
 	}
 
 	private void cbEnabledStateChanged(ChangeEvent e) {

@@ -25,8 +25,8 @@ public class JXFormattedTextField extends JFormattedTextField {
 		this(null);
 	}
 
-	public JXFormattedTextField(String labelText) {
-		this(labelText, null);
+	public JXFormattedTextField(String promptText) {
+		this(promptText, null);
 	}
 
 	public JXFormattedTextField(String promptText, Color promptForeground) {
@@ -34,7 +34,7 @@ public class JXFormattedTextField extends JFormattedTextField {
 	}
 	
 	public JXFormattedTextField(String promptText, Color promptForeground, Color promptBackground) {
-		PromptSupport.init(promptText, promptForeground, promptBackground, this, true);
+		PromptSupport.init(promptText, promptForeground, promptBackground, this);
 	}
 
 	/**

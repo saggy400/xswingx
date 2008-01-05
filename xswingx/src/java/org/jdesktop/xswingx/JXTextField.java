@@ -23,8 +23,8 @@ public class JXTextField extends JTextField {
 		this(null);
 	}
 
-	public JXTextField(String labelText) {
-		this(labelText, null);
+	public JXTextField(String promptText) {
+		this(promptText, null);
 	}
 
 	public JXTextField(String promptText, Color promptForeground) {
@@ -34,7 +34,7 @@ public class JXTextField extends JTextField {
 	public JXTextField(String promptText, Color promptForeground,
 			Color promptBackground) {
 		PromptSupport.init(promptText, promptForeground, promptBackground,
-				this, true);
+				this);
 	}
 
 	/**

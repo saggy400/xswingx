@@ -7,21 +7,22 @@ package org.jdesktop.xswingx.demo;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.plaf.ComponentUI;
+import javax.swing.text.JTextComponent;
 
 /**
  * @author Peter Weishapl
  */
 public class CustomizePanel extends JPanel {
-	private JTextField field;
+	private JTextComponent field;
 	
 	public CustomizePanel() {
 	}
 
-	public JTextField getField() {
+	public JTextComponent getField() {
 		return field;
 	}
 
-	public void setField(JTextField textComponent) {
+	public void setField(JTextComponent textComponent) {
 		this.field = textComponent;
 	}
 	

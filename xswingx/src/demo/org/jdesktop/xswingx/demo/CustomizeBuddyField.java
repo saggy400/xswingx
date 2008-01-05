@@ -23,6 +23,7 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.text.DefaultFormatterFactory;
+import javax.swing.text.JTextComponent;
 
 import org.jdesktop.xswingx.BuddySupport;
 
@@ -43,10 +44,10 @@ public class CustomizeBuddyField extends CustomizePanel {
 	}
 	
 	@Override
-	public void setField(JTextField textComponent) {
+	public void setField(JTextComponent textComponent) {
 		super.setField(textComponent);
 		txtOuterMargin.setFormatterFactory(new DefaultFormatterFactory(new InsetsFormatter()));
-		Insets outerMargin = BuddySupport.getOuterMargin(textComponent);
+		Insets outerMargin = BuddySupport.getOuterMargin((JTextField) textComponent);
 		if(outerMargin == null) outerMargin = new Insets(0,0,0,0);
 		txtOuterMargin.setValue(outerMargin);
 	}
@@ -69,23 +70,27 @@ public class CustomizeBuddyField extends CustomizePanel {
 	}
 
 	private void btnAddLeftActionPerformed(ActionEvent e) {
-		BuddySupport.addLeft(getSelectedComponent(), getField());
+		BuddySupport.addLeft(getSelectedComponent(), getTextField());
 		changed();
 	}
 
 	private void btnAddRightActionPerformed(ActionEvent e) {
-		BuddySupport.addRight(getSelectedComponent(), getField());
+		BuddySupport.addRight(getSelectedComponent(), getTextField());
 		changed();
 	}
 
 	private void btnRemoveallActionPerformed(ActionEvent e) {
-		BuddySupport.removeAll(getField());
+		BuddySupport.removeAll(getTextField());
 		changed();
 	}
 
 	private void txtOuterMarginPropertyChange(PropertyChangeEvent e) {
-		BuddySupport.setOuterMargin(getField(), (Insets) txtOuterMargin.getValue());
+		BuddySupport.setOuterMargin(getTextField(), (Insets) txtOuterMargin.getValue());
 		changed();
+	}
+
+	private JTextField getTextField() {
+		return (JTextField) getField();
 	}
 
 	private void initComponents() {

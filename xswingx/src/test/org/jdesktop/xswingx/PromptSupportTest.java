@@ -27,7 +27,7 @@ public class PromptSupportTest {
 
 	@Test
 	public void testInit() {
-		PromptSupport.init("test", Color.LIGHT_GRAY, Color.YELLOW, txt, false);
+		PromptSupport.init("test", Color.LIGHT_GRAY, Color.YELLOW, txt);
 
 		assertEquals("test", PromptSupport.getPrompt(txt));
 		assertEquals("test", txt.getClientProperty(PromptSupport.PROMPT));
@@ -41,7 +41,7 @@ public class PromptSupportTest {
 
 	@Test
 	public void testInitEmpty() {
-		PromptSupport.init(null, null, null, txt, false);
+		PromptSupport.init(null, null, null, txt);
 		Assert.assertNotSame("PromptSupport should not be installed, unless it is necessary.", PromptTextFieldUI.class,
 				txt.getUI().getClass());
 	}

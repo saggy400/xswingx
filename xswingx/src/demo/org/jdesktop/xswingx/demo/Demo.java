@@ -28,7 +28,9 @@ public class Demo {
 		
 		JTabbedPane tb = new JTabbedPane();
 		tb.add("Text Field", new TextFieldCustomizer());
+		tb.add("Text Area", new TextAreaCustomizer());
 		tb.add("Search Field", new SearchFieldCustomizer());
+		tb.add("Contact Demo", new ContactPanel());
 		f.add(tb);
 		f.pack();
 		f.setVisible(true);

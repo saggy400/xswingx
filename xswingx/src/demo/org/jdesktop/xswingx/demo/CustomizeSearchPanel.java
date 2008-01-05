@@ -4,6 +4,7 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.text.JTextComponent;
 
 import org.jdesktop.xswingx.JXSearchField;
 import org.jdesktop.xswingx.NativeSearchFieldSupport;
@@ -28,7 +29,7 @@ public class CustomizeSearchPanel extends CustomizePanel {
 	}
 
 	@Override
-	public void setField(JTextField textComponent) {
+	public void setField(JTextComponent textComponent) {
 		super.setField(textComponent);
 		spnDelay.setValue(getSearchField().getInstantSearchDelay());
 		cbUseNative.setSelected(getSearchField().isUseNativeSearchFieldIfPossible());
@@ -41,6 +42,7 @@ public class CustomizeSearchPanel extends CustomizePanel {
 			rbMac.setSelected(true);
 		}
 	}
+	
 
 	private JXSearchField getSearchField() {
 		return (JXSearchField) getField();
