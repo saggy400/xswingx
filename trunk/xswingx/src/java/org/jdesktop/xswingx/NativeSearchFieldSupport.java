@@ -1,5 +1,6 @@
 package org.jdesktop.xswingx;
 
+import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 
 import javax.swing.JPopupMenu;
@@ -13,12 +14,13 @@ import org.jdesktop.xswingx.plaf.AbstractUIChangeHandler;
  * TODO
  * 
  * @author Peter Weishapl <petw@gmx.net>
- * 
+ * TODO: Find Action
  */
 public class NativeSearchFieldSupport {
 	public static final String FIND_POPUP_PROPERTY = "JTextField.Search.FindPopup";
 	public static final String MAC_SEARCH_VARIANT = "search";
 	public static final String MAC_TEXT_FIELD_VARIANT_PROPERTY = "JTextField.variant";
+	public static final String CANCEL_ACTION_PROPERTY = "JTextField.Search.CancelAction";
 
 	/**
 	 * @return <code>true</code> if we run Leopard and the Mac Look And Feel.
@@ -74,12 +76,20 @@ public class NativeSearchFieldSupport {
 		return isSearchField(txt) && isNativeSearchFieldSupported();
 	}
 
-	public static void setSearchPopupMenu(JTextField txt, JPopupMenu popupMenu) {
+	public static void setFindPopupMenu(JTextField txt, JPopupMenu popupMenu) {
 		txt.putClientProperty(FIND_POPUP_PROPERTY, popupMenu);
 	}
 
-	public static JPopupMenu getSearchPopupMenu(JTextField txt) {
+	public static JPopupMenu getFindPopupMenu(JTextField txt) {
 		return (JPopupMenu) txt.getClientProperty(FIND_POPUP_PROPERTY);
+	}
+	
+	public static void setCancelAction(JTextField txt, ActionListener cancelAction) {
+		txt.putClientProperty(CANCEL_ACTION_PROPERTY, cancelAction);
+	}
+
+	public static ActionListener getCancelAction(JTextField txt) {
+		return (ActionListener) txt.getClientProperty(CANCEL_ACTION_PROPERTY);
 	}
 
 	private static final SearchFieldUIChangeHandler uiChangeHandler = new SearchFieldUIChangeHandler();

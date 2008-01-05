@@ -83,7 +83,7 @@ public class CustomizeSearchPanel extends CustomizePanel {
 		if(cbWithPopup.isSelected()){
 			new RecentSearches("demoSearch").install(getSearchField());
 		}else{
-			getSearchField().setSearchPopupMenu(null);
+			getSearchField().setFindPopupMenu(null);
 		}
 	}
 

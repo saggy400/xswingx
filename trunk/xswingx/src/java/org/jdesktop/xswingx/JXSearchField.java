@@ -29,13 +29,13 @@ import org.jdesktop.xswingx.plaf.TextUIWrapper;
  * box, a Mac OS X search field, or a search field like the one used in Mozilla
  * Thunderbird 2.0 - depending on the current look and feel.
  * 
- * JXSearchField is a text field that contains a search button and a clear
+ * JXSearchField is a text field that contains a search button and a cancel
  * button. The search button normally displays a lens icon appropriate for the
- * current look and feel. The clear button is used to clear the text and
+ * current look and feel. The cancel button is used to clear the text and
  * therefore only visible when text is present. It normally displays a 'x' like
  * icon. Text can also be cleared, using the 'Esc' key.
  * 
- * The position of the search and clear buttons can be customized by either
+ * The position of the search and cancel buttons can be customized by either
  * changing the search fields (text) margin or button margin, or by changing the
  * {@link LayoutStyle}.
  * 
@@ -56,30 +56,30 @@ public class JXSearchField extends JXTextField {
 	 */
 	private static final int DEFAULT_INSTANT_SEARCH_DELAY = 180;
 	/**
-	 * The key used to invoke the clear action.
+	 * The key used to invoke the cancel action.
 	 */
-	private static final KeyStroke CLEAR_KEY = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0);
+	private static final KeyStroke CANCEL_KEY = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0);
 
 	/**
-	 * Defines, how the search and clear button are layouted.
+	 * Defines, how the search and cancel button are layouted.
 	 */
 	public enum LayoutStyle {
 		/**
 		 * <p>
 		 * In VISTA layout style, the search button is placed on the right side
 		 * of the search field. If text is entered, the search button is
-		 * replaced by the clear button when the actual search mode is
+		 * replaced by the cancel button when the actual search mode is
 		 * {@link SearchMode#INSTANT}. When the search mode is
 		 * {@link SearchMode#REGULAR} the search button will always stay visible
-		 * and the clear button will never be shown. However, 'Escape' can still
-		 * be pressed to clear the text.
+		 * and the cancel button will never be shown. However, 'Escape' can
+		 * still be pressed to clear the text.
 		 * </p>
 		 */
 		VISTA,
 		/**
 		 * <p>
 		 * In MAC layout style, the search button is placed on the left side of
-		 * the search field and the clear button on the right side. The clear
+		 * the search field and the cancel button on the right side. The cancel
 		 * button is only visible when text is present.
 		 * </p>
 		 */
@@ -128,13 +128,11 @@ public class JXSearchField extends JXTextField {
 		LookAndFeelAddons.contribute(new JXSearchFieldAddon());
 	}
 
-	private ClearAction clearAction;
-
 	private SearchAction searchAction;
 
 	private JButton searchButton;
 
-	private JButton clearButton;
+	private JButton cancelButton;
 
 	private JButton popupButton;
 
@@ -169,6 +167,7 @@ public class JXSearchField extends JXTextField {
 	 */
 	public JXSearchField(String prompt) {
 		super(prompt);
+		setCancelAction(new ClearAction());
 		setUseNativeSearchFieldIfPossible(true);
 
 		// We cannot register the ClearAction through the Input- and
@@ -177,8 +176,9 @@ public class JXSearchField extends JXTextField {
 		// then the ClearAction will never be called.
 		addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent e) {
-				if (CLEAR_KEY.equals(KeyStroke.getKeyStroke(e.getKeyCode(), e.getModifiers()))) {
-					getClearAction().clear();
+				if (CANCEL_KEY.equals(KeyStroke.getKeyStroke(e.getKeyCode(), e.getModifiers()))) {
+					getCancelAction().actionPerformed(
+							new ActionEvent(JXSearchField.this, e.getID(), KeyEvent.getKeyText(e.getKeyCode())));
 				}
 			}
 		});
@@ -188,6 +188,12 @@ public class JXSearchField extends JXTextField {
 			public void propertyChange(PropertyChangeEvent evt) {
 				JPopupMenu oldPopup = (JPopupMenu) evt.getOldValue();
 				firePropertyChange("searchPopupMenu", oldPopup, evt.getNewValue());
+			}
+		});
+		addPropertyChangeListener(NativeSearchFieldSupport.CANCEL_ACTION_PROPERTY, new PropertyChangeListener() {
+			public void propertyChange(PropertyChangeEvent evt) {
+				ActionListener oldAction = (ActionListener) evt.getOldValue();
+				firePropertyChange("cancelAction", oldAction, evt.getNewValue());
 			}
 		});
 	}
@@ -318,57 +324,54 @@ public class JXSearchField extends JXTextField {
 	}
 
 	/**
-	 * Returns the action that is invoked when the escape key is pressed or the
-	 * clear button is clicked.
+	 * Returns the cancel action, or an instance of {@link ClearAction}, if
+	 * none has been set.
 	 * 
-	 * Calls {@link #createClearAction()} to create the clear action, if needed.
-	 * 
-	 * @return the clear action
+	 * @return the cancel action
 	 */
-	protected final ClearAction getClearAction() {
-		if (clearAction == null) {
-			clearAction = createClearAction();
+	public final ActionListener getCancelAction() {
+		ActionListener a = NativeSearchFieldSupport.getCancelAction(this);
+		if (a == null) {
+			a = new ClearAction();
 		}
-		return clearAction;
+		return a;
+	}
+
+	public final void setCancelAction(ActionListener cancelAction) {
+		NativeSearchFieldSupport.setCancelAction(this, cancelAction);
 	}
 
 	/**
-	 * Creates and returns the {@link ClearAction}. Override to use a custom
-	 * clear action
+	 * Returns the cancel button.
 	 * 
-	 * @see #getClearAction()
-	 * @return the clear action
+	 * Calls {@link #createCancelButton()} to create the cancel button, if
+	 * needed. Registers an {@link ActionListener} that delegates actions to the
+	 * {@link ActionListener} returned by {@link #getCancelAction()}.
+	 * 
+	 * @return the cancel button
 	 */
-	protected ClearAction createClearAction() {
-		return new ClearAction();
-	}
-
-	/**
-	 * Returns the clear button.
-	 * 
-	 * Calls {@link #createClearButton()} to create the clear button, if needed.
-	 * 
-	 * @return the clear button
-	 */
-	public final JButton getClearButton() {
-		if (clearButton == null) {
-			clearButton = createClearButton();
+	public final JButton getCancelButton() {
+		if (cancelButton == null) {
+			cancelButton = createCancelButton();
+			cancelButton.addActionListener(new ActionListener(){
+				public void actionPerformed(ActionEvent e) {
+					getCancelAction().actionPerformed(e);
+				}
+			});
 		}
-		return clearButton;
+		return cancelButton;
 	}
 
 	/**
-	 * Creates and returns the clear button. The buttons action is set to the
-	 * action returned by {@link #getClearAction()}.
+	 * Creates and returns the cancel button.
 	 * 
-	 * Override to use a custom clear button.
+	 * Override to use a custom cancel button.
 	 * 
-	 * @see #getClearButton()
-	 * @return the clear button
+	 * @see #getCancelButton()
+	 * @return the cancel button
 	 */
-	protected JButton createClearButton() {
+	protected JButton createCancelButton() {
 		BuddyButton btn = new BuddyButton();
-		btn.setAction(getClearAction());
 
 		return btn;
 	}
@@ -494,7 +497,7 @@ public class JXSearchField extends JXTextField {
 	}
 
 	/**
-	 * Updates the clear, search and popup buttons enabled state in addition to
+	 * Updates the cancel, search and popup buttons enabled state in addition to
 	 * setting the search fields editable state.
 	 * 
 	 * @see #updateButtonState()
@@ -506,7 +509,7 @@ public class JXSearchField extends JXTextField {
 	}
 
 	/**
-	 * Updates the clear, search and popup buttons enabled state in addition to
+	 * Updates the cancel, search and popup buttons enabled state in addition to
 	 * setting the search fields enabled state.
 	 * 
 	 * @see #updateButtonState()
@@ -518,12 +521,12 @@ public class JXSearchField extends JXTextField {
 	}
 
 	/**
-	 * Enables the clear action if this search field is editable and enabled,
+	 * Enables the cancel action if this search field is editable and enabled,
 	 * otherwise it will be disabled. Enabled the search action and popup button
 	 * if this search field is enabled, otherwise it will be disabled.
 	 */
 	protected void updateButtonState() {
-		getClearAction().setEnabled(isEditable() & isEnabled());
+		getCancelButton().setEnabled(isEditable() & isEnabled());
 		getSearchAction().setEnabled(isEnabled());
 		getPopupButton().setEnabled(isEnabled());
 	}
@@ -543,18 +546,18 @@ public class JXSearchField extends JXTextField {
 	 *            the popup menu, which will be displayed when the popup button
 	 *            is clicked
 	 */
-	public void setSearchPopupMenu(JPopupMenu searchPopupMenu) {
-		NativeSearchFieldSupport.setSearchPopupMenu(this, searchPopupMenu);
+	public void setFindPopupMenu(JPopupMenu searchPopupMenu) {
+		NativeSearchFieldSupport.setFindPopupMenu(this, searchPopupMenu);
 	}
 
 	/**
 	 * Returns the search popup menu.
 	 * 
-	 * @see #setSearchPopupMenu(JPopupMenu)
+	 * @see #setFindPopupMenu(JPopupMenu)
 	 * @return the search popup menu
 	 */
-	public JPopupMenu getSearchPopupMenu() {
-		return NativeSearchFieldSupport.getSearchPopupMenu(this);
+	public JPopupMenu getFindPopupMenu() {
+		return NativeSearchFieldSupport.getFindPopupMenu(this);
 	}
 
 	/**
@@ -588,7 +591,7 @@ public class JXSearchField extends JXTextField {
 	 *         the search popup menu is visible
 	 */
 	public boolean hasFocus() {
-		if (getSearchPopupMenu() != null && getSearchPopupMenu().isVisible()) {
+		if (getFindPopupMenu() != null && getFindPopupMenu().isVisible()) {
 			return true;
 		}
 		return super.hasFocus();
@@ -599,8 +602,8 @@ public class JXSearchField extends JXTextField {
 	 */
 	public void updateUI() {
 		super.updateUI();
-		if (getSearchPopupMenu() != null) {
-			SwingUtilities.updateComponentTreeUI(getSearchPopupMenu());
+		if (getFindPopupMenu() != null) {
+			SwingUtilities.updateComponentTreeUI(getFindPopupMenu());
 		}
 	}
 
@@ -675,7 +678,7 @@ public class JXSearchField extends JXTextField {
 	}
 
 	/**
-	 * Invoked when the the clear button or the 'Esc' key is pressed. Sets the
+	 * Invoked when the the cancel button or the 'Esc' key is pressed. Sets the
 	 * text in the search field to <code>null</code>.
 	 * 
 	 */

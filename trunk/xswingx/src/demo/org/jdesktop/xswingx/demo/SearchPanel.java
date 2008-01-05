@@ -648,7 +648,7 @@ public class SearchPanel extends javax.swing.JPanel {
 		if (cbPopup.isSelected()) {
 			new RecentSearches("search.demo").install(searchField);
 		} else {
-			searchField.setSearchPopupMenu(null);
+			searchField.setFindPopupMenu(null);
 		}
 	}// GEN-LAST:event_cbPopupActionPerformed
 

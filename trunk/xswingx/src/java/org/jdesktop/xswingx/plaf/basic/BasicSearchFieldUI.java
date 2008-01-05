@@ -140,7 +140,7 @@ public class BasicSearchFieldUI extends BuddyTextFieldUI {
 						}
 					} else {
 						JButton refButton = popupButton();
-						if (searchField.getSearchPopupMenu() == null ^ searchField.isUseSeperatePopupButton()) {
+						if (searchField.getFindPopupMenu() == null ^ searchField.isUseSeperatePopupButton()) {
 							refButton = searchButton();
 						}
 
@@ -291,11 +291,11 @@ public class BasicSearchFieldUI extends BuddyTextFieldUI {
 	/**
 	 * Convienence method.
 	 * 
-	 * @see JXSearchField#getClearButton()
+	 * @see JXSearchField#getCancelButton()
 	 * @return the clear button
 	 */
 	protected final JButton clearButton() {
-		return searchField.getClearButton();
+		return searchField.getCancelButton();
 	}
 
 	/**
@@ -326,7 +326,7 @@ public class BasicSearchFieldUI extends BuddyTextFieldUI {
 	 * @return the popup button is used in addition to the search button
 	 */
 	public boolean usingSeperatePopupButton() {
-		return searchField.isUseSeperatePopupButton() && searchField.getSearchPopupMenu() != null;
+		return searchField.isUseSeperatePopupButton() && searchField.getFindPopupMenu() != null;
 	}
 
 	/**
@@ -358,9 +358,9 @@ public class BasicSearchFieldUI extends BuddyTextFieldUI {
 		boolean clearNotHere = (searchField.isMacLayoutStyle() || !clearButton().isVisible());
 
 		searchButton().setVisible(
-				(searchField.getSearchPopupMenu() == null || usingSeperatePopupButton()) && clearNotHere);
+				(searchField.getFindPopupMenu() == null || usingSeperatePopupButton()) && clearNotHere);
 		popupButton().setVisible(
-				searchField.getSearchPopupMenu() != null && (clearNotHere || usingSeperatePopupButton()));
+				searchField.getFindPopupMenu() != null && (clearNotHere || usingSeperatePopupButton()));
 
 		if (searchField.isRegularSearchMode()) {
 			searchButton().setRolloverIcon(getNewIcon(searchButton().getRolloverIcon(), "SearchField.rolloverIcon"));
@@ -408,15 +408,15 @@ public class BasicSearchFieldUI extends BuddyTextFieldUI {
 		 * Shows the search popup menu, if installed.
 		 */
 		public void actionPerformed(ActionEvent e) {
-			if (searchField.getSearchPopupMenu() != null) {
+			if (searchField.getFindPopupMenu() != null) {
 				Component src = JXSearchFieldAddon.SEARCH_FIELD_SOURCE.equals(UIManager
 						.getString("SearchField.popupSource")) ? searchField : (Component) e.getSource();
 
 				Rectangle r = SwingUtilities.getLocalBounds(src);
-				int popupWidth = searchField.getSearchPopupMenu().getPreferredSize().width;
+				int popupWidth = searchField.getFindPopupMenu().getPreferredSize().width;
 				int x = searchField.isVistaLayoutStyle() || usingSeperatePopupButton() ? r.x + r.width - popupWidth
 						: r.x;
-				searchField.getSearchPopupMenu().show(src, x, r.y + r.height);
+				searchField.getFindPopupMenu().show(src, x, r.y + r.height);
 			}
 		}
 

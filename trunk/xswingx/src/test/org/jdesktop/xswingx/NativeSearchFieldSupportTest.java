@@ -1,5 +1,7 @@
 package org.jdesktop.xswingx;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
@@ -12,16 +14,30 @@ import org.junit.Test;
 
 public class NativeSearchFieldSupportTest implements PropertyChangeListener {
 	private JTextField tf = new JTextField();
-	private boolean propertyChanged;
+	private boolean eventFired;
 	
 	@Test
-	public void testPropertyChangeEvent() throws Exception {
+	public void testSearchFieldPropertyChangeEvent() throws Exception {
 		tf.addPropertyChangeListener(NativeSearchFieldSupport.MAC_TEXT_FIELD_VARIANT_PROPERTY, this);
 		NativeSearchFieldSupport.setSearchField(tf, true);
-		Assert.assertTrue(propertyChanged);
-		propertyChanged = false;
+		Assert.assertTrue(eventFired);
+		eventFired = false;
 		NativeSearchFieldSupport.setSearchField(tf, true);
-		Assert.assertTrue(propertyChanged);
+		Assert.assertTrue(eventFired);
+	}
+	
+	@Test
+	public void testCancelActionPropertyChangeEvent() throws Exception {
+		tf.addPropertyChangeListener(NativeSearchFieldSupport.CANCEL_ACTION_PROPERTY, this);
+		NativeSearchFieldSupport.setCancelAction(tf, new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				eventFired = true;
+			}
+		});
+		Assert.assertTrue(eventFired);
+		eventFired = false;
+		NativeSearchFieldSupport.setCancelAction(tf, null);
+		Assert.assertTrue(eventFired);
 	}
 	
 	@Test
@@ -29,12 +45,12 @@ public class NativeSearchFieldSupportTest implements PropertyChangeListener {
 		NativeSearchFieldSupport.setSearchField(tf, true);
 		tf.addPropertyChangeListener(NativeSearchFieldSupport.MAC_TEXT_FIELD_VARIANT_PROPERTY, this);
 		tf.updateUI();
-		Assert.assertTrue(propertyChanged);
+		Assert.assertTrue(eventFired);
 		
 		NativeSearchFieldSupport.setSearchField(tf, false);
-		propertyChanged = false;
+		eventFired = false;
 		tf.updateUI();
-		Assert.assertFalse(propertyChanged);
+		Assert.assertFalse(eventFired);
 	}
 	
 	@Test
@@ -47,6 +63,6 @@ public class NativeSearchFieldSupportTest implements PropertyChangeListener {
 	}
 
 	public void propertyChange(PropertyChangeEvent evt) {
-		propertyChanged = true;
+		eventFired = true;
 	}
 }

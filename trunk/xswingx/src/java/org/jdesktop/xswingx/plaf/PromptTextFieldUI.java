@@ -45,7 +45,7 @@ public class PromptTextFieldUI extends PromptTextUI {
 		// leopard client properties. see
 		// http://developer.apple.com/technotes/tn2007/tn2196.html#JTEXTFIELD_VARIANT
 		NativeSearchFieldSupport.setSearchField(lbl, NativeSearchFieldSupport.isSearchField(txtField));
-		NativeSearchFieldSupport.setSearchPopupMenu(lbl, NativeSearchFieldSupport.getSearchPopupMenu(txtField));
+		NativeSearchFieldSupport.setFindPopupMenu(lbl, NativeSearchFieldSupport.getFindPopupMenu(txtField));
 		
 		//here we need to copy the border again for Mac OS X, because the above calls may have replaced it.
 		lbl.setBorder(txtField.getBorder());

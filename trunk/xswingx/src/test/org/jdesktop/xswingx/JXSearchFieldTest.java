@@ -24,6 +24,7 @@ import javax.swing.border.Border;
 import javax.swing.plaf.InsetsUIResource;
 import javax.swing.plaf.UIResource;
 
+import org.jdesktop.xswingx.JXSearchField.ClearAction;
 import org.jdesktop.xswingx.JXSearchField.LayoutStyle;
 import org.jdesktop.xswingx.JXSearchField.SearchMode;
 import org.jdesktop.xswingx.plaf.basic.BasicSearchFieldUI;
@@ -60,8 +61,46 @@ public class JXSearchFieldTest {
 			}
 		});
 		
-		NativeSearchFieldSupport.setSearchPopupMenu(searchField, popupMenu);
+		NativeSearchFieldSupport.setFindPopupMenu(searchField, popupMenu);
 		assertTrue(eventReceived);
+	}
+	
+	@Test
+	public void testCancelAction() throws Exception {
+		assertSame(ClearAction.class, searchField.getCancelAction().getClass());
+		ActionListener a = new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				eventReceived = true;
+			}
+		};
+		searchField.setCancelAction(a);
+		assertSame(a, searchField.getCancelAction());
+		eventReceived = false;
+		searchField.getCancelButton().doClick(0);
+		assertTrue(eventReceived);
+		
+		
+		NativeSearchFieldSupport.setCancelAction(searchField, null);
+		assertSame(ClearAction.class, searchField.getCancelAction().getClass());
+	}
+	
+	@Test
+	public void testCancelActionPropertyChange() throws Exception {
+		final ActionListener action = new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+			}
+		};
+		searchField.addPropertyChangeListener("cancelAction", new PropertyChangeListener(){
+			public void propertyChange(PropertyChangeEvent evt) {
+				assertSame(evt.getOldValue().getClass(), ClearAction.class);
+				assertSame(evt.getNewValue(), action);
+				eventReceived = true;
+			}
+		});
+		
+		NativeSearchFieldSupport.setCancelAction(searchField, action);
+		assertTrue(eventReceived);
+		assertSame(searchField.getCancelAction(), action);
 	}
 	
 	@Test
@@ -124,23 +163,23 @@ public class JXSearchFieldTest {
 	@Test
 	public void testButtonVisibility() throws Exception {
 		assertTrue(searchField.getSearchButton().isVisible());
-		assertFalse(searchField.getClearButton().isVisible());
+		assertFalse(searchField.getCancelButton().isVisible());
 
 		assertTrue(searchField.isMacLayoutStyle());
 		assertTrue(searchField.isInstantSearchMode());
 		searchField.setText("text");
 		assertTrue(searchField.getSearchButton().isVisible());
-		assertTrue(searchField.getClearButton().isVisible());
+		assertTrue(searchField.getCancelButton().isVisible());
 
 		searchField.setLayoutStyle(LayoutStyle.VISTA);
 		assertFalse(searchField.getSearchButton().isVisible());
-		assertTrue(searchField.getClearButton().isVisible());
+		assertTrue(searchField.getCancelButton().isVisible());
 		
 		searchField.setSearchMode(SearchMode.REGULAR);
 		assertTrue(searchField.getSearchButton().isVisible());
-		assertFalse(searchField.getClearButton().isVisible());
+		assertFalse(searchField.getCancelButton().isVisible());
 		
-		searchField.setSearchPopupMenu(new JPopupMenu());
+		searchField.setFindPopupMenu(new JPopupMenu());
 		searchField.setUseSeperatePopupButton(false);
 		assertFalse(searchField.getSearchButton().isVisible());
 		assertTrue(searchField.getPopupButton().isVisible());
@@ -183,32 +222,32 @@ public class JXSearchFieldTest {
 	public void testEditableEnabled() throws Exception {
 		searchField.setEditable(false);
 		searchField.setEnabled(true);
-		assertFalse(searchField.getClearAction().isEnabled());
-		assertFalse(searchField.getClearButton().isEnabled());
+//		assertFalse(searchField.getCancelAction().isEnabled());
+		assertFalse(searchField.getCancelButton().isEnabled());
 		assertTrue(searchField.getSearchAction().isEnabled());
 		assertTrue(searchField.getSearchButton().isEnabled());
 		assertTrue(searchField.getPopupButton().isEnabled());
 
 		searchField.setEditable(true);
 		searchField.setEnabled(false);
-		assertFalse(searchField.getClearAction().isEnabled());
-		assertFalse(searchField.getClearButton().isEnabled());
+//		assertFalse(searchField.getCancelAction().isEnabled());
+		assertFalse(searchField.getCancelButton().isEnabled());
 		assertFalse(searchField.getSearchAction().isEnabled());
 		assertFalse(searchField.getSearchButton().isEnabled());
 		assertFalse(searchField.getPopupButton().isEnabled());
 
 		searchField.setEditable(false);
 		searchField.setEnabled(false);
-		assertFalse(searchField.getClearAction().isEnabled());
-		assertFalse(searchField.getClearButton().isEnabled());
+//		assertFalse(searchField.getCancelAction().isEnabled());
+		assertFalse(searchField.getCancelButton().isEnabled());
 		assertFalse(searchField.getSearchAction().isEnabled());
 		assertFalse(searchField.getSearchButton().isEnabled());
 		assertFalse(searchField.getPopupButton().isEnabled());
 
 		searchField.setEditable(true);
 		searchField.setEnabled(true);
-		assertTrue(searchField.getClearAction().isEnabled());
-		assertTrue(searchField.getClearButton().isEnabled());
+//		assertTrue(searchField.getCancelAction().isEnabled());
+		assertTrue(searchField.getCancelButton().isEnabled());
 		assertTrue(searchField.getSearchAction().isEnabled());
 		assertTrue(searchField.getSearchButton().isEnabled());
 		assertTrue(searchField.getPopupButton().isEnabled());
@@ -218,16 +257,16 @@ public class JXSearchFieldTest {
 	public void testSetLayoutStyle() throws Exception {
 		assertSame(LayoutStyle.MAC, searchField.getLayoutStyle());
 		assertTrue(searchField.isMacLayoutStyle());
-		assertFalse(searchField.getClearButton().isVisible());
+		assertFalse(searchField.getCancelButton().isVisible());
 		assertTrue(searchField.getSearchButton().isVisible());
 		
 		searchField.setText("test");
-		assertTrue(searchField.getClearButton().isVisible());
+		assertTrue(searchField.getCancelButton().isVisible());
 		assertTrue(searchField.getSearchButton().isVisible());
 		
 		searchField.setLayoutStyle(LayoutStyle.VISTA);
 		assertTrue(searchField.isVistaLayoutStyle());
-		assertTrue(searchField.getClearButton().isVisible());
+		assertTrue(searchField.getCancelButton().isVisible());
 		assertFalse(searchField.getSearchButton().isVisible());
 	}
 	
@@ -307,7 +346,7 @@ public class JXSearchFieldTest {
 	
 	@Test
 	public void testPopupButton() throws Exception {
-		searchField.setSearchPopupMenu(new JPopupMenu());
+		searchField.setFindPopupMenu(new JPopupMenu());
 		assertFalse(searchField.getSearchButton().isVisible());
 		assertTrue(searchField.getPopupButton().isVisible());
 		
@@ -322,7 +361,7 @@ public class JXSearchFieldTest {
 		assertTrue(searchField.getSearchButton().isVisible());
 		assertTrue(searchField.getPopupButton().isVisible());
 		
-		searchField.setSearchPopupMenu(null);
+		searchField.setFindPopupMenu(null);
 		assertFalse(searchField.getPopupButton().isVisible());
 		assertTrue(searchField.getSearchButton().isVisible());
 	}

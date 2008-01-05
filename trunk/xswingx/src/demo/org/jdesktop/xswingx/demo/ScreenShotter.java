@@ -64,14 +64,14 @@ public class ScreenShotter {
 
 	private void vistaSession() {
 		c.setText("rollover");
-		c.getClearButton().setIcon(c.getClearButton().getRolloverIcon());
+		c.getCancelButton().setIcon(c.getCancelButton().getRolloverIcon());
 		shoot("clear_rollover");
 		c.updateUI();
 		c.getPopupButton().setIcon(c.getPopupButton().getRolloverIcon());
 		shoot("popup_rollover");
 		c.updateUI();
 		c.setText("pressed");
-		c.getClearButton().setIcon(c.getClearButton().getPressedIcon());
+		c.getCancelButton().setIcon(c.getCancelButton().getPressedIcon());
 		shoot("clear_pressed");
 		c.updateUI();
 		c.getPopupButton().setIcon(c.getPopupButton().getPressedIcon());
@@ -103,12 +103,12 @@ public class ScreenShotter {
 
 	private void layoutSession() {
 		c.setText(null);
-		c.setSearchPopupMenu(null);
+		c.setFindPopupMenu(null);
 		shoot();
 		c.setText("searching");
 		shoot("searching");
 		c.setText(null);
-		c.setSearchPopupMenu(new JPopupMenu());
+		c.setFindPopupMenu(new JPopupMenu());
 		shoot("popup");
 	}
 

@@ -253,7 +253,7 @@ public class RecentSearches implements ActionListener {
 	 */
 	public void install(JTextField searchField) {
 		searchField.addActionListener(this);
-		NativeSearchFieldSupport.setSearchPopupMenu(searchField, createPopupMenu(searchField));
+		NativeSearchFieldSupport.setFindPopupMenu(searchField, createPopupMenu(searchField));
 	}
 
 	/**
@@ -266,8 +266,8 @@ public class RecentSearches implements ActionListener {
 	 */
 	public void uninstall(JXSearchField searchField) {
 		searchField.removeActionListener(this);
-		if (searchField.getSearchPopupMenu() instanceof ChangeListener) {
-			removeChangeListener((ChangeListener) searchField.getSearchPopupMenu());
+		if (searchField.getFindPopupMenu() instanceof ChangeListener) {
+			removeChangeListener((ChangeListener) searchField.getFindPopupMenu());
 		}
 	}
 
