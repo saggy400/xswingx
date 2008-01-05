@@ -27,6 +27,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.text.DefaultFormatterFactory;
 
+import org.jdesktop.swingx.util.OS;
 import org.jdesktop.xswingx.NativeSearchFieldSupport;
 
 import com.jgoodies.forms.factories.FormFactory;
@@ -41,8 +42,7 @@ import com.jgoodies.forms.layout.Sizes;
  * @author Peter Weishapl
  */
 public class CustomizeGeneralPanel extends CustomizePanel {
-	private final DefaultFormatterFactory ff = new DefaultFormatterFactory(
-			new InsetsFormatter());
+	private final DefaultFormatterFactory ff = new DefaultFormatterFactory(new InsetsFormatter());
 
 	public CustomizeGeneralPanel() {
 		initComponents();
@@ -54,18 +54,23 @@ public class CustomizeGeneralPanel extends CustomizePanel {
 		cbOpaque.setSelected(textComponent.isOpaque());
 		txtMargin.setFormatterFactory(ff);
 		txtMargin.setValue(textComponent.getMargin());
-		cbOpaque.setSelected(textComponent.isOpaque());
+
+		// Mac Hack: Textfields look odd when opaque, otherwise opaque is default.
+		if (OS.isMacOSX() && UIManager.getLookAndFeel().isNativeLookAndFeel()) {
+			cbOpaque.setSelected(false);
+		} else {
+			cbOpaque.setSelected(true);
+		}
+		
 		columnsChanged(null);
 	}
 
 	private void rbBorderStateChanged(ChangeEvent e) {
 		if (rbDefault.isSelected()) {
 			getField().setBorder(UIManager.getBorder("TextField.border"));
-			NativeSearchFieldSupport.setSearchField(getField(),
-					NativeSearchFieldSupport.isSearchField(getField()));
+			NativeSearchFieldSupport.setSearchField(getField(), NativeSearchFieldSupport.isSearchField(getField()));
 		} else {
-			getField().setBorder(
-					new LineBorder(Color.BLACK, lineSlider.getValue()));
+			getField().setBorder(new LineBorder(Color.BLACK, lineSlider.getValue()));
 		}
 		changed();
 	}
@@ -83,7 +88,7 @@ public class CustomizeGeneralPanel extends CustomizePanel {
 	private void columnsChanged(ChangeEvent e) {
 		if (cbFixedSize.isSelected()) {
 			getField().setColumns(((Integer) spColumns.getValue()).intValue());
-		}else{
+		} else {
 			getField().setColumns(0);
 		}
 
@@ -91,11 +96,11 @@ public class CustomizeGeneralPanel extends CustomizePanel {
 	}
 
 	private void alignmentChanged(ChangeEvent e) {
-		if(rbCenter.isSelected()){
+		if (rbCenter.isSelected()) {
 			getField().setHorizontalAlignment(JTextField.CENTER);
-		}else if(rbTrailing.isSelected()){
+		} else if (rbTrailing.isSelected()) {
 			getField().setHorizontalAlignment(JTextField.TRAILING);
-		}else{
+		} else {
 			getField().setHorizontalAlignment(JTextField.LEADING);
 		}
 		changed();
@@ -140,70 +145,41 @@ public class CustomizeGeneralPanel extends CustomizePanel {
 		cbOpaque = new JCheckBox();
 		CellConstraints cc = new CellConstraints();
 
-		//======== this ========
+		// ======== this ========
 		setBorder(null);
 
-		// JFormDesigner evaluation mark
-		setBorder(new javax.swing.border.CompoundBorder(
-			new javax.swing.border.TitledBorder(new javax.swing.border.EmptyBorder(0, 0, 0, 0),
-				"JFormDesigner Evaluation", javax.swing.border.TitledBorder.CENTER,
-				javax.swing.border.TitledBorder.BOTTOM, new java.awt.Font("Dialog", java.awt.Font.BOLD, 12),
-				java.awt.Color.red), getBorder())); addPropertyChangeListener(new java.beans.PropertyChangeListener(){public void propertyChange(java.beans.PropertyChangeEvent e){if("border".equals(e.getPropertyName()))throw new RuntimeException();}});
-
-		setLayout(new FormLayout(
-			new ColumnSpec[] {
-				FormFactory.UNRELATED_GAP_COLSPEC,
+		setLayout(new FormLayout(new ColumnSpec[] { FormFactory.UNRELATED_GAP_COLSPEC,
 				new ColumnSpec(ColumnSpec.LEFT, Sizes.DEFAULT, FormSpec.NO_GROW),
+				FormFactory.LABEL_COMPONENT_GAP_COLSPEC, FormFactory.DEFAULT_COLSPEC,
 				FormFactory.LABEL_COMPONENT_GAP_COLSPEC,
-				FormFactory.DEFAULT_COLSPEC,
-				FormFactory.LABEL_COMPONENT_GAP_COLSPEC,
-				new ColumnSpec(ColumnSpec.FILL, Sizes.DEFAULT, FormSpec.DEFAULT_GROW)
-			},
-			new RowSpec[] {
-				FormFactory.DEFAULT_ROWSPEC,
-				FormFactory.LINE_GAP_ROWSPEC,
-				FormFactory.DEFAULT_ROWSPEC,
-				FormFactory.UNRELATED_GAP_ROWSPEC,
-				FormFactory.DEFAULT_ROWSPEC,
-				FormFactory.LINE_GAP_ROWSPEC,
-				FormFactory.DEFAULT_ROWSPEC
-			}));
+				new ColumnSpec(ColumnSpec.FILL, Sizes.DEFAULT, FormSpec.DEFAULT_GROW) }, new RowSpec[] {
+				FormFactory.DEFAULT_ROWSPEC, FormFactory.LINE_GAP_ROWSPEC, FormFactory.DEFAULT_ROWSPEC,
+				FormFactory.UNRELATED_GAP_ROWSPEC, FormFactory.DEFAULT_ROWSPEC, FormFactory.LINE_GAP_ROWSPEC,
+				FormFactory.DEFAULT_ROWSPEC }));
 
-		//---- titledSeparator1 ----
+		// ---- titledSeparator1 ----
 		titledSeparator1.setTitle("General");
 		add(titledSeparator1, cc.xywh(1, 1, 6, 1));
 
-		//======== panel3 ========
+		// ======== panel3 ========
 		{
-			panel3.setLayout(new FormLayout(
-				new ColumnSpec[] {
+			panel3.setLayout(new FormLayout(new ColumnSpec[] {
 					new ColumnSpec(ColumnSpec.RIGHT, Sizes.DEFAULT, FormSpec.NO_GROW),
-					FormFactory.LABEL_COMPONENT_GAP_COLSPEC,
-					FormFactory.DEFAULT_COLSPEC,
-					FormFactory.LABEL_COMPONENT_GAP_COLSPEC,
-					FormFactory.DEFAULT_COLSPEC,
-					FormFactory.LABEL_COMPONENT_GAP_COLSPEC,
-					FormFactory.DEFAULT_COLSPEC,
+					FormFactory.LABEL_COMPONENT_GAP_COLSPEC, FormFactory.DEFAULT_COLSPEC,
+					FormFactory.LABEL_COMPONENT_GAP_COLSPEC, FormFactory.DEFAULT_COLSPEC,
+					FormFactory.LABEL_COMPONENT_GAP_COLSPEC, FormFactory.DEFAULT_COLSPEC,
 					FormFactory.LABEL_COMPONENT_GAP_COLSPEC,
 					new ColumnSpec(ColumnSpec.FILL, Sizes.DEFAULT, FormSpec.DEFAULT_GROW),
-					FormFactory.LABEL_COMPONENT_GAP_COLSPEC,
-					FormFactory.DEFAULT_COLSPEC
-				},
-				new RowSpec[] {
-					FormFactory.DEFAULT_ROWSPEC,
-					FormFactory.LINE_GAP_ROWSPEC,
-					FormFactory.DEFAULT_ROWSPEC,
-					FormFactory.UNRELATED_GAP_ROWSPEC,
-					FormFactory.DEFAULT_ROWSPEC,
-					FormFactory.LINE_GAP_ROWSPEC,
-					FormFactory.DEFAULT_ROWSPEC
-				}));
+					FormFactory.LABEL_COMPONENT_GAP_COLSPEC, FormFactory.DEFAULT_COLSPEC }, new RowSpec[] {
+					FormFactory.DEFAULT_ROWSPEC, FormFactory.LINE_GAP_ROWSPEC, FormFactory.DEFAULT_ROWSPEC,
+					FormFactory.UNRELATED_GAP_ROWSPEC, FormFactory.DEFAULT_ROWSPEC, FormFactory.LINE_GAP_ROWSPEC,
+					FormFactory.DEFAULT_ROWSPEC }));
 
-			//---- label5 ----
+			// ---- label5 ----
 			label5.setText("Border:");
 			panel3.add(label5, cc.xy(1, 1));
 
-			//---- rbDefault ----
+			// ---- rbDefault ----
 			rbDefault.setText("Default");
 			rbDefault.setSelected(true);
 			rbDefault.addChangeListener(new ChangeListener() {
@@ -213,7 +189,7 @@ public class CustomizeGeneralPanel extends CustomizePanel {
 			});
 			panel3.add(rbDefault, cc.xywh(3, 1, 7, 1));
 
-			//---- rbLine ----
+			// ---- rbLine ----
 			rbLine.setText("Line:");
 			rbLine.addChangeListener(new ChangeListener() {
 				public void stateChanged(ChangeEvent e) {
@@ -222,7 +198,7 @@ public class CustomizeGeneralPanel extends CustomizePanel {
 			});
 			panel3.add(rbLine, cc.xy(3, 3));
 
-			//---- lineSlider ----
+			// ---- lineSlider ----
 			lineSlider.setMaximum(10);
 			lineSlider.setValue(1);
 			lineSlider.addChangeListener(new ChangeListener() {
@@ -232,11 +208,11 @@ public class CustomizeGeneralPanel extends CustomizePanel {
 			});
 			panel3.add(lineSlider, cc.xywh(5, 3, 7, 1));
 
-			//---- label1 ----
+			// ---- label1 ----
 			label1.setText("Margin:");
 			panel3.add(label1, cc.xy(1, 5));
 
-			//---- txtMargin ----
+			// ---- txtMargin ----
 			txtMargin.addPropertyChangeListener("value", new PropertyChangeListener() {
 				public void propertyChange(PropertyChangeEvent e) {
 					marginChange(e);
@@ -244,7 +220,7 @@ public class CustomizeGeneralPanel extends CustomizePanel {
 			});
 			panel3.add(txtMargin, cc.xywh(3, 5, 7, 1));
 
-			//---- btnReset ----
+			// ---- btnReset ----
 			btnReset.setText("Reset");
 			btnReset.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
@@ -253,11 +229,11 @@ public class CustomizeGeneralPanel extends CustomizePanel {
 			});
 			panel3.add(btnReset, cc.xy(11, 5));
 
-			//---- label3 ----
+			// ---- label3 ----
 			label3.setText("Alignment:");
 			panel3.add(label3, cc.xy(1, 7));
 
-			//---- rbLeading ----
+			// ---- rbLeading ----
 			rbLeading.setText("Leading");
 			rbLeading.setSelected(true);
 			rbLeading.addChangeListener(new ChangeListener() {
@@ -267,7 +243,7 @@ public class CustomizeGeneralPanel extends CustomizePanel {
 			});
 			panel3.add(rbLeading, cc.xy(3, 7));
 
-			//---- rbCenter ----
+			// ---- rbCenter ----
 			rbCenter.setText("Center");
 			rbCenter.addChangeListener(new ChangeListener() {
 				public void stateChanged(ChangeEvent e) {
@@ -276,7 +252,7 @@ public class CustomizeGeneralPanel extends CustomizePanel {
 			});
 			panel3.add(rbCenter, cc.xy(5, 7));
 
-			//---- rbTrailing ----
+			// ---- rbTrailing ----
 			rbTrailing.setText("Trailing");
 			rbTrailing.addChangeListener(new ChangeListener() {
 				public void stateChanged(ChangeEvent e) {
@@ -287,7 +263,7 @@ public class CustomizeGeneralPanel extends CustomizePanel {
 		}
 		add(panel3, cc.xywh(2, 3, 5, 1));
 
-		//---- cbFixedSize ----
+		// ---- cbFixedSize ----
 		cbFixedSize.setText("Fixed Size:");
 		cbFixedSize.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
@@ -296,7 +272,7 @@ public class CustomizeGeneralPanel extends CustomizePanel {
 		});
 		add(cbFixedSize, cc.xy(2, 5));
 
-		//---- spColumns ----
+		// ---- spColumns ----
 		spColumns.setModel(new SpinnerNumberModel(15, 0, 80, 1));
 		spColumns.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
@@ -305,23 +281,20 @@ public class CustomizeGeneralPanel extends CustomizePanel {
 		});
 		add(spColumns, cc.xy(4, 5));
 
-		//---- label2 ----
+		// ---- label2 ----
 		label2.setText("Columns");
 		add(label2, cc.xy(6, 5));
 
-		//======== panel1 ========
+		// ======== panel1 ========
 		{
-			panel1.setLayout(new FormLayout(
-				new ColumnSpec[] {
-					FormFactory.DEFAULT_COLSPEC,
-					FormFactory.LABEL_COMPONENT_GAP_COLSPEC,
-					FormFactory.DEFAULT_COLSPEC,
-					FormFactory.LABEL_COMPONENT_GAP_COLSPEC,
-					new ColumnSpec(ColumnSpec.LEFT, Sizes.DEFAULT, FormSpec.NO_GROW)
-				},
-				RowSpec.decodeSpecs("default")));
+			panel1
+					.setLayout(new FormLayout(new ColumnSpec[] { FormFactory.DEFAULT_COLSPEC,
+							FormFactory.LABEL_COMPONENT_GAP_COLSPEC, FormFactory.DEFAULT_COLSPEC,
+							FormFactory.LABEL_COMPONENT_GAP_COLSPEC,
+							new ColumnSpec(ColumnSpec.LEFT, Sizes.DEFAULT, FormSpec.NO_GROW) }, RowSpec
+							.decodeSpecs("default")));
 
-			//---- cbEnabled ----
+			// ---- cbEnabled ----
 			cbEnabled.setText("Enabled");
 			cbEnabled.setSelected(true);
 			cbEnabled.addChangeListener(new ChangeListener() {
@@ -331,7 +304,7 @@ public class CustomizeGeneralPanel extends CustomizePanel {
 			});
 			panel1.add(cbEnabled, cc.xy(1, 1));
 
-			//---- cbEditable ----
+			// ---- cbEditable ----
 			cbEditable.setText("Editable");
 			cbEditable.setSelected(true);
 			cbEditable.addChangeListener(new ChangeListener() {
@@ -341,7 +314,7 @@ public class CustomizeGeneralPanel extends CustomizePanel {
 			});
 			panel1.add(cbEditable, cc.xy(3, 1));
 
-			//---- cbOpaque ----
+			// ---- cbOpaque ----
 			cbOpaque.setText("Opaque");
 			cbOpaque.addChangeListener(new ChangeListener() {
 				public void stateChanged(ChangeEvent e) {
@@ -352,12 +325,12 @@ public class CustomizeGeneralPanel extends CustomizePanel {
 		}
 		add(panel1, cc.xywh(2, 7, 5, 1));
 
-		//---- grpBorder ----
+		// ---- grpBorder ----
 		ButtonGroup grpBorder = new ButtonGroup();
 		grpBorder.add(rbDefault);
 		grpBorder.add(rbLine);
 
-		//---- buttonGroup1 ----
+		// ---- buttonGroup1 ----
 		ButtonGroup buttonGroup1 = new ButtonGroup();
 		buttonGroup1.add(rbLeading);
 		buttonGroup1.add(rbCenter);
