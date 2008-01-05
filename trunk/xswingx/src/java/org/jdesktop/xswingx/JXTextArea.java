@@ -30,7 +30,7 @@ public class JXTextArea extends JTextArea {
 	public JXTextArea(String promptText, Color promptForeground,
 			Color promptBackground) {
 		PromptSupport.init(promptText, promptForeground, promptBackground,
-				this, true);
+				this);
 	}
 
 	/**

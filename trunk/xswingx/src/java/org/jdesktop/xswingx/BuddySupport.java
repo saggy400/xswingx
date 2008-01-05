@@ -10,7 +10,6 @@ import javax.swing.Box;
 import javax.swing.JComponent;
 import javax.swing.JTextField;
 import javax.swing.plaf.basic.BasicTextUI;
-import javax.swing.text.JTextComponent;
 
 import org.jdesktop.xswingx.plaf.TextUIWrapper;
 
@@ -135,8 +134,7 @@ public class BuddySupport {
 		return (Insets) buddyField.getClientProperty(OUTER_MARGIN);
 	}
 
-	public static void ensureBuddiesAreInComponentHierarchy(JTextComponent textComponent) {
-		JTextField textField = (JTextField) textComponent;
+	public static void ensureBuddiesAreInComponentHierarchy(JTextField textField) {
 		for (Component c : BuddySupport.getLeft(textField)) {
 			addToComponentHierarchy(c, Position.LEFT, textField);
 		}

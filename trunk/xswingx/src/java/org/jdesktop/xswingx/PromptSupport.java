@@ -93,10 +93,9 @@ public class PromptSupport {
 	 * @param promptForeground
 	 * @param promptBackground
 	 * @param textComponent
-	 * @param stayOnUIChange
 	 */
 	public static void init(String promptText, Color promptForeground, Color promptBackground,
-			final JTextComponent textComponent, boolean stayOnUIChange) {
+			final JTextComponent textComponent) {
 		if (promptText != null && promptText.length() > 0) {
 			setPrompt(promptText, textComponent);
 		}

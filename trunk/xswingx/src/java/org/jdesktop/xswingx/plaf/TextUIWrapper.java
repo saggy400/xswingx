@@ -4,6 +4,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import javax.swing.JComponent;
+import javax.swing.JTextField;
 import javax.swing.UIDefaults;
 import javax.swing.plaf.TextUI;
 import javax.swing.plaf.basic.BasicTextAreaUI;
@@ -166,8 +167,8 @@ public abstract class TextUIWrapper<UI extends TextUI> {
 		protected boolean replaceUIIfNeeded(JTextComponent textComponent) {
 			boolean replaced = super.replaceUIIfNeeded(textComponent);
 
-			if (replaced) {
-				BuddySupport.ensureBuddiesAreInComponentHierarchy(textComponent);
+			if (replaced && textComponent instanceof JTextField) {
+				BuddySupport.ensureBuddiesAreInComponentHierarchy((JTextField) textComponent);
 			}
 			return replaced;
 		}

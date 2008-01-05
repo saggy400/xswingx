@@ -17,6 +17,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.text.JTextComponent;
 
 import org.jdesktop.xswingx.PromptSupport;
 
@@ -37,7 +38,7 @@ public class CustomizePromptPanel extends CustomizePanel {
 	}
 
 	@Override
-	public void setField(JTextField textComponent) {
+	public void setField(JTextComponent textComponent) {
 		super.setField(textComponent);
 		promptChanged(null);
 		focusBehaviorChanged(null);
@@ -91,6 +92,15 @@ public class CustomizePromptPanel extends CustomizePanel {
 			PromptSupport.setFontStyle(null, getField());
 		}
 		changed();
+	}
+	
+	public void setPrompt(String prompt){
+		txtPrompt.setText(prompt);
+		promptChanged(null);
+	}
+	
+	public String getPrompt(){
+		return txtPrompt.getText();
 	}
 
 	private void initComponents() {

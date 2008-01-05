@@ -7,6 +7,7 @@ package org.jdesktop.xswingx.demo;
 import javax.swing.*;
 import com.jgoodies.forms.factories.*;
 import com.jgoodies.forms.layout.*;
+import org.jdesktop.xswingx.*;
 
 /**
  * @author Peter Weishapl
@@ -44,7 +45,7 @@ public class TextFieldCustomizer extends JPanel {
 				FormFactory.DEFAULT_ROWSPEC,
 				new RowSpec(RowSpec.TOP, Sizes.DEFAULT, FormSpec.NO_GROW),
 				FormFactory.LINE_GAP_ROWSPEC,
-				new RowSpec(RowSpec.CENTER, Sizes.DEFAULT, FormSpec.DEFAULT_GROW)
+				new RowSpec(RowSpec.TOP, Sizes.DEFAULT, FormSpec.DEFAULT_GROW)
 			}));
 
 		//======== panel1 ========
@@ -53,8 +54,7 @@ public class TextFieldCustomizer extends JPanel {
 				ColumnSpec.decodeSpecs("default:grow, default, default:grow"),
 				new RowSpec[] {
 					FormFactory.UNRELATED_GAP_ROWSPEC,
-					FormFactory.DEFAULT_ROWSPEC,
-					FormFactory.UNRELATED_GAP_ROWSPEC
+					FormFactory.DEFAULT_ROWSPEC
 				}));
 			panel1.add(field, cc.xy(2, 2));
 		}
