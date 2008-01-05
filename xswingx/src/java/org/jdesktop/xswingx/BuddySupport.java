@@ -9,11 +9,9 @@ import java.util.List;
 import javax.swing.Box;
 import javax.swing.JComponent;
 import javax.swing.JTextField;
-import javax.swing.plaf.TextUI;
 import javax.swing.plaf.basic.BasicTextUI;
 import javax.swing.text.JTextComponent;
 
-import org.jdesktop.xswingx.plaf.BuddyTextFieldUI;
 import org.jdesktop.xswingx.plaf.TextUIWrapper;
 
 public class BuddySupport {
@@ -32,7 +30,7 @@ public class BuddySupport {
 	}
 
 	public static void add(Component c, Position pos, JTextField textField) {
-		install(textField);
+		TextUIWrapper.getDefaultWrapper().install(textField, true);
 
 		List<Component> leftBuddies = buddies(Position.LEFT, textField);
 		List<Component> rightBuddies = buddies(Position.RIGHT, textField);
@@ -129,25 +127,6 @@ public class BuddySupport {
 		
 	}
 
-	/**
-	 * Install buddy support on a text field by calling
-	 * {@link TextUIWrapper#install(JTextComponent)}
-	 * 
-	 * @param buddyField
-	 */
-	private static void install(JTextField buddyField) {
-		wrapper.install(buddyField, true);
-	}
-
-	/**
-	 * Calls {@link TextUIWrapper}{@link #uninstall(JTextComponent)}
-	 * 
-	 * @param textComponent
-	 */
-	public static void uninstall(final JTextComponent textComponent) {
-		wrapper.uninstall(textComponent);
-	}
-
 	public static void setOuterMargin(JTextField buddyField, Insets margin) {
 		buddyField.putClientProperty(OUTER_MARGIN, margin);
 	}
@@ -156,7 +135,7 @@ public class BuddySupport {
 		return (Insets) buddyField.getClientProperty(OUTER_MARGIN);
 	}
 
-	static void ensureBuddiesAreInComponentHierarchy(JTextComponent textComponent) {
+	public static void ensureBuddiesAreInComponentHierarchy(JTextComponent textComponent) {
 		JTextField textField = (JTextField) textComponent;
 		for (Component c : BuddySupport.getLeft(textField)) {
 			addToComponentHierarchy(c, Position.LEFT, textField);
@@ -174,34 +153,5 @@ public class BuddySupport {
 	 */
 	public static Component createGap(int width) {
 		return Box.createHorizontalStrut(width);
-	}
-
-	private static final BuddyWrapper wrapper = new BuddyWrapper();
-
-	private static final class BuddyWrapper extends TextUIWrapper<BuddyTextFieldUI> {
-		private BuddyWrapper() {
-			super(BuddyTextFieldUI.class);
-		}
-
-		@Override
-		public BuddyTextFieldUI wrapUI(TextUI textUI) {
-			return new BuddyTextFieldUI(textUI);
-		}
-
-		/**
-		 * Every time the UI needs to be replaced we also need to make sure,
-		 * that all buddy components are also in the component hierarchy.
-		 * (That's because {@link BasicTextUI} removes all our buddies upon UI
-		 * changes).
-		 */
-		@Override
-		protected boolean replaceUIIfNeeded(JTextComponent textComponent) {
-			boolean replaced = super.replaceUIIfNeeded(textComponent);
-
-			if (replaced) {
-				ensureBuddiesAreInComponentHierarchy(textComponent);
-			}
-			return replaced;
-		}
 	}
 }

@@ -10,7 +10,6 @@ import java.beans.PropertyChangeListener;
 
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JPopupMenu;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
@@ -19,9 +18,8 @@ import javax.swing.UIManager;
 import javax.swing.text.Document;
 
 import org.jdesktop.swingx.plaf.LookAndFeelAddons;
-import org.jdesktop.xswingx.plaf.AbstractUIChangeHandler;
 import org.jdesktop.xswingx.plaf.JXSearchFieldAddon;
-import org.jdesktop.xswingx.plaf.basic.BasicSearchFieldUI;
+import org.jdesktop.xswingx.plaf.TextUIWrapper;
 
 /**
  * A text field with a search icon in which the user enters text that identifies
@@ -170,18 +168,8 @@ public class JXSearchField extends JXTextField {
 	 * @param prompt
 	 */
 	public JXSearchField(String prompt) {
-		// This must be called BEFORE the default UI is replaced by the search
-		// fields UI to make the native search field on Mac OS Leopard render
-		// correctly.
+		super(prompt);
 		setUseNativeSearchFieldIfPossible(true);
-		// now we can wrap the default UI.
-		uiChangeHandler.install(this);
-
-		// We're extending JXTextField, but we cannot call the super constructor
-		// with the prompt because then the wrapping UI would be installed,
-		// before the native search field support is installed (see above) and
-		// thus rendering of the native search field on Leopard would be broken.
-		setPrompt(prompt);
 
 		// We cannot register the ClearAction through the Input- and
 		// ActionMap because ToolTipManager registers the escape key with an
@@ -194,9 +182,9 @@ public class JXSearchField extends JXTextField {
 				}
 			}
 		});
-		
-		//Map specific native properties to general JXSearchField properties.
-		addPropertyChangeListener(NativeSearchFieldSupport.FIND_POPUP_PROPERTY, new PropertyChangeListener(){
+
+		// Map specific native properties to general JXSearchField properties.
+		addPropertyChangeListener(NativeSearchFieldSupport.FIND_POPUP_PROPERTY, new PropertyChangeListener() {
 			public void propertyChange(PropertyChangeEvent evt) {
 				JPopupMenu oldPopup = (JPopupMenu) evt.getOldValue();
 				firePropertyChange("searchPopupMenu", oldPopup, evt.getNewValue());
@@ -499,7 +487,9 @@ public class JXSearchField extends JXTextField {
 	}
 
 	public void setUseNativeSearchFieldIfPossible(boolean useNativeSearchFieldIfPossible) {
+		TextUIWrapper.getDefaultWrapper().uninstall(this);
 		NativeSearchFieldSupport.setSearchField(this, useNativeSearchFieldIfPossible);
+		TextUIWrapper.getDefaultWrapper().install(this, true);
 		updateUI();
 	}
 
@@ -731,30 +721,6 @@ public class JXSearchField extends JXTextField {
 			}
 			requestFocusInWindow();
 			selectAll();
-		}
-	}
-
-	private static final UIChangeHandler uiChangeHandler = new UIChangeHandler();
-
-	private static class UIChangeHandler extends AbstractUIChangeHandler {
-		/**
-		 * Overriden to also replace the UI with {@link BasicSearchFieldUI} if
-		 * needed.
-		 */
-		@Override
-		public void install(JComponent c) {
-			super.install(c);
-			replaceUIIfNeeded((JXSearchField) c);
-		}
-
-		public void propertyChange(PropertyChangeEvent evt) {
-			replaceUIIfNeeded((JXSearchField) evt.getSource());
-		}
-
-		private void replaceUIIfNeeded(JXSearchField sf) {
-			if (!(sf.getUI() instanceof BasicSearchFieldUI)) {
-				sf.setUI(new BasicSearchFieldUI(sf.getUI()));
-			}
 		}
 	}
 }

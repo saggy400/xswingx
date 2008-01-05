@@ -6,7 +6,14 @@ import java.beans.PropertyChangeListener;
 import javax.swing.JComponent;
 import javax.swing.UIDefaults;
 import javax.swing.plaf.TextUI;
+import javax.swing.plaf.basic.BasicTextAreaUI;
+import javax.swing.plaf.basic.BasicTextFieldUI;
+import javax.swing.plaf.basic.BasicTextUI;
 import javax.swing.text.JTextComponent;
+
+import org.jdesktop.xswingx.BuddySupport;
+import org.jdesktop.xswingx.JXSearchField;
+import org.jdesktop.xswingx.plaf.basic.BasicSearchFieldUI;
 
 /**
  * TODO:
@@ -16,9 +23,15 @@ import javax.swing.text.JTextComponent;
  * @param <UI>
  */
 public abstract class TextUIWrapper<UI extends TextUI> {
+	private static final DefaultWrapper defaultWrapper = new DefaultWrapper();
+
+	public static final TextUIWrapper<? extends PromptTextUI> getDefaultWrapper() {
+		return defaultWrapper;
+	}
+
 	private Class<UI> wrapperClass;
 
-	public TextUIWrapper(Class<UI> wrapperClass) {
+	protected TextUIWrapper(Class<UI> wrapperClass) {
 		this.wrapperClass = wrapperClass;
 	}
 
@@ -54,7 +67,7 @@ public abstract class TextUIWrapper<UI extends TextUI> {
 			return false;
 		}
 
-		textComponent.setUI(wrapUI(textComponent.getUI()));
+		textComponent.setUI(wrapUI(textComponent));
 
 		return true;
 	}
@@ -66,7 +79,7 @@ public abstract class TextUIWrapper<UI extends TextUI> {
 	 * @param textUI
 	 * @return the wrapping UI
 	 */
-	public abstract UI wrapUI(TextUI textUI);
+	public abstract UI wrapUI(JTextComponent textComponent);
 
 	/**
 	 * Returns the wrapper class.
@@ -93,11 +106,70 @@ public abstract class TextUIWrapper<UI extends TextUI> {
 	}
 
 	private final TextUIChangeHandler uiChangeHandler = new TextUIChangeHandler();
+
 	private final class TextUIChangeHandler extends AbstractUIChangeHandler {
 		public void propertyChange(PropertyChangeEvent evt) {
 			JTextComponent txt = (JTextComponent) evt.getSource();
 
 			replaceUIIfNeeded(txt);
+		}
+	}
+
+	public static final class DefaultWrapper extends TextUIWrapper<PromptTextUI> {
+		private DefaultWrapper() {
+			super(PromptTextUI.class);
+		}
+
+		/**
+		 * <p>
+		 * Creates a new {@link PromptTextUI}, which wraps the given
+		 * <code>textUI</code>.
+		 * </p>
+		 * <p>
+		 * If <code>textUI</code> is of type {@link PromptTextUI},
+		 * <code>textUI</code> will be returned. If <code>textUI</code> is
+		 * of type {@link BasicTextFieldUI} a {@link BuddyTextFieldUI} object
+		 * will be returned. If <code>textUI</code> is of type
+		 * {@link BasicTextAreaUI} a {@link PromptTextAreaUI} object will be
+		 * returned.
+		 * </p>
+		 * 
+		 * @param textComponent
+		 *            wrap this components UI
+		 * @return a {@link PromptTextUI} which wraps <code>textUI</code>
+		 */
+		@Override
+		public PromptTextUI wrapUI(JTextComponent textComponent) {
+			TextUI textUI = textComponent.getUI();
+
+			if (textUI instanceof PromptTextUI) {
+				return (PromptTextUI) textUI;
+			} else if (textUI instanceof BasicTextFieldUI) {
+				if (textComponent instanceof JXSearchField) {
+					return new BasicSearchFieldUI(textUI);
+				} else {
+					return new BuddyTextFieldUI(textUI);
+				}
+			} else if (textUI instanceof BasicTextAreaUI) {
+				return new PromptTextAreaUI(textUI);
+			}
+			throw new IllegalArgumentException();
+		}
+
+		/**
+		 * Every time the UI needs to be replaced we also need to make sure,
+		 * that all buddy components are also in the component hierarchy.
+		 * (That's because {@link BasicTextUI} removes all our buddies upon UI
+		 * changes).
+		 */
+		@Override
+		protected boolean replaceUIIfNeeded(JTextComponent textComponent) {
+			boolean replaced = super.replaceUIIfNeeded(textComponent);
+
+			if (replaced) {
+				BuddySupport.ensureBuddiesAreInComponentHierarchy(textComponent);
+			}
+			return replaced;
 		}
 	}
 }
