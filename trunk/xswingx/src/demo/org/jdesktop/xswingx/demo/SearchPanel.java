@@ -663,7 +663,7 @@ public class SearchPanel extends javax.swing.JPanel {
 	}// GEN-LAST:event_searchFieldActionPerformed
 
 	private void btnResetIconsActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnResetIconsActionPerformed
-		searchField.getSearchButton().setIcon(UIManager.getIcon("SearchField.icon"));
+		searchField.getFindButton().setIcon(UIManager.getIcon("SearchField.icon"));
 	}// GEN-LAST:event_btnResetIconsActionPerformed
 
 	private void btnSearchIconActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnSearchIconActionPerformed
@@ -671,7 +671,7 @@ public class SearchPanel extends javax.swing.JPanel {
 		fc.showOpenDialog(this);
 		File f = fc.getSelectedFile();
 		try {
-			searchField.getSearchButton().setIcon(new ImageIcon(f.getAbsolutePath()));
+			searchField.getFindButton().setIcon(new ImageIcon(f.getAbsolutePath()));
 			searchFieldChanged();
 		} catch (Exception ex) {
 

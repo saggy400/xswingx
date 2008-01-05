@@ -25,6 +25,7 @@ import javax.swing.plaf.InsetsUIResource;
 import javax.swing.plaf.UIResource;
 
 import org.jdesktop.xswingx.JXSearchField.ClearAction;
+import org.jdesktop.xswingx.JXSearchField.FindAction;
 import org.jdesktop.xswingx.JXSearchField.LayoutStyle;
 import org.jdesktop.xswingx.JXSearchField.SearchMode;
 import org.jdesktop.xswingx.plaf.basic.BasicSearchFieldUI;
@@ -85,6 +86,25 @@ public class JXSearchFieldTest {
 	}
 	
 	@Test
+	public void testFindAction() throws Exception {
+		assertSame(FindAction.class, searchField.getFindAction().getClass());
+		ActionListener a = new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				eventReceived = true;
+			}
+		};
+		searchField.setFindAction(a);
+		assertSame(a, searchField.getFindAction());
+		eventReceived = false;
+		searchField.getFindButton().doClick(0);
+		assertTrue(eventReceived);
+		
+		
+		NativeSearchFieldSupport.setFindAction(searchField, null);
+		assertSame(FindAction.class, searchField.getFindAction().getClass());
+	}
+	
+	@Test
 	public void testCancelActionPropertyChange() throws Exception {
 		final ActionListener action = new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
@@ -101,6 +121,25 @@ public class JXSearchFieldTest {
 		NativeSearchFieldSupport.setCancelAction(searchField, action);
 		assertTrue(eventReceived);
 		assertSame(searchField.getCancelAction(), action);
+	}
+	
+	@Test
+	public void testFindActionPropertyChange() throws Exception {
+		final ActionListener action = new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+			}
+		};
+		searchField.addPropertyChangeListener("findAction", new PropertyChangeListener(){
+			public void propertyChange(PropertyChangeEvent evt) {
+				assertSame(evt.getOldValue().getClass(), FindAction.class);
+				assertSame(evt.getNewValue(), action);
+				eventReceived = true;
+			}
+		});
+		
+		NativeSearchFieldSupport.setFindAction(searchField, action);
+		assertTrue(eventReceived);
+		assertSame(searchField.getFindAction(), action);
 	}
 	
 	@Test
@@ -162,30 +201,30 @@ public class JXSearchFieldTest {
 	
 	@Test
 	public void testButtonVisibility() throws Exception {
-		assertTrue(searchField.getSearchButton().isVisible());
+		assertTrue(searchField.getFindButton().isVisible());
 		assertFalse(searchField.getCancelButton().isVisible());
 
 		assertTrue(searchField.isMacLayoutStyle());
 		assertTrue(searchField.isInstantSearchMode());
 		searchField.setText("text");
-		assertTrue(searchField.getSearchButton().isVisible());
+		assertTrue(searchField.getFindButton().isVisible());
 		assertTrue(searchField.getCancelButton().isVisible());
 
 		searchField.setLayoutStyle(LayoutStyle.VISTA);
-		assertFalse(searchField.getSearchButton().isVisible());
+		assertFalse(searchField.getFindButton().isVisible());
 		assertTrue(searchField.getCancelButton().isVisible());
 		
 		searchField.setSearchMode(SearchMode.REGULAR);
-		assertTrue(searchField.getSearchButton().isVisible());
+		assertTrue(searchField.getFindButton().isVisible());
 		assertFalse(searchField.getCancelButton().isVisible());
 		
 		searchField.setFindPopupMenu(new JPopupMenu());
 		searchField.setUseSeperatePopupButton(false);
-		assertFalse(searchField.getSearchButton().isVisible());
+		assertFalse(searchField.getFindButton().isVisible());
 		assertTrue(searchField.getPopupButton().isVisible());
 		
 		searchField.setUseSeperatePopupButton(true);
-		assertTrue(searchField.getSearchButton().isVisible());
+		assertTrue(searchField.getFindButton().isVisible());
 		assertTrue(searchField.getPopupButton().isVisible());
 	}
 
@@ -198,11 +237,11 @@ public class JXSearchFieldTest {
 			}
 		});
 		assertTrue(searchField.isInstantSearchMode());
-		assertSame(UIManager.getIcon("SearchField.icon"), searchField.getSearchButton().getIcon());
-		assertNull(searchField.getSearchButton().getRolloverIcon());
-		assertNull(searchField.getSearchButton().getPressedIcon());
+		assertSame(UIManager.getIcon("SearchField.icon"), searchField.getFindButton().getIcon());
+		assertNull(searchField.getFindButton().getRolloverIcon());
+		assertNull(searchField.getFindButton().getPressedIcon());
 		eventReceived = false;
-		searchField.getSearchButton().doClick();
+		searchField.getFindButton().doClick();
 		assertFalse(eventReceived);
 		searchField.setText("test");
 		assertTrue(eventReceived);
@@ -210,11 +249,11 @@ public class JXSearchFieldTest {
 		eventReceived = false;
 		searchField.setSearchMode(SearchMode.REGULAR);
 		assertTrue(searchField.isRegularSearchMode());
-		assertSame(UIManager.getIcon("SearchField.rolloverIcon"), searchField.getSearchButton().getRolloverIcon());
-		assertSame(UIManager.getIcon("SearchField.pressedIcon"), searchField.getSearchButton().getPressedIcon());
+		assertSame(UIManager.getIcon("SearchField.rolloverIcon"), searchField.getFindButton().getRolloverIcon());
+		assertSame(UIManager.getIcon("SearchField.pressedIcon"), searchField.getFindButton().getPressedIcon());
 		
 		focused = true;
-		searchField.getSearchButton().doClick();
+		searchField.getFindButton().doClick();
 		assertTrue(eventReceived);
 	}
 
@@ -224,32 +263,32 @@ public class JXSearchFieldTest {
 		searchField.setEnabled(true);
 //		assertFalse(searchField.getCancelAction().isEnabled());
 		assertFalse(searchField.getCancelButton().isEnabled());
-		assertTrue(searchField.getSearchAction().isEnabled());
-		assertTrue(searchField.getSearchButton().isEnabled());
+//		assertTrue(searchField.getSearchAction().isEnabled());
+		assertTrue(searchField.getFindButton().isEnabled());
 		assertTrue(searchField.getPopupButton().isEnabled());
 
 		searchField.setEditable(true);
 		searchField.setEnabled(false);
 //		assertFalse(searchField.getCancelAction().isEnabled());
 		assertFalse(searchField.getCancelButton().isEnabled());
-		assertFalse(searchField.getSearchAction().isEnabled());
-		assertFalse(searchField.getSearchButton().isEnabled());
+//		assertFalse(searchField.getSearchAction().isEnabled());
+		assertFalse(searchField.getFindButton().isEnabled());
 		assertFalse(searchField.getPopupButton().isEnabled());
 
 		searchField.setEditable(false);
 		searchField.setEnabled(false);
 //		assertFalse(searchField.getCancelAction().isEnabled());
 		assertFalse(searchField.getCancelButton().isEnabled());
-		assertFalse(searchField.getSearchAction().isEnabled());
-		assertFalse(searchField.getSearchButton().isEnabled());
+//		assertFalse(searchField.getSearchAction().isEnabled());
+		assertFalse(searchField.getFindButton().isEnabled());
 		assertFalse(searchField.getPopupButton().isEnabled());
 
 		searchField.setEditable(true);
 		searchField.setEnabled(true);
 //		assertTrue(searchField.getCancelAction().isEnabled());
 		assertTrue(searchField.getCancelButton().isEnabled());
-		assertTrue(searchField.getSearchAction().isEnabled());
-		assertTrue(searchField.getSearchButton().isEnabled());
+//		assertTrue(searchField.getSearchAction().isEnabled());
+		assertTrue(searchField.getFindButton().isEnabled());
 		assertTrue(searchField.getPopupButton().isEnabled());
 	}
 	
@@ -258,16 +297,16 @@ public class JXSearchFieldTest {
 		assertSame(LayoutStyle.MAC, searchField.getLayoutStyle());
 		assertTrue(searchField.isMacLayoutStyle());
 		assertFalse(searchField.getCancelButton().isVisible());
-		assertTrue(searchField.getSearchButton().isVisible());
+		assertTrue(searchField.getFindButton().isVisible());
 		
 		searchField.setText("test");
 		assertTrue(searchField.getCancelButton().isVisible());
-		assertTrue(searchField.getSearchButton().isVisible());
+		assertTrue(searchField.getFindButton().isVisible());
 		
 		searchField.setLayoutStyle(LayoutStyle.VISTA);
 		assertTrue(searchField.isVistaLayoutStyle());
 		assertTrue(searchField.getCancelButton().isVisible());
-		assertFalse(searchField.getSearchButton().isVisible());
+		assertFalse(searchField.getFindButton().isVisible());
 	}
 	
 	@Test
@@ -283,32 +322,32 @@ public class JXSearchFieldTest {
 		searchField.updateUI();
 		
 		assertSame(UIManager.getIcon("SearchField.icon"),
-				searchField.getSearchButton().getIcon());
+				searchField.getFindButton().getIcon());
 		assertFalse(searchField.isRegularSearchMode());
-		assertNull(searchField.getSearchButton().getRolloverIcon());
-		assertNull(searchField.getSearchButton().getPressedIcon());
+		assertNull(searchField.getFindButton().getRolloverIcon());
+		assertNull(searchField.getFindButton().getPressedIcon());
 		
 		searchField.setSearchMode(SearchMode.REGULAR);
 		assertSame(UIManager.getIcon("SearchField.icon"),
-				searchField.getSearchButton().getIcon());
+				searchField.getFindButton().getIcon());
 		assertSame(UIManager.getIcon("SearchField.rolloverIcon"),
-				searchField.getSearchButton().getRolloverIcon());
+				searchField.getFindButton().getRolloverIcon());
 		assertSame(UIManager.getIcon("SearchField.pressedIcon"),
-				searchField.getSearchButton().getPressedIcon());
+				searchField.getFindButton().getPressedIcon());
 		
 		TestIcon diff = new TestIcon("different");
-		searchField.getSearchButton().setRolloverIcon(diff);
+		searchField.getFindButton().setRolloverIcon(diff);
 		searchField.updateUI();
 		assertSame(diff,
-				searchField.getSearchButton().getRolloverIcon());
-		searchField.getSearchButton().setPressedIcon(diff);
+				searchField.getFindButton().getRolloverIcon());
+		searchField.getFindButton().setPressedIcon(diff);
 		searchField.updateUI();
 		assertSame(diff,
-				searchField.getSearchButton().getPressedIcon());
-		searchField.getSearchButton().setIcon(diff);
+				searchField.getFindButton().getPressedIcon());
+		searchField.getFindButton().setIcon(diff);
 		searchField.updateUI();
 		assertSame(diff,
-				searchField.getSearchButton().getIcon());
+				searchField.getFindButton().getIcon());
 	}
 	
 	@Test
@@ -319,22 +358,22 @@ public class JXSearchFieldTest {
 		searchField.updateUI();
 		
 		assertNotSame(UIManager.getIcon("SearchField.popupIcon"),
-				searchField.getSearchButton().getIcon());
+				searchField.getFindButton().getIcon());
 		assertNotSame(UIManager.getIcon("SearchField.popupRolloverIcon"),
-				searchField.getSearchButton().getRolloverIcon());
+				searchField.getFindButton().getRolloverIcon());
 		assertNotSame(UIManager.getIcon("SearchField.popupPressedIcon"),
-				searchField.getSearchButton().getPressedIcon());
+				searchField.getFindButton().getPressedIcon());
 		
 		searchField.setUseSeperatePopupButton(true);
 		
 		assertSame(UIManager.getIcon("SearchField.icon"),
-				searchField.getSearchButton().getIcon());
+				searchField.getFindButton().getIcon());
 		
 		searchField.setSearchMode(SearchMode.REGULAR);
 		assertSame(UIManager.getIcon("SearchField.rolloverIcon"),
-				searchField.getSearchButton().getRolloverIcon());
+				searchField.getFindButton().getRolloverIcon());
 		assertSame(UIManager.getIcon("SearchField.pressedIcon"),
-				searchField.getSearchButton().getPressedIcon());
+				searchField.getFindButton().getPressedIcon());
 		
 		assertSame(UIManager.getIcon("SearchField.popupIcon"),
 				searchField.getPopupButton().getIcon());
@@ -347,7 +386,7 @@ public class JXSearchFieldTest {
 	@Test
 	public void testPopupButton() throws Exception {
 		searchField.setFindPopupMenu(new JPopupMenu());
-		assertFalse(searchField.getSearchButton().isVisible());
+		assertFalse(searchField.getFindButton().isVisible());
 		assertTrue(searchField.getPopupButton().isVisible());
 		
 		assertFalse(searchField.isUseSeperatePopupButton());
@@ -358,12 +397,12 @@ public class JXSearchFieldTest {
 		});
 		searchField.setUseSeperatePopupButton(true);
 		assertTrue(eventReceived);
-		assertTrue(searchField.getSearchButton().isVisible());
+		assertTrue(searchField.getFindButton().isVisible());
 		assertTrue(searchField.getPopupButton().isVisible());
 		
 		searchField.setFindPopupMenu(null);
 		assertFalse(searchField.getPopupButton().isVisible());
-		assertTrue(searchField.getSearchButton().isVisible());
+		assertTrue(searchField.getFindButton().isVisible());
 	}
 	
 	@Test
@@ -374,20 +413,20 @@ public class JXSearchFieldTest {
 			}
 		});
 		assertFalse(searchField.isRegularSearchMode());
-		searchField.getSearchAction().actionPerformed(null);
+		searchField.getFindAction().actionPerformed(null);
 		assertFalse(eventReceived);
 		
 		searchField.setSearchMode(SearchMode.REGULAR);
 		focused = false;
-		searchField.getSearchAction().actionPerformed(null);
+		searchField.getFindAction().actionPerformed(null);
 		assertFalse(eventReceived);
 		focused = true;
-		searchField.getSearchAction().actionPerformed(null);
+		searchField.getFindAction().actionPerformed(null);
 		assertTrue(eventReceived);
 		
 		eventReceived = false;
 		searchField.setUseSeperatePopupButton(true);
-		searchField.getSearchAction().actionPerformed(null);
+		searchField.getFindAction().actionPerformed(null);
 		assertTrue(eventReceived);
 	}
 	
