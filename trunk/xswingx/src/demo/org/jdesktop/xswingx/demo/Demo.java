@@ -5,8 +5,6 @@ import javax.swing.JMenuBar;
 import javax.swing.JTabbedPane;
 import javax.swing.UIManager;
 
-import ch.randelshofer.quaqua.QuaquaLookAndFeel;
-
 import com.jgoodies.looks.plastic.Plastic3DLookAndFeel;
 import com.jgoodies.looks.plastic.PlasticXPLookAndFeel;
 import com.jgoodies.looks.windows.WindowsLookAndFeel;
@@ -21,7 +19,6 @@ public class Demo {
 		UIManager.installLookAndFeel("JGoodies Windows", WindowsLookAndFeel.class.getName());
 		UIManager.installLookAndFeel("JGoodies Plastic", Plastic3DLookAndFeel.class.getName());
 		UIManager.installLookAndFeel("JGoodies Plastic XP", PlasticXPLookAndFeel.class.getName());
-		UIManager.installLookAndFeel("Quaqua", QuaquaLookAndFeel.class.getName());
 		
 		JFrame f = new JFrame("xswingx Demo");
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
