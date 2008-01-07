@@ -66,9 +66,9 @@ public class JXSearchField extends JXTextField {
 	public enum LayoutStyle {
 		/**
 		 * <p>
-		 * In VISTA layout style, the find button is placed on the right side
-		 * of the search field. If text is entered, the find button is
-		 * replaced by the cancel button when the actual search mode is
+		 * In VISTA layout style, the find button is placed on the right side of
+		 * the search field. If text is entered, the find button is replaced by
+		 * the cancel button when the actual search mode is
 		 * {@link SearchMode#INSTANT}. When the search mode is
 		 * {@link SearchMode#REGULAR} the find button will always stay visible
 		 * and the cancel button will never be shown. However, 'Escape' can
@@ -150,6 +150,10 @@ public class JXSearchField extends JXTextField {
 
 	private Timer instantSearchTimer;
 
+	private String recentSearchesSaveKey;
+
+	private RecentSearches recentSearches;
+
 	/**
 	 * Creates a new search field with a default prompt.
 	 */
@@ -188,7 +192,7 @@ public class JXSearchField extends JXTextField {
 		addPropertyChangeListener(NativeSearchFieldSupport.FIND_POPUP_PROPERTY, new PropertyChangeListener() {
 			public void propertyChange(PropertyChangeEvent evt) {
 				JPopupMenu oldPopup = (JPopupMenu) evt.getOldValue();
-				firePropertyChange("searchPopupMenu", oldPopup, evt.getNewValue());
+				firePropertyChange("findPopupMenu", oldPopup, evt.getNewValue());
 			}
 		});
 		addPropertyChangeListener(NativeSearchFieldSupport.CANCEL_ACTION_PROPERTY, new PropertyChangeListener() {
@@ -481,8 +485,8 @@ public class JXSearchField extends JXTextField {
 
 	/**
 	 * Returns <code>true</code> if the popup button should be visible and
-	 * used for displaying the find popup menu. Otherwise, the find popup
-	 * menu will be displayed when the find button is clicked.
+	 * used for displaying the find popup menu. Otherwise, the find popup menu
+	 * will be displayed when the find button is clicked.
 	 * 
 	 * @return <code>true</code> if the popup button should be used
 	 */
@@ -552,19 +556,31 @@ public class JXSearchField extends JXTextField {
 	 * Sets the popup menu that will be displayed when the popup button is
 	 * clicked. If a find popup menu is set and
 	 * {@link #isUseSeperatePopupButton()} returns <code>false</code>, the
-	 * popup button will be displayed instead of the find button. Otherwise
-	 * the popup button will be displayed in addition to the find button.
+	 * popup button will be displayed instead of the find button. Otherwise the
+	 * popup button will be displayed in addition to the find button.
 	 * 
-	 * The find popup menu is managed using {@link NativeSearchFieldSupport}
-	 * to achieve compatibility with the native search field support provided by
+	 * The find popup menu is managed using {@link NativeSearchFieldSupport} to
+	 * achieve compatibility with the native search field support provided by
 	 * the Mac Look And Feel since Mac OS 10.5.
 	 * 
-	 * @param searchPopupMenu
+	 * If a recent searches save key has been set and therefore a recent
+	 * searches popup menu is installed, this method does nothing. You must
+	 * first remove the recent searches save key, by calling
+	 * {@link #setRecentSearchesSaveKey(String)} with a <code>null</code>
+	 * parameter.
+	 * 
+	 * @see #setRecentSearchesSaveKey(String)
+	 * @see RecentSearches
+	 * @param findPopupMenu
 	 *            the popup menu, which will be displayed when the popup button
 	 *            is clicked
 	 */
-	public void setFindPopupMenu(JPopupMenu searchPopupMenu) {
-		NativeSearchFieldSupport.setFindPopupMenu(this, searchPopupMenu);
+	public void setFindPopupMenu(JPopupMenu findPopupMenu) {
+		if (isManagingRecentSearches()) {
+			return;
+		}
+
+		NativeSearchFieldSupport.setFindPopupMenu(this, findPopupMenu);
 	}
 
 	/**
@@ -575,6 +591,70 @@ public class JXSearchField extends JXTextField {
 	 */
 	public JPopupMenu getFindPopupMenu() {
 		return NativeSearchFieldSupport.getFindPopupMenu(this);
+	}
+
+	/**
+	 * TODO
+	 * 
+	 * @return
+	 */
+	public final boolean isManagingRecentSearches() {
+		return recentSearches != null;
+	}
+
+	private boolean isValidRecentSearchesKey(String key) {
+		return key != null && key.length() > 0;
+	}
+
+	/**
+	 * Returns the key used to persist recent searches.
+	 * 
+	 * @see #setRecentSearchesSaveKey(String)
+	 * @return
+	 */
+	public String getRecentSearchesSaveKey() {
+		return recentSearchesSaveKey;
+	}
+
+	/**
+	 * Installs and manages a recent searches popup menu as the find popup menu,
+	 * if <code>recentSearchesSaveKey</code> is not null. Otherwise, removes
+	 * the popup menu and stops managing recent searches.
+	 * 
+	 * @see #setFindAction(ActionListener)
+	 * @see #isManagingRecentSearches()
+	 * @see RecentSearches
+	 * 
+	 * @param recentSearchesSaveKey
+	 *            this key is used to persist the recent searches.
+	 */
+	public void setRecentSearchesSaveKey(String recentSearchesSaveKey) {
+		String oldName = getRecentSearchesSaveKey();
+		this.recentSearchesSaveKey = recentSearchesSaveKey;
+
+		if (recentSearches != null) {
+			// set null before uninstalling. otherwise the popup menu is not
+			// allowed to be changed.
+			RecentSearches rs = recentSearches;
+			recentSearches = null;
+			rs.uninstall(this);
+		}
+
+		if (isValidRecentSearchesKey(recentSearchesSaveKey)) {
+			recentSearches = new RecentSearches(recentSearchesSaveKey);
+			recentSearches.install(this);
+		}
+
+		firePropertyChange("recentSearchesSaveKey", oldName, this.recentSearchesSaveKey);
+	}
+
+	/**
+	 * TODO
+	 * 
+	 * @return
+	 */
+	public RecentSearches getRecentSearches() {
+		return recentSearches;
 	}
 
 	/**

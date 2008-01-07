@@ -12,7 +12,7 @@ public class JXSearchFieldBeanInfo extends JXTextFieldBeanInfo {
 
 	protected void initialize() {
 		super.initialize();
-		setPreferred(true, "layoutStyle", "searchMode", "instantSearchDelay", "findPopupMenu", "useNativeSearchFieldIfPossible");
+		setPreferred(true, "layoutStyle", "searchMode", "instantSearchDelay", "findPopupMenu", "useNativeSearchFieldIfPossible", "recentSearchesSaveKey");
 
 		setEnumerationValues(
 				new EnumerationValue[] {
