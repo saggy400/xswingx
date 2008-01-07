@@ -173,6 +173,11 @@ public class BuddyLayoutAndBorder implements LayoutManager, Border, PropertyChan
 		} else {
 			insets = new Insets(0, 0, 0, 0);
 		}
+		//somehow this happens sometimes
+		if (textField == null) {
+			return insets;
+		}
+		
 		for (Component comp : BuddySupport.getLeft(textField)) {
 			insets.left += comp.isVisible() ? comp.getPreferredSize().width : 0;
 		}
