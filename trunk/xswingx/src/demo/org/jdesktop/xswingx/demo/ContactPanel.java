@@ -6,6 +6,7 @@
 
 package org.jdesktop.xswingx.demo;
 
+import java.awt.*;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.FocusAdapter;
@@ -23,6 +24,7 @@ import javax.swing.text.DateFormatter;
 import javax.swing.text.DefaultFormatterFactory;
 import javax.swing.text.JTextComponent;
 import com.jgoodies.forms.factories.*;
+import org.jdesktop.xswingx.*;
 
 import org.jdesktop.xswingx.JXFormattedTextField;
 import org.jdesktop.xswingx.JXTextArea;
@@ -156,8 +158,6 @@ public class ContactPanel extends javax.swing.JPanel {
 				FormFactory.DEFAULT_ROWSPEC,
 				FormFactory.LINE_GAP_ROWSPEC,
 				new RowSpec(RowSpec.CENTER, Sizes.DEFAULT, FormSpec.DEFAULT_GROW),
-				FormFactory.LINE_GAP_ROWSPEC,
-				FormFactory.DEFAULT_ROWSPEC,
 				FormFactory.LINE_GAP_ROWSPEC,
 				FormFactory.DEFAULT_ROWSPEC,
 				FormFactory.LINE_GAP_ROWSPEC,

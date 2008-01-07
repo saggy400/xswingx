@@ -266,8 +266,9 @@ public class RecentSearches implements ActionListener {
 	 */
 	public void uninstall(JXSearchField searchField) {
 		searchField.removeActionListener(this);
-		if (searchField.getFindPopupMenu() instanceof ChangeListener) {
+		if (searchField.getFindPopupMenu() instanceof RecentSearchesPopup) {
 			removeChangeListener((ChangeListener) searchField.getFindPopupMenu());
+			searchField.setFindPopupMenu(null);
 		}
 	}
 

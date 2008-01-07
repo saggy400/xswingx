@@ -28,6 +28,7 @@ import org.jdesktop.xswingx.JXSearchField.ClearAction;
 import org.jdesktop.xswingx.JXSearchField.FindAction;
 import org.jdesktop.xswingx.JXSearchField.LayoutStyle;
 import org.jdesktop.xswingx.JXSearchField.SearchMode;
+import org.jdesktop.xswingx.RecentSearches.RecentSearchesPopup;
 import org.jdesktop.xswingx.plaf.basic.BasicSearchFieldUI;
 import org.junit.Assert;
 import org.junit.Before;
@@ -54,7 +55,7 @@ public class JXSearchFieldTest {
 	@Test
 	public void testSearchPopupPropertyChange() throws Exception {
 		final JPopupMenu popupMenu = new JPopupMenu();
-		searchField.addPropertyChangeListener("searchPopupMenu", new PropertyChangeListener(){
+		searchField.addPropertyChangeListener("findPopupMenu", new PropertyChangeListener(){
 			public void propertyChange(PropertyChangeEvent evt) {
 				assertNull(evt.getOldValue());
 				assertSame(evt.getNewValue(), popupMenu);
@@ -509,6 +510,56 @@ public class JXSearchFieldTest {
 		searchField.setUseNativeSearchFieldIfPossible(false);
 		assertFalse(searchField.isUseNativeSearchFieldIfPossible());
 		assertFalse(NativeSearchFieldSupport.isSearchField(searchField));
+	}
+	
+	@Test
+	public void testManageRecentSearches() throws Exception {
+		assertNull(searchField.getRecentSearches());
+		assertFalse(searchField.isManagingRecentSearches());
+		
+		searchField.addPropertyChangeListener("recentSearchesSaveKey", new PropertyChangeListener(){
+			public void propertyChange(PropertyChangeEvent evt) {
+				eventReceived = true;
+			}
+		});
+		
+		searchField.setRecentSearchesSaveKey("test");
+		assertTrue(eventReceived);
+		assertTrue(searchField.isManagingRecentSearches());
+		assertSame("test", searchField.getRecentSearchesSaveKey());
+		assertSame(RecentSearchesPopup.class, searchField.getFindPopupMenu().getClass());
+		
+		eventReceived = false;
+		searchField.setRecentSearchesSaveKey(null);
+		assertTrue(eventReceived);
+		assertFalse(searchField.isManagingRecentSearches());
+		assertNull(searchField.getRecentSearchesSaveKey());
+		assertNull(searchField.getFindPopupMenu());
+		assertNull(searchField.getRecentSearches());
+	}
+	
+	@Test
+	public void testChangeRecentSearchesName() throws Exception {
+		searchField.setRecentSearchesSaveKey("test");
+		RecentSearches rs = searchField.getRecentSearches();
+		rs.removeAll();
+		rs.put("test1");
+		
+		searchField.setRecentSearchesSaveKey("test2");
+		searchField.setRecentSearchesSaveKey("test");
+		
+		rs = searchField.getRecentSearches();
+		assertSame(1, rs.getLength());
+		assertEquals("test1", rs.getRecentSearches()[0]);
+	}
+	
+	@Test
+	public void testManageRecentSearchesAndSetPopup() throws Exception {
+		searchField.setRecentSearchesSaveKey("test");
+		JPopupMenu pm = new JPopupMenu();
+		searchField.setFindPopupMenu(pm);
+		
+		assertNotSame(pm, searchField.getFindPopupMenu());
 	}
 	
 	class TestIcon implements Icon{

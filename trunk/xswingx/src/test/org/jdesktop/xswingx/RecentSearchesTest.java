@@ -1,6 +1,7 @@
 package org.jdesktop.xswingx;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 
 import java.util.prefs.Preferences;
@@ -98,5 +99,6 @@ public class RecentSearchesTest {
 
 		assertSame(0, searchField.getActionListeners().length);
 		assertSame(0, searchHistory.getChangeListeners().length);
+		assertNull(searchField.getFindPopupMenu());
 	}
 }

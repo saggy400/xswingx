@@ -386,7 +386,7 @@ public class BasicSearchFieldUI extends BuddyTextFieldUI {
 			Object src = evt.getSource();
 
 			if (src.equals(searchField)) {
-				if ("searchPopupMenu".equals(prop) || "searchMode".equals(prop)
+				if ("findPopupMenu".equals(prop) || "searchMode".equals(prop)
 						|| "useSeperatePopupButton".equals(prop) || "searchMode".equals(prop)
 						|| "layoutStyle".equals(prop)) {
 					layoutButtons();

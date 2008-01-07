@@ -1,14 +1,23 @@
 package org.jdesktop.xswingx.demo;
 
-import java.awt.event.*;
-import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerNumberModel;
+import javax.swing.UIManager;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.text.JTextComponent;
 
 import org.jdesktop.xswingx.JXSearchField;
 import org.jdesktop.xswingx.NativeSearchFieldSupport;
-import org.jdesktop.xswingx.RecentSearches;
 import org.jdesktop.xswingx.JXSearchField.LayoutStyle;
 import org.jdesktop.xswingx.JXSearchField.SearchMode;
 
@@ -83,9 +92,9 @@ public class CustomizeSearchPanel extends CustomizePanel {
 
 	private void cbWithPopupStateChanged(ChangeEvent e) {
 		if(cbWithPopup.isSelected()){
-			new RecentSearches("demoSearch").install(getSearchField());
+			getSearchField().setRecentSearchesSaveKey("demoSearch");
 		}else{
-			getSearchField().setFindPopupMenu(null);
+			getSearchField().setRecentSearchesSaveKey(null);
 		}
 	}
 
