@@ -131,13 +131,6 @@ public class ContactPanel extends javax.swing.JPanel {
 		setBackground(Color.white);
 		setBorder(Borders.DLU4_BORDER);
 
-		// JFormDesigner evaluation mark
-		setBorder(new javax.swing.border.CompoundBorder(
-			new javax.swing.border.TitledBorder(new javax.swing.border.EmptyBorder(0, 0, 0, 0),
-				"JFormDesigner Evaluation", javax.swing.border.TitledBorder.CENTER,
-				javax.swing.border.TitledBorder.BOTTOM, new java.awt.Font("Dialog", java.awt.Font.BOLD, 12),
-				java.awt.Color.red), getBorder())); addPropertyChangeListener(new java.beans.PropertyChangeListener(){public void propertyChange(java.beans.PropertyChangeEvent e){if("border".equals(e.getPropertyName()))throw new RuntimeException();}});
-
 		setLayout(new FormLayout(
 			new ColumnSpec[] {
 				FormFactory.DEFAULT_COLSPEC,
@@ -166,17 +159,20 @@ public class ContactPanel extends javax.swing.JPanel {
 
 		//---- xTextField2 ----
 		xTextField2.setPrompt("Prefix");
+		xTextField2.setFont(xTextField2.getFont().deriveFont(xTextField2.getFont().getStyle() | Font.BOLD, xTextField2.getFont().getSize() + 2f));
 		add(xTextField2, cc.xy(1, 1));
 
 		//---- xTextField1 ----
 		xTextField1.setPrompt("First Name");
 		xTextField1.setPromptForeground(Color.red);
 		xTextField1.setToolTipText("You must enter a first name.");
+		xTextField1.setFont(xTextField1.getFont().deriveFont(xTextField1.getFont().getStyle() | Font.BOLD, xTextField1.getFont().getSize() + 2f));
 		add(xTextField1, cc.xy(3, 1));
 
 		//---- xTextField3 ----
 		xTextField3.setPrompt("Last Name");
 		xTextField3.setPromptFontStyle(null);
+		xTextField3.setFont(xTextField3.getFont().deriveFont(xTextField3.getFont().getStyle() | Font.BOLD, xTextField3.getFont().getSize() + 2f));
 		add(xTextField3, cc.xy(5, 1));
 
 		//---- label1 ----
