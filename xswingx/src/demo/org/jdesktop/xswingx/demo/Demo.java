@@ -1,9 +1,17 @@
 package org.jdesktop.xswingx.demo;
 
+import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.JFrame;
+import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JTabbedPane;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+import javax.swing.UIManager.LookAndFeelInfo;
 
 import com.jgoodies.looks.plastic.Plastic3DLookAndFeel;
 import com.jgoodies.looks.plastic.PlasticXPLookAndFeel;
@@ -23,7 +31,7 @@ public class Demo {
 		JFrame f = new JFrame("xswingx Demo");
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		JMenuBar mb = new JMenuBar();
-		mb.add(LabelDemo.createLookAndFeelMenu(f));
+		mb.add(Demo.createLookAndFeelMenu(f));
 		f.setJMenuBar(mb);
 		
 		JTabbedPane tb = new JTabbedPane();
@@ -34,6 +42,27 @@ public class Demo {
 		f.add(tb);
 		f.pack();
 		f.setVisible(true);
+	}
+	
+	public static JMenu createLookAndFeelMenu(final Component toUpdate) {
+		final JMenu lnf = new JMenu("Look and Feel");
+		for (final LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+			final JMenuItem mi = new JMenuItem(info.getName());
+			lnf.add(mi);
+
+			mi.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					try {
+						UIManager.setLookAndFeel(info.getClassName());
+						SwingUtilities.updateComponentTreeUI(toUpdate);
+					} catch (Exception ex) {
+						mi.setEnabled(false);
+						ex.printStackTrace();
+					}
+				}
+			});
+		}
+		return lnf;
 	}
 
 }
