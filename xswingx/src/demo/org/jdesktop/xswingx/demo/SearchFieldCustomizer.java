@@ -1,15 +1,23 @@
 package org.jdesktop.xswingx.demo;
 
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-import com.jgoodies.forms.factories.*;
-import com.jgoodies.forms.layout.*;
-import org.jdesktop.xswingx.*;
-import org.jdesktop.xswingx.demo.*;
-/*
- * Created by JFormDesigner on Wed Nov 21 09:09:11 CET 2007
- */
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+
+import org.jdesktop.xswingx.JXSearchField;
+
+import com.jgoodies.forms.factories.Borders;
+import com.jgoodies.forms.factories.FormFactory;
+import com.jgoodies.forms.layout.CellConstraints;
+import com.jgoodies.forms.layout.ColumnSpec;
+import com.jgoodies.forms.layout.FormLayout;
+import com.jgoodies.forms.layout.FormSpec;
+import com.jgoodies.forms.layout.RowSpec;
+import com.jgoodies.forms.layout.Sizes;
 
 
 
@@ -19,6 +27,10 @@ import org.jdesktop.xswingx.demo.*;
 public class SearchFieldCustomizer extends JPanel {
 	public SearchFieldCustomizer() {
 		initComponents();
+		//webstart fix
+		if(field.getPrompt() == null){
+			field.setPrompt("Search");
+		}
 	}
 
 	private void search(ActionEvent e) {
