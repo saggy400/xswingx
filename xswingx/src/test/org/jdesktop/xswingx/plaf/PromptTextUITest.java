@@ -14,7 +14,6 @@ import java.awt.Rectangle;
 import java.util.Arrays;
 
 import javax.swing.BorderFactory;
-import javax.swing.plaf.basic.BasicTextFieldUI;
 import javax.swing.text.JTextComponent;
 
 import org.jdesktop.swingx.util.JVM;
@@ -29,6 +28,7 @@ public abstract class PromptTextUITest {
     @Before
     public void setUI() {
         setup();
+        TextUIWrapper.getDefaultWrapper().install(textComponent, true);
         ui = (PromptTextUI) textComponent.getUI();
     }
 
@@ -121,7 +121,7 @@ public abstract class PromptTextUITest {
     @Test
     public void testPromptSupportStaysInstalledOnUIChange() {
     	assertTrue(textComponent.getUI() instanceof PromptTextUI);
-    	textComponent.setUI(new BasicTextFieldUI());
+    	textComponent.updateUI();
     	assertTrue(textComponent.getUI() instanceof PromptTextUI);
     }
 }

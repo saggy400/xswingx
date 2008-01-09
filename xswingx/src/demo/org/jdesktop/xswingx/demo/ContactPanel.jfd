@@ -38,6 +38,15 @@
          <string>prompt</string> 
          <string>Prefix</string> 
         </void> 
+        <void method="setProperty"> 
+         <string>font</string> 
+         <object id="SwingDerivedFont0" class="com.jformdesigner.model.SwingDerivedFont"> 
+          <null/> 
+          <int>1</int> 
+          <int>2</int> 
+          <boolean>false</boolean> 
+         </object> 
+        </void> 
         <void property="name"> 
          <string>xTextField2</string> 
         </void> 
@@ -61,6 +70,10 @@
          <string>toolTipText</string> 
          <string>You must enter a first name.</string> 
         </void> 
+        <void method="setProperty"> 
+         <string>font</string> 
+         <object idref="SwingDerivedFont0"/> 
+        </void> 
         <void property="name"> 
          <string>xTextField1</string> 
         </void> 
@@ -83,6 +96,10 @@
         <void method="setProperty"> 
          <string>promptFontStyle</string> 
          <object class="com.jformdesigner.model.FormObject" field="NULL_VALUE"/> 
+        </void> 
+        <void method="setProperty"> 
+         <string>font</string> 
+         <object idref="SwingDerivedFont0"/> 
         </void> 
         <void property="name"> 
          <string>xTextField3</string> 
