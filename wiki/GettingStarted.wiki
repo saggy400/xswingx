@@ -89,7 +89,7 @@ searchField.setSearchMode(SearchMode.INSTANT);
 An action event is fired when the text changes.
 In _Instant_ search mode you can set a search delay:
 {{{
-searchField.setInstantSearchDelay(100); //milliseconds. default: 50
+searchField.setInstantSearchDelay(100); //milliseconds. default: 180
 }}}
 
 *Regular
@@ -100,16 +100,16 @@ An action event is fired when the _notify_ action is invoked (typically that is,
 
 
 ==Adding a Popup Menu==
-Set a search popup menu by calling:
+Set a find popup menu by calling:
 {{{
-searchField.setSearchPopupMenu(popupMenu);
+searchField.setFindPopupMenu(popupMenu);
 }}}
 
-To add a Mac style recent searches popup to your search field, use the RecentSearches class:
+To add a Mac style recent searches popup to your search field, simply call:
 {{{
-new RecentSearches("aUniqueName").install(searchField);
+searchField.setRecentSearchesSaveKey("someUniqueKey");
 }}}
-The list of recent searches will automatically be persisted using the [http://java.sun.com/j2se/1.4.2/docs/guide/lang/preferences.html Java Preferences API] under the given name.
+The list of recent searches will automatically be persisted using the [http://java.sun.com/j2se/1.4.2/docs/guide/lang/preferences.html Java Preferences API] under the given key.
 
 The search field will automatically change it's icon (the Windows LnF even uses a seperate popup button) and display the popup menu appropriately:
 ||*Metal*||[http://xswingx.googlecode.com/svn/wiki/images/searchfield_metal_popup.png]||[http://xswingx.googlecode.com/svn/wiki/images/searchfield_metal_popup_clicked.png]||
@@ -117,8 +117,6 @@ The search field will automatically change it's icon (the Windows LnF even uses 
 ||*Windows XP*||[http://xswingx.googlecode.com/svn/wiki/images/searchfield_xp_popup.png]||[http://xswingx.googlecode.com/svn/wiki/images/searchfield_xp_popup_clicked.png]||
 ||*Vista*||[http://xswingx.googlecode.com/svn/wiki/images/searchfield_vista_popup.png]||[http://xswingx.googlecode.com/svn/wiki/images/searchfield_vista_popup_clicked.png]||
 ||*Mac*||[http://xswingx.googlecode.com/svn/wiki/images/searchfield_mac_popup.png]||[http://xswingx.googlecode.com/svn/wiki/images/searchfield_mac_popup_clicked.png]||
-
-
 
 
 
