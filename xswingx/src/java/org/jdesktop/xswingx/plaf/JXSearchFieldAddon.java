@@ -12,6 +12,7 @@ import javax.swing.plaf.InsetsUIResource;
 
 import org.jdesktop.swingx.plaf.AbstractComponentAddon;
 import org.jdesktop.swingx.plaf.LookAndFeelAddons;
+import org.jdesktop.swingx.plaf.UIManagerExt;
 import org.jdesktop.xswingx.JXSearchField.LayoutStyle;
 
 public class JXSearchFieldAddon extends AbstractComponentAddon {
@@ -47,7 +48,9 @@ public class JXSearchFieldAddon extends AbstractComponentAddon {
 						new InsetsUIResource(1, 1, 1, 1),
 						"SearchField.popupSource", BUTTON_SOURCE}));
 		
-		UIManager.getDefaults().addResourceBundle("org.jdesktop.xswingx.plaf.basic.resources.SearchField");
+		//webstart fix
+		UIManagerExt.addResourceBundle("org.jdesktop.xswingx.plaf.basic.resources.SearchField");
+//		UIManager.getDefaults().addResourceBundle("org.jdesktop.xswingx.plaf.basic.resources.SearchField");
 	}
 
 	@Override

@@ -7,7 +7,6 @@ import javax.swing.JTextField;
 import javax.swing.plaf.basic.BasicTextFieldUI;
 
 import org.jdesktop.xswingx.JXSearchField;
-import org.jdesktop.xswingx.plaf.basic.BasicSearchFieldUI;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -26,7 +25,7 @@ public class TextUIWrapperTest {
     public void testWrapUI() throws Exception {
     	assertEquals(BuddyTextFieldUI.class, wrapper.wrapUI(new JTextField()).getClass());
     	assertEquals(PromptTextAreaUI.class, wrapper.wrapUI(new JTextArea()).getClass());
-    	assertEquals(BasicSearchFieldUI.class, wrapper.wrapUI(new JXSearchField()).getClass());
+    	assertEquals(SearchFieldUI.class, wrapper.wrapUI(new JXSearchField()).getClass());
 	}
 	
 	

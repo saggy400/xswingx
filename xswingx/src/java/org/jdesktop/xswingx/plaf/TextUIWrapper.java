@@ -14,7 +14,6 @@ import javax.swing.text.JTextComponent;
 
 import org.jdesktop.xswingx.BuddySupport;
 import org.jdesktop.xswingx.JXSearchField;
-import org.jdesktop.xswingx.plaf.basic.BasicSearchFieldUI;
 
 /**
  * TODO:
@@ -147,7 +146,7 @@ public abstract class TextUIWrapper<UI extends TextUI> {
 				return (PromptTextUI) textUI;
 			} else if (textUI instanceof BasicTextFieldUI) {
 				if (textComponent instanceof JXSearchField) {
-					return new BasicSearchFieldUI(textUI);
+					return new SearchFieldUI(textUI);
 				} else {
 					return new BuddyTextFieldUI(textUI);
 				}

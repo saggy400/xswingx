@@ -27,10 +27,6 @@ import com.jgoodies.forms.layout.Sizes;
 public class SearchFieldCustomizer extends JPanel {
 	public SearchFieldCustomizer() {
 		initComponents();
-		//webstart fix
-		if(field.getPrompt() == null){
-			field.setPrompt("Search");
-		}
 	}
 
 	private void search(ActionEvent e) {

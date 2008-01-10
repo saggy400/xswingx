@@ -29,7 +29,7 @@ import org.jdesktop.xswingx.JXSearchField.FindAction;
 import org.jdesktop.xswingx.JXSearchField.LayoutStyle;
 import org.jdesktop.xswingx.JXSearchField.SearchMode;
 import org.jdesktop.xswingx.RecentSearches.RecentSearchesPopup;
-import org.jdesktop.xswingx.plaf.basic.BasicSearchFieldUI;
+import org.jdesktop.xswingx.plaf.SearchFieldUI;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -500,7 +500,7 @@ public class JXSearchFieldTest {
 	
 	@Test
 	public void testUseNativeSearchFieldIfPossible() throws Exception {
-		BasicSearchFieldUI ui = (BasicSearchFieldUI) searchField.getUI();
+		SearchFieldUI ui = (SearchFieldUI) searchField.getUI();
 		
 		searchField.setUseNativeSearchFieldIfPossible(true);
 		assertTrue(searchField.isUseNativeSearchFieldIfPossible());

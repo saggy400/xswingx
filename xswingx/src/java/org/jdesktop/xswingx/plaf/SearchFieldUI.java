@@ -1,4 +1,4 @@
-package org.jdesktop.xswingx.plaf.basic;
+package org.jdesktop.xswingx.plaf;
 
 import java.awt.Component;
 import java.awt.Container;
@@ -25,9 +25,6 @@ import org.jdesktop.xswingx.BuddySupport;
 import org.jdesktop.xswingx.JXSearchField;
 import org.jdesktop.xswingx.NativeSearchFieldSupport;
 import org.jdesktop.xswingx.JXSearchField.LayoutStyle;
-import org.jdesktop.xswingx.plaf.BuddyLayoutAndBorder;
-import org.jdesktop.xswingx.plaf.BuddyTextFieldUI;
-import org.jdesktop.xswingx.plaf.JXSearchFieldAddon;
 
 /**
  * The default {@link JXSearchField} UI delegate.
@@ -35,7 +32,7 @@ import org.jdesktop.xswingx.plaf.JXSearchFieldAddon;
  * @author Peter Weishapl <petw@gmx.net>
  * 
  */
-public class BasicSearchFieldUI extends BuddyTextFieldUI {
+public class SearchFieldUI extends BuddyTextFieldUI {
 	/**
 	 * The search field that we're a UI delegate for. Initialized by the
 	 * <code>installUI</code> method, and reset to null by
@@ -50,7 +47,7 @@ public class BasicSearchFieldUI extends BuddyTextFieldUI {
 
 	public static final Insets NO_INSETS = new Insets(0, 0, 0, 0);
 
-	public BasicSearchFieldUI(TextUI delegate) {
+	public SearchFieldUI(TextUI delegate) {
 		super(delegate);
 	}
 
