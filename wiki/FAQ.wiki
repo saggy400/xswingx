@@ -3,9 +3,12 @@
 
 See http://designinginterfaces.com/Input_Prompt for a description of the *Input Prompt* pattern or [http://msdn2.microsoft.com/en-us/library/aa511494.aspx#prompts] for guidelines of how to use prompts in Windows Vista.
 
+===What does 'buddy' mean in terms of child components?===
+Because the child is the buddy of the text field. Anyway, I believe I read about it somewhere in an older version of the Vista UX Guidelines (_...make it the buddy of the text box..._), but can't find it anymore. If you know a better name, please let me know.
+
 ===Why should I use the prompt support provided by xswingx? I could easily write my own prompt support.===
 
-Well, that sounds pretty complicated. But it could be so easy: Just download [http://xswingx.googlecode.com/files/prompt.jar prompt.jar] (<10kB), add it to your classpath and call:
+Well, that sounds pretty complicated, doesn't it? But it could be so easy: Just download [http://xswingx.googlecode.com/files/prompt.jar prompt.jar] (<10kB), add it to your classpath and call:
 {{{
 PromptSupport.setPrompt("My Prompt", myTextComponent);
 }}}
