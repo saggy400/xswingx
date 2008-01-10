@@ -1,6 +1,6 @@
 #labels Featured
 =Get the Library=
-Download [http://xswingx.googlecode.com/files/xswingx.zip xswingx.zip] from the _Downloads_ section if you want to use all xswingx features, or download [http://xswingx.googlecode.com/files/prompt.jar prompt.jar], if you just want to add a prompt to your existing text components.
+Download [http://xswingx.googlecode.com/files/xswingx-0.2.zip xswingx] from the _Downloads_ section if you want to use all xswingx features, or download [http://xswingx.googlecode.com/files/prompt.jar prompt.jar], if you just want to add a prompt to your existing text components.
 
 =Add a Prompt to Your Existing Text Component=
 Just invoke
@@ -125,8 +125,6 @@ The search field will automatically change its icon (the Windows LnF even uses a
 ||*Windows XP*||[http://xswingx.googlecode.com/svn/wiki/images/searchfield_xp_popup.png]||[http://xswingx.googlecode.com/svn/wiki/images/searchfield_xp_popup_clicked.png]||
 ||*Vista*||[http://xswingx.googlecode.com/svn/wiki/images/searchfield_vista_popup.png]||[http://xswingx.googlecode.com/svn/wiki/images/searchfield_vista_popup_clicked.png]||
 ||*Mac*||[http://xswingx.googlecode.com/svn/wiki/images/searchfield_mac_popup.png]||[http://xswingx.googlecode.com/svn/wiki/images/searchfield_mac_popup_clicked.png]||
-
-
 
 
 
