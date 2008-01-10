@@ -40,9 +40,17 @@ By default, the color used for the prompt text is the text component's disabled 
 You can also set a background color for the promp by calling `PromptSupport.setBackground()`.
 
 =Use the Extended Text Components=
-If you are creating a new form for your application, you probably want to use a graphical editor like _JFormDesigner_ or _Matisse_ to change you text components properties. In this case it is handy to use one of the prebuilt text components, which support prompt customization via JavaBean properties: [http://xswingx.googlecode.com/svn/trunk/xswingx/src/java/org/jdesktop/xswingx/JXTextField.java JXTextField], [http://xswingx.googlecode.com/svn/trunk/xswingx/src/java/org/jdesktop/xswingx/JXTextArea.java JXTextArea], or [http://xswingx.googlecode.com/svn/trunk/xswingx/src/java/org/jdesktop/xswingx/JXFormattedTextField.java JXFormattedPromptField]. These classes simply extend JTextField, JTextArea, or JFormattedTextField respectively, and add properties supported by [http://xswingx.googlecode.com/svn/trunk/xswingx/src/java/org/jdesktop/xswingx/PromptSupport.java PromptSupport].
+If you are creating a new form for your application, you probably want to use a graphical editor like _JFormDesigner_ or _Matisse_ to change you text components properties. In this case it is handy to use one of the prebuilt text components, which support prompt customization via JavaBean properties: [http://xswingx.googlecode.com/svn/trunk/xswingx/src/java/org/jdesktop/xswingx/JXTextField.java JXTextField], [http://xswingx.googlecode.com/svn/trunk/xswingx/src/java/org/jdesktop/xswingx/JXTextArea.java JXTextArea], or [http://xswingx.googlecode.com/svn/trunk/xswingx/src/java/org/jdesktop/xswingx/JXFormattedTextField.java JXFormattedTextField]. These classes simply extend JTextField, JTextArea, or JFormattedTextField respectively, and add properties supported by [http://xswingx.googlecode.com/svn/trunk/xswingx/src/java/org/jdesktop/xswingx/PromptSupport.java PromptSupport].
 
 Note: You need the whole xswingx library to use these components.
+
+=Add a Buddy to a Text Field=
+Use
+{{{
+BuddySupport.addLeft(buddy, textField); 
+//or
+BuddySupport.addRight(buddy, textField); 
+}}}
 
 =Use the Search Field=
 It's easy to create a search field:
@@ -117,8 +125,6 @@ The search field will automatically change its icon (the Windows LnF even uses a
 ||*Windows XP*||[http://xswingx.googlecode.com/svn/wiki/images/searchfield_xp_popup.png]||[http://xswingx.googlecode.com/svn/wiki/images/searchfield_xp_popup_clicked.png]||
 ||*Vista*||[http://xswingx.googlecode.com/svn/wiki/images/searchfield_vista_popup.png]||[http://xswingx.googlecode.com/svn/wiki/images/searchfield_vista_popup_clicked.png]||
 ||*Mac*||[http://xswingx.googlecode.com/svn/wiki/images/searchfield_mac_popup.png]||[http://xswingx.googlecode.com/svn/wiki/images/searchfield_mac_popup_clicked.png]||
-
-
 
 
 
