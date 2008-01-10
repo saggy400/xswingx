@@ -7,20 +7,21 @@ import javax.swing.text.AbstractDocument;
 
 import org.jdesktop.xswingx.JXSearchField;
 import org.jdesktop.xswingx.NativeSearchFieldSupport;
+import org.jdesktop.xswingx.plaf.SearchFieldUI;
 import org.junit.Before;
 import org.junit.Test;
 
 
 public class BasicSearchFieldUITest {
 	private JXSearchField sf;
-	private BasicSearchFieldUI ui;
+	private SearchFieldUI ui;
 	
 	@Before
 	public void setUp() {
 		UIManager.put("SearchField.useSeperatePopupButton", Boolean.FALSE);
 		sf = new JXSearchField();
 		sf.setUseNativeSearchFieldIfPossible(false);
-		ui = (BasicSearchFieldUI) sf.getUI();
+		ui = (SearchFieldUI) sf.getUI();
 	}
 	
 	@Test

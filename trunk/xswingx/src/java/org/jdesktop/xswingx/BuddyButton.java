@@ -7,7 +7,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.border.Border;
 
-import org.jdesktop.xswingx.plaf.basic.BasicSearchFieldUI;
+import org.jdesktop.xswingx.plaf.SearchFieldUI;
 
 /**
  * Non focusable, no border, no margin and insets button with no content area
@@ -24,7 +24,7 @@ public class BuddyButton extends JButton {
 	public BuddyButton(String text) {
 		super(text);
 		setFocusable(false);
-		setMargin(BasicSearchFieldUI.NO_INSETS);
+		setMargin(SearchFieldUI.NO_INSETS);
 
 		// Windows UI will add 1 pixel for width and height, if this is true
 		setFocusPainted(false);
@@ -43,7 +43,7 @@ public class BuddyButton extends JButton {
 	// Windows UI overrides Insets.
 	// Who knows what other UIs are doing...
 	public Insets getInsets() {
-		return BasicSearchFieldUI.NO_INSETS;
+		return SearchFieldUI.NO_INSETS;
 	}
 
 	public Insets getInsets(Insets insets) {

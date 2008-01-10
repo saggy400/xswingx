@@ -14,10 +14,10 @@ import javax.swing.JPopupMenu;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
-import javax.swing.UIManager;
 import javax.swing.text.Document;
 
 import org.jdesktop.swingx.plaf.LookAndFeelAddons;
+import org.jdesktop.swingx.plaf.UIManagerExt;
 import org.jdesktop.xswingx.plaf.JXSearchFieldAddon;
 import org.jdesktop.xswingx.plaf.TextUIWrapper;
 
@@ -158,7 +158,7 @@ public class JXSearchField extends JXTextField {
 	 * Creates a new search field with a default prompt.
 	 */
 	public JXSearchField() {
-		this(UIManager.getString("SearchField.prompt"));
+		this(UIManagerExt.getString("SearchField.prompt"));
 	}
 
 	/**
