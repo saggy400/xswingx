@@ -56,6 +56,7 @@ What you get is this:
 || Windows XP || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_xp.png] || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_xp_searching.png] ||
 || Vista || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_vista.png] || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_vista_searching.png] ||
 || Mac || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_mac.png] || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_mac_searching.png] || 
+|| Mac Native (10.5 required) || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_mac_native.png] || [http://xswingx.googlecode.com/svn/wiki/images/searchfield_mac_native_searching.png] || 
 
 Notice that the search field _automatically_ takes the style of the current Look and Feel.
 Everything is still customizable, of course. You can make the search field more _Vista_ like in any LnF by calling 
@@ -116,8 +117,6 @@ The search field will automatically change it's icon (the Windows LnF even uses 
 ||*Windows XP*||[http://xswingx.googlecode.com/svn/wiki/images/searchfield_xp_popup.png]||[http://xswingx.googlecode.com/svn/wiki/images/searchfield_xp_popup_clicked.png]||
 ||*Vista*||[http://xswingx.googlecode.com/svn/wiki/images/searchfield_vista_popup.png]||[http://xswingx.googlecode.com/svn/wiki/images/searchfield_vista_popup_clicked.png]||
 ||*Mac*||[http://xswingx.googlecode.com/svn/wiki/images/searchfield_mac_popup.png]||[http://xswingx.googlecode.com/svn/wiki/images/searchfield_mac_popup_clicked.png]||
-
-
 
 
 
